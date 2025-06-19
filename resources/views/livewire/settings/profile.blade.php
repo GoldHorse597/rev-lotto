@@ -45,7 +45,7 @@ new class extends Component {
             $user->email_verified_at = null;
         }
 
-        $user->save();
+        // $user->save();
 
         $this->dispatch('profile-updated', name: $user->name);
     }

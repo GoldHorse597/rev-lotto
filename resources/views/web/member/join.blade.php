@@ -13,9 +13,10 @@
     </div>
   </div>
   <form action="/member/join" method="post" name="join_form" enctype="multipart/form-data">
+    @csrf
     <input type="hidden" name="mailing" id="mailing" value="1">
     <input type="hidden" name="idchk" id="idchk" value="">
-    <input type="hidden" name="emailchk" id="emailchk" value="">
+    <input type="hidden" name="codechk" id="codechk" value="">
     <div class="contents">
       <div class="inner-contents">
         <h3 class="tit-h3 tit-h3-sub mt50 mo-mt0"> 기본정보 <span>
@@ -64,7 +65,19 @@
             </tr>
             <tr>
               <th>
-                <em>*</em> 은행정보
+                <em>*</em> 은행권선택
+              </th>
+              <td>
+                <select name="bankName" id="bankName" class="w250 mw100p" style="text-align:center">
+                  @foreach ($banks as $bank)
+                  <option value="{{ $bank->name }}"> {{ $bank->name }} </option>
+                  @endforeach                  
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <em>*</em> 계좌번호
               </th>
               <td>
                 <input type="text" name="bank" id="bank" class="w250 mw100p">
@@ -76,7 +89,7 @@
                 <em>*</em> 예금주
               </th>
               <td>
-                <input type="text" name="bankname" class="w250 mw100p">
+                <input type="text" name="bankOwner" class="w250 mw100p">
               </td>
             </tr>            
             <tr>
@@ -85,6 +98,16 @@
               </th>
               <td class="m-flex m-justify-space">
                 <input type="text" name="phone" id="phone" class="w250 mw100p">             
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <em>*</em> 추천코드
+              </th>
+              <td class="m-flex">
+                <input type="text" name="code" id="code" class="w250 mw30p">
+                <a href="javascript:codeWinOpen(2);" class="btn-comm btn-k mw70 ml5">확인</a>
+                <div id="code_check_result" class="mw100p"></div>
               </td>
             </tr>
           </tbody>
@@ -100,13 +123,11 @@
 
 <script language="javascript">
 <!--
-
-//function window::onload(){ 
-//  var form=document.join_form;
-//  form.userid1.focus() ;
-// }
-
-
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
 // 아이디중복검색	 && 추천인 아이디 검색
 function idWinOpen(data) {
 
@@ -133,7 +154,7 @@ function idWinOpen(data) {
         $.ajax({
             type: "POST",
                 contentType: "application/x-www-form-urlencoded; charset=euc-kr",
-            url: "/member/idCheck",
+            url: "/member/id_check",
             data: {"id": userid}, 
             dataType: "html",
             cache: false,
@@ -146,17 +167,68 @@ function idWinOpen(data) {
                         data =  "<span style='color:red;'>이미 사용하고 있는 아이디 입니다.</span>";
                         frm.idchk.value = "";
                     }	
-                    else if(data == "YY")
+                    else if(data == "Y")
                     {
                         data =  "<span style='color:blue;'>사용이 가능한 아이디 입니다.</span>";
                         frm.idchk.value = "Y";
-                    }
-                    else if(data == "YN")
-                    {
-                        data =  "<span style='color:red;'>탈퇴한 아이디 입니다.</span>";
-                        frm.idchk.value = "";
-                    }
+                    }                   
                     $("#id_check_result").html(data);						
+                }
+                else
+                {
+                    alert(data);
+                }
+            },
+            error: function(data, textStatus, jqXHR)
+            {
+                alert("실패했습니다. 다시시도해주세요");
+            }
+        });			
+    }
+}
+
+function codeWinOpen(data) {
+
+	frm = document.join_form;
+	code_chk = checkSpace(frm.code.value);
+
+	if(code_chk === true){
+		data =  "<span style='color:red;'>아이디 공백을 확인하세요.</span>";
+		frm.codechk.value = "";
+		$("#code_check_result").html(data);
+		return;
+	}
+
+	var code = frm.code.value;
+	
+	if(frm.code.value =="") {
+        alert("추천코드를 입력해 주세요.");
+        frm.code.focus();
+    } 
+    else {
+        $.ajax({
+            type: "POST",
+                contentType: "application/x-www-form-urlencoded; charset=euc-kr",
+            url: "/member/code_check",
+            
+            data: {"code": code}, 
+            dataType: "html",
+            cache: false,
+            success: function(data, textStatus, jqXHR)
+            {
+                if(textStatus =="success")
+                {
+                    if(data == "N")
+                    {
+                        data =  "<span style='color:red;'>추천코드가 정확하지 않습니다.</span>";
+                        frm.codechk.value = "";
+                    }	
+                    else if(data == "Y")
+                    {
+                        data =  "<span style='color:blue;'>사용이 가능한 추천코드 입니다.</span>";
+                        frm.codechk.value = "Y";
+                    }                   
+                    $("#code_check_result").html(data);						
                 }
                 else
                 {
@@ -204,6 +276,10 @@ function sendit() {
 		alert("아이디 중복체크를 해주세요.");
 		//form.userid1.focus();
 	}
+  if(form.codechk.value=="") {
+		alert("추천코드를 확인 해주세요.");
+		//form.userid1.focus();
+	}
 	else if(form.userid1.value=="") {
 		alert("회원아이디를 입력해 주세요.");
 		form.userid1.focus();
@@ -229,16 +305,19 @@ function sendit() {
 		alert("회원님의 이름을 입력해 주세요.");
 		form.name.focus();
 	}
-    else if(form.bankname.value=="" || form.bankname.value.trim() =="") {
+    else if(form.bankOwner.value=="" || form.bankOwner.value.trim() =="") {
 		alert("회원님의 예금주를 입력해 주세요.");
-		form.name.focus();
+		form.bankOwner.focus();
 	} else if(form.bank.value=="") {
-		alert("회원님의 은행정보를 입력해 주세요.");
-		form.jumin1.focus();
+		alert("회원님의 계좌번호를 입력해 주세요.");
+		form.bank.focus();
 	}else if(form.phone.value=="") {
 		alert("회원님의 이동전화를 입력해 주세요.");
 		form.phone.focus();
-	}  else {
+	} else if(form.code.value=="") {
+		alert("추천코드를 입력해 주세요.");
+		form.code.focus();
+	} else {
 		form.submit();
 	}
 }

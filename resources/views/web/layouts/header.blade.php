@@ -1,5 +1,17 @@
 <header>
-  <div class="my-info"> &nbsp; </div>
+  <div class="my-info"> &nbsp;
+    @auth
+    <a href="/ver_02/w_mypage/modify.php" class="name">{{ Auth::user()->name }}</a>님! 반갑습니다. 
+      <button class="grade grade-normal pointer" onclick="javascript:openIdpass2();">Normal</button>
+      <span class="ml10">로또현황: 
+        <a href="/mypage/buy_list">0종</a> 
+        | 포인트: 
+        <a href="/mypage/point_list">{{number_format(floor(Auth::user()->amount),0)}}</a>
+        <a href="/mypage/deposit" class="btn-point" title="금액충전">금액충전</a>
+      </span>
+    <a href="/play/cart" title="장바구니" class="btn-cart">장바구니</a>
+    @endauth
+  </div>
   <div class="max-wrapper">
     <div class="gnb-logo">
       <a href="/" title="로또캠프">
@@ -11,8 +23,14 @@
     </a>
     <nav class="gnb">
       <div class="sub-menu">
+        @auth
+        
+        <a href="/member/logout" title="로그아웃">로그아웃</a>
+        <a href="/mypage/deposit" title="포인트충전">금액충전</a>
+        @else
         <a href="/member/login" title="로그인">로그인</a>
         <a href="/member/join" title="회원가입">회원가입</a>
+        @endauth
         <a href="javascript:void(0)" class="btn-nav  btn-nav-close2">
           <img src="{{ asset('images/web/btn_menu_close.png')}}" alt="메뉴 닫기">
         </a>
@@ -31,7 +49,7 @@
               <a href="/play/lotto_em_qp" title="연금720(한국)">연금720(한국)</a>
             </li>
             <li>
-              <a href="/jplay/lotto_pb" title="파워볼(미국)">파워볼(미국)</a>
+              <a href="/play/lotto_pb" title="파워볼(미국)">파워볼(미국)</a>
             </li>
             <li>
               <a href="/play/lotto_mm" title="메가밀리언(미국)">메가밀리언(미국)</a>
@@ -57,34 +75,34 @@
           <span class="gnb-btn" style="cursor:pointer">리버스 로또</span>
           <ul class="depth2">
               <li>
-              <a href="/play/lotto_live" title="실시간로또">실시간로또</a>
+              <a href="/jplay/lotto_live" title="실시간로또">실시간로또</a>
             </li>
             <li>
-              <a href="/play/lotto_KR" title="로또6/45(한국)">로또6/45(한국)</a>
+              <a href="/jplay/lotto_KR" title="로또6/45(한국)">로또6/45(한국)</a>
             </li>
             <li>
-              <a href="/play/lotto_em_qp" title="연금720(한국)">연금720(한국)</a>
+              <a href="/jplay/lotto_em_qp" title="연금720(한국)">연금720(한국)</a>
             </li>
             <li>
               <a href="/jplay/lotto_pb" title="파워볼(미국)">파워볼(미국)</a>
             </li>
             <li>
-              <a href="/play/lotto_mm" title="메가밀리언(미국)">메가밀리언(미국)</a>
+              <a href="/jplay/lotto_mm" title="메가밀리언(미국)">메가밀리언(미국)</a>
             </li>           
             <li>
-              <a href="/play/lotto_eg" title="쌍색구(중국)">쌍색구(중국)</a>
+              <a href="/jplay/lotto_eg" title="쌍색구(중국)">쌍색구(중국)</a>
             </li>
             <li>
-              <a href="/play/lotto_lp" title="따루토(중국)">따루토(중국)</a>
+              <a href="/jplay/lotto_lp" title="따루토(중국)">따루토(중국)</a>
             </li>
             <li>
-              <a href="/play/lotto_ej" title="로또6(일본)">로또6(일본)</a>
+              <a href="/jplay/lotto_ej" title="로또6(일본)">로또6(일본)</a>
             </li>
             <li>
-              <a href="/play/lotto_ed" title="로또7(일본)">로또7(일본)</a>
+              <a href="/jplay/lotto_ed" title="로또7(일본)">로또7(일본)</a>
             </li>
             <li>
-              <a href="/play/lotto_ed" title="미니(일본)">미니(일본)</a>
+              <a href="/jplay/lotto_ed" title="미니(일본)">미니(일본)</a>
             </li>
           </ul>
         </li>
@@ -94,13 +112,13 @@
           <span class="gnb-btn" style="cursor:pointer">입금/출금</span>
           <ul class="depth2">            
             <li>
-              <a href="/mypage/modify" title="입금">입금</a>
+              <a href="/mypage/deposit" title="입금">입금</a>
             </li>  
             <li>
-              <a href="/mypage/modify" title="출금">출금</a>
+              <a href="/mypage/withdrawal" title="출금">출금</a>
             </li>
             <li>
-              <a href="/mypage/modify" title="입/출금내역">입/출금내역</a>
+              <a href="/mypage/depo_with" title="입/출금내역">입/출금내역</a>
             </li>
           </ul>
         </li>
@@ -109,7 +127,7 @@
           <span class="gnb-btn" style="cursor:pointer">마이페이지</span>
           <ul class="depth2">
             <li>
-              <a href="/customer/faq" title="받은쪽지함">받은쪽지함</a>
+              <a href="/mypage/message" title="받은쪽지함">받은쪽지함</a>
             </li>
             <li>
               <a href="/mypage/buy_list" title="거래(구매내역)">거래(구매내역)</a>
@@ -129,9 +147,9 @@
             <li>
               <a href="/customer/notice" title="공지사항">공지사항</a>
             </li>           
-            <li>
+            <!-- <li>
               <a href="/info/lotto_pb" title="로또안내">로또안내</a>
-            </li>  
+            </li>   -->
             <li>
               <a href="/customer/event" title="이벤트">이벤트</a>
             </li>
@@ -178,10 +196,7 @@
                 <img src="{{ asset('images/web/ico_quick2_06.png')}}" alt="Q&amp;A문의">
                 <span>Q&amp;A <br>문의 </span>
               </a>
-              <a href="https://lottocamp.net/" target="_blank" class="item">
-                <img src="{{ asset('images/web/ico_quick2_07.png')}}" alt="블로그">
-                <span>블로그</span>
-              </a>
+              
             </div>
             <div class="quick-prod">
               <a href="/jplay/lotto_kr" title="로또6/45">

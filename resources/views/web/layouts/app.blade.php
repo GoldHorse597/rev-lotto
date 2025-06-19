@@ -9,12 +9,12 @@
         <meta property="og:site_name" content="로또캠프-해외로또 구매대행">
         <meta property="og:title" content="파워볼 구매하기 "> 
         <meta name="keywords" content="파워볼, 메가밀리언, 로또6/45 , 연금복원720, 쌍색구, 따루토, 로또6, 로또7, 미니 공식복권 신뢰도1위 해외로또 구매대행">
-
+        <meta name="csrf-token" content="{{ csrf_token() }}">
         <link rel="stylesheet" type="text/css" href= "{{ asset('css/web/google.font.css')}}">
         <link rel="stylesheet" type="text/css" href= "{{ asset('css/web/Montserrat.css')}}">
-        <link rel="stylesheet" type="text/css" href="{{ asset('css/web/common.css') }}">
-        <link rel="stylesheet" type="text/css" href="{{ asset('css/web/layout.css') }}">
-        <link rel="stylesheet" type="text/css" href="{{ asset('css/web/main.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ asset('css/web/common.css') }}?v=1.1">
+        <link rel="stylesheet" type="text/css" href="{{ asset('css/web/layout.css') }}?v=1.1">
+        <link rel="stylesheet" type="text/css" href="{{ asset('css/web/main.css') }}?v=1.1">
         <link rel="stylesheet" type="text/css" href="{{ asset('css/web/jquery-ui.min.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ asset('css/web/sidemenu.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ asset('css/web/swiper.min.css') }}">
@@ -47,6 +47,7 @@
     </head>
 
     <body>
+        
         <div class="wrap">
         {{-- 헤더 --}}
         @include('web.layouts.header');

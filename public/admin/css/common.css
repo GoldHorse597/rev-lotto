@@ -1,0 +1,26 @@
+.table td,
+.table th {
+    word-break: keep-all;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.sidebar-brand-text {
+    word-break: keep-all;
+}
+
+.input-group>.search-control {
+    width: 120px;
+}
+
+.swagger-ui .info .title small pre {
+    padding-bottom: 1px !important;
+}
+
+@media (min-width: 320px) and (max-width: 480px) {
+    .navbar {
+        position: fixed !important;
+        width: 100% !important;
+        z-index: 999 !important;
+    }
+}

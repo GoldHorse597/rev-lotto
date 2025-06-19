@@ -148,12 +148,12 @@
 .main-bbs-w .main-bbs-inner .con:after{position:absolute;display:block;right:-52px;top:0;content:'';width:52px;height:100%;z-index:1;background:url(../images/bg_bbs_r.png) no-repeat 0 0}
 .main-bbs-w .main-bbs-inner .con .bbs-w{width:57%}
 .main-bbs-w .main-bbs-inner .con .bbs-w ul{display:flex;padding-right:80px;margin-bottom:40px}
-.main-bbs-w .main-bbs-inner .con .bbs-w ul li{display:flex;justify-content:center;align-items:center;width:20%;border-top:1px solid #b4b4b4;box-sizing:border-box;border-left:1px solid #b4b4b4;border-bottom:1px solid #b4b4b4;height:50px;text-align:center;font-size:28px;background:#FFF;color:#9f9f9f;line-height:1em;letter-spacing:-0.05em;cursor:pointer}
+.main-bbs-w .main-bbs-inner .con .bbs-w ul li{display:flex;justify-content:center;align-items:center;width:25%;border-top:1px solid #b4b4b4;box-sizing:border-box;border-left:1px solid #b4b4b4;border-bottom:1px solid #b4b4b4;height:50px;text-align:center;font-size:28px;background:#FFF;color:#9f9f9f;line-height:1em;letter-spacing:-0.05em;cursor:pointer}
 .main-bbs-w .main-bbs-inner .con .bbs-w ul li.selected{background:#1b68b0;color:#fff;font-weight:500}
 .main-bbs-w .main-bbs-inner .con .bbs-w ul li:hover{background:#1b68b0;color:#fff;font-weight:500}
 .main-bbs-w .main-bbs-inner .con .bbs-w ul li:last-child{border-right:1px solid #b4b4b4;}
 .main-bbs-w .main-bbs-inner .con .bbs-w .main-bbs-list{position:relative;}
-.main-bbs-w .main-bbs-inner .con .bbs-w .main-bbs-list .btn-more{position:absolute;top:-90px;right:0}
+.main-bbs-w .main-bbs-inner .con .bbs-w .main-bbs-list .btn-more{position:absolute;top:-90px;right:65%}
 .main-bbs-w .main-bbs-inner .con .bbs-w .main-bbs-list .item{margin:0 0 25px 0}
 .main-bbs-w .main-bbs-inner .con .bbs-w .main-bbs-list .item .linked{display:inline-block;max-width:92%;}
 .main-bbs-w .main-bbs-inner .con .bbs-w .main-bbs-list .item a{display:inline-block;font-size:20px;padding-left:15px;background:url('/images/web/ico_dot.gif') no-repeat 0 10px;width:100%;overflow:hidden; text-overflow:ellipsis; display: -webkit-box !important;-webkit-line-clamp: 1;-webkit-box-orient: vertical;max-height: 1.5em;box-sizing:border-box}

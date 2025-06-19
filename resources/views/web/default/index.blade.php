@@ -58,27 +58,15 @@
 				<div class="main-hot-notice">
 				<h3>HOT! 최근 소식</h3>
 				<a href="w_customer/lotto_news.php" class="btn-more-w"></a>
-				<a href="./w_customer/notice_view?bbs_data=aWR4PTcwMjgmc3RhcnRQYWdlPSZsaXN0Tm89JnRhYmxlPSZjb2RlPSZzZWFyY2hfaXRlbT0mc2VhcmNoX29yZGVyPQ==||" class="linked">
+				@foreach($news as $new)
+				<a href="/customer/{{$new->type}}_view?id={{$new->id}}" class="linked">
 					<span class="content">
-					<span class="tit">[중요] 접속주소변경 및 서버 업데이트작업 안내</span>
+					<span class="tit">{{$new->title}}</span>
 					<span class="ico-new">NEW</span>
 					</span>
-					<span class="date">2025-06-11</span>
+					<span class="date">{{ \Carbon\Carbon::parse($new->created_at)->format('Y-m-d') }}</span>
 				</a>
-				<a href="./w_customer/win_story_view?bbs_data=aWR4PTcwMjcmc3RhcnRQYWdlPSZsaXN0Tm89JnRhYmxlPSZjb2RlPSZzZWFyY2hfaXRlbT0mc2VhcmNoX29yZGVyPQ==||" class="linked">
-					<span class="content">
-					<span class="tit">2025년 Contra el Cancer 항암 특별복권 추첨소식</span>
-					<span class="ico-new">NEW</span>
-					</span>
-					<span class="date">2025-06-08</span>
-				</a>
-				<a href="./w_customer/notice_view?bbs_data=aWR4PTcwMjYmc3RhcnRQYWdlPSZsaXN0Tm89JnRhYmxlPSZjb2RlPSZzZWFyY2hfaXRlbT0mc2VhcmNoX29yZGVyPQ==||" class="linked">
-					<span class="content">
-					<span class="tit">[중요] 금일(6일) 유로밀리언 조기마감</span>
-					<span class="ico-new">NEW</span>
-					</span>
-					<span class="date">2025-06-06</span>
-				</a>
+				@endforeach				
 				</div>
 			</div>
 			<div class="main-lotto-buy-w" id="lottoBuy">
@@ -1401,196 +1389,45 @@
 			</div>
 			<div class="main-bbs-w">
 				<div class="main-bbs-inner">
-				<div class="con">
-					<div class="bbs-w">
-					<ul>
-						<li onclick="javascript:bbsTab('1');" class="selected">당첨소식</li>
-						<li onclick="javascript:bbsTab('2');">공지사항</li>
-						<li onclick="javascript:bbsTab('3');">복권뉴스</li>
-						<li onclick="javascript:bbsTab('4');">도움안내</li>
-						<li onclick="javascript:bbsTab('5');">이벤트</li>
-					</ul>
-					<div class="main-bbs-list">
-						<a href="w_customer/win_story.php" class="btn-more"></a>
-						<div class="item">
-						<span class="linked">
-							<a href="./w_customer/win_story_view?bbs_data=aWR4PTcwMjcmc3RhcnRQYWdlPSZsaXN0Tm89JnRhYmxlPWNzX2dvb2RzX2V0YyZjb2RlPXdpbl9uZXdzJnNlYXJjaF9pdGVtPSZzZWFyY2hfb3JkZXI9||">2025년 Contra el Cancer 항암 특별복권 추첨소식</a>
-						</span>
-						<span class="ico-new">NEW</span>
+					<div class="con">
+						<div class="bbs-w">
+							<ul>
+								<li class="selected">공지사항</li>							
+							</ul>
+							
+							<div class="main-bbs-list">
+								<a href="w_customer/notice.php" class="btn-more"></a>
+								@foreach($notices as $notice)
+								<div class="item">
+									<span class="linked">
+										<a href="/customer/notice_view?id={{$notice->id}}">{{$notice->title}}</a>
+									</span>
+									@if($notice->created_at->gt(\Carbon\Carbon::now()->subDays(1))) 
+										<span class="ico-new">NEW</span>
+									@endif
+								</div>
+								@endforeach
+							</div>
+							
 						</div>
-						<div class="item">
-						<span class="linked">
-							<a href="./w_customer/win_story_view?bbs_data=aWR4PTcwMTUmc3RhcnRQYWdlPSZsaXN0Tm89JnRhYmxlPWNzX2dvb2RzX2V0YyZjb2RlPXdpbl9uZXdzJnNlYXJjaF9pdGVtPSZzZWFyY2hfb3JkZXI9||">2025년 Dia de la Madre 어머니의날 특별복권 추첨소식 (94663)</a>
-						</span>
+						<div class="bbs-w">
+							<ul><li class="selected">이벤트</li></ul>
+							<div class="main-bbs-list">
+								<a href="/w_customer/event" class="btn-more"></a>
+								@foreach($events as $event)
+								<div class="item">
+									<span class="linked">
+										<a href="/customer/event_view?id={{$event->id}}">{{$event->title}}</a>
+									</span>
+									@if($event->created_at->gt(\Carbon\Carbon::now()->subDays(1)))
+									<span class="ico-new">NEW</span>
+									@endif
+								</div>
+								@endforeach
+							</div>
 						</div>
-						<div class="item">
-						<span class="linked">
-							<a href="./w_customer/win_story_view?bbs_data=aWR4PTcwMDQmc3RhcnRQYWdlPSZsaXN0Tm89JnRhYmxlPWNzX2dvb2RzX2V0YyZjb2RlPXdpbl9uZXdzJnNlYXJjaF9pdGVtPSZzZWFyY2hfb3JkZXI9||">2025년 DIA DEL PADRE 아빠의날 특별복권 추첨소식(02769)</a>
-						</span>
-						</div>
-						<div class="item">
-						<span class="linked">
-							<a href="./w_customer/win_story_view?bbs_data=aWR4PTY5OTYmc3RhcnRQYWdlPSZsaXN0Tm89JnRhYmxlPWNzX2dvb2RzX2V0YyZjb2RlPXdpbl9uZXdzJnNlYXJjaF9pdGVtPSZzZWFyY2hfb3JkZXI9||">2025년 San Valentin 성발렌타인 특별복권 추첨소식 (33858)</a>
-						</span>
-						</div>
-						<div class="item">
-						<span class="linked">
-							<a href="./w_customer/win_story_view?bbs_data=aWR4PTY5OTAmc3RhcnRQYWdlPSZsaXN0Tm89JnRhYmxlPWNzX2dvb2RzX2V0YyZjb2RlPXdpbl9uZXdzJnNlYXJjaF9pdGVtPSZzZWFyY2hfb3JkZXI9||">2025년 EL NINO 특별복권 추첨소식(78908)</a>
-						</span>
-						</div>
-					</div>
-					<div class="main-bbs-list" style="display:none">
-						<a href="w_customer/notice.php" class="btn-more"></a>
-						<div class="item">
-						<span class="linked">
-							<a href="./w_customer/notice_view?bbs_data=aWR4PTcwMjgmc3RhcnRQYWdlPSZsaXN0Tm89JnRhYmxlPWNzX2dvb2RzX2V0YyZjb2RlPW5vdGljZSZzZWFyY2hfaXRlbT0mc2VhcmNoX29yZGVyPQ==||">[중요] 접속주소변경 및 서버 업데이트작업 안내</a>
-						</span>
-						<span class="ico-new">NEW</span>
-						</div>
-						<div class="item">
-						<span class="linked">
-							<a href="./w_customer/notice_view?bbs_data=aWR4PTcwMjYmc3RhcnRQYWdlPSZsaXN0Tm89JnRhYmxlPWNzX2dvb2RzX2V0YyZjb2RlPW5vdGljZSZzZWFyY2hfaXRlbT0mc2VhcmNoX29yZGVyPQ==||">[중요] 금일(6일) 유로밀리언 조기마감</a>
-						</span>
-						<span class="ico-new">NEW</span>
-						</div>
-						<div class="item">
-						<span class="linked">
-							<a href="./w_customer/notice_view?bbs_data=aWR4PTcwMjMmc3RhcnRQYWdlPSZsaXN0Tm89JnRhYmxlPWNzX2dvb2RzX2V0YyZjb2RlPW5vdGljZSZzZWFyY2hfaXRlbT0mc2VhcmNoX29yZGVyPQ==||">[연기됨] 2025년 2번째 슈퍼유로밀리언 공표(기한 미정)</a>
-						</span>
-						</div>
-						<div class="item">
-						<span class="linked">
-							<a href="./w_customer/notice_view?bbs_data=aWR4PTcwMjImc3RhcnRQYWdlPSZsaXN0Tm89JnRhYmxlPWNzX2dvb2RzX2V0YyZjb2RlPW5vdGljZSZzZWFyY2hfaXRlbT0mc2VhcmNoX29yZGVyPQ==||">일부 통신사&amp;지역 접속지연 안내</a>
-						</span>
-						</div>
-						<div class="item">
-						<span class="linked">
-							<a href="./w_customer/notice_view?bbs_data=aWR4PTcwMjEmc3RhcnRQYWdlPSZsaXN0Tm89JnRhYmxlPWNzX2dvb2RzX2V0YyZjb2RlPW5vdGljZSZzZWFyY2hfaXRlbT0mc2VhcmNoX29yZGVyPQ==||">[중요] 유럽로또 마감임시 변경 &amp; 임시 휴무안내</a>
-						</span>
 						</div>
 					</div>
-					<div class="main-bbs-list" style="display:none">
-						<a href="w_customer/lotto_news.php" class="btn-more"></a>
-						<div class="item">
-						<span class="linked">
-							<a href="./w_customer/lotto_news_view?bbs_data=aWR4PTY5NDEmc3RhcnRQYWdlPSZsaXN0Tm89JnRhYmxlPWNzX2dvb2RzX2V0YyZjb2RlPW5ld3Mmc2VhcmNoX2l0ZW09JnNlYXJjaF9vcmRlcj0=||">1조8천억원의 당첨자는 공동당첨을 선택하였습니다.</a>
-						</span>
-						</div>
-						<div class="item">
-						<span class="linked">
-							<a href="./w_customer/lotto_news_view?bbs_data=aWR4PTY5MTAmc3RhcnRQYWdlPSZsaXN0Tm89JnRhYmxlPWNzX2dvb2RzX2V0YyZjb2RlPW5ld3Mmc2VhcmNoX2l0ZW09JnNlYXJjaF9vcmRlcj0=||">수상한 중국복권! 402억 당첨금을 미리 알고 구매한 듯한 정황 포착</a>
-						</span>
-						</div>
-						<div class="item">
-						<span class="linked">
-							<a href="./w_customer/lotto_news_view?bbs_data=aWR4PTY4ODgmc3RhcnRQYWdlPSZsaXN0Tm89JnRhYmxlPWNzX2dvb2RzX2V0YyZjb2RlPW5ld3Mmc2VhcmNoX2l0ZW09JnNlYXJjaF9vcmRlcj0=||">갈수록 가관. 막장을 치닫는 한국 복권</a>
-						</span>
-						</div>
-						<div class="item">
-						<span class="linked">
-							<a href="./w_customer/lotto_news_view?bbs_data=aWR4PTY4Nzkmc3RhcnRQYWdlPSZsaXN0Tm89JnRhYmxlPWNzX2dvb2RzX2V0YyZjb2RlPW5ld3Mmc2VhcmNoX2l0ZW09JnNlYXJjaF9vcmRlcj0=||">스웨덴에는 스피드 카메라 복권이 주목 받고 있습니다.</a>
-						</span>
-						</div>
-						<div class="item">
-						<span class="linked">
-							<a href="./w_customer/lotto_news_view?bbs_data=aWR4PTY4Nzcmc3RhcnRQYWdlPSZsaXN0Tm89JnRhYmxlPWNzX2dvb2RzX2V0YyZjb2RlPW5ld3Mmc2VhcmNoX2l0ZW09JnNlYXJjaF9vcmRlcj0=||">전 세계 복권판매 급증..... 서민들의 꿈과 희망을 건다</a>
-						</span>
-						</div>
-					</div>
-					<div class="main-bbs-list" style="display:none">
-						<a href="w_customer/help.php" class="btn-more"></a>
-						<div class="item">
-						<span class="linked">
-							<a href="./w_customer/help_view?bbs_data=aWR4PTY5MjAmc3RhcnRQYWdlPSZsaXN0Tm89JnRhYmxlPWNzX2dvb2RzX2V0YyZjb2RlPXFuYSZzZWFyY2hfaXRlbT0mc2VhcmNoX29yZGVyPQ==||">한국에서 접속이 않되면 반드시 블로그를 확인하세요</a>
-						</span>
-						</div>
-						<div class="item">
-						<span class="linked">
-							<a href="./w_customer/help_view?bbs_data=aWR4PTY2NTkmc3RhcnRQYWdlPSZsaXN0Tm89JnRhYmxlPWNzX2dvb2RzX2V0YyZjb2RlPXFuYSZzZWFyY2hfaXRlbT0mc2VhcmNoX29yZGVyPQ==||">비밀번호는 6개월마다 변경 해주세요</a>
-						</span>
-						</div>
-						<div class="item">
-						<span class="linked">
-							<a href="./w_customer/help_view?bbs_data=aWR4PTY2NTEmc3RhcnRQYWdlPSZsaXN0Tm89JnRhYmxlPWNzX2dvb2RzX2V0YyZjb2RlPXFuYSZzZWFyY2hfaXRlbT0mc2VhcmNoX29yZGVyPQ==||">방화벽차단으로 접속이 불가합니다.</a>
-						</span>
-						</div>
-						<div class="item">
-						<span class="linked">
-							<a href="./w_customer/help_view?bbs_data=aWR4PTY2MjEmc3RhcnRQYWdlPSZsaXN0Tm89JnRhYmxlPWNzX2dvb2RzX2V0YyZjb2RlPXFuYSZzZWFyY2hfaXRlbT0mc2VhcmNoX29yZGVyPQ==||">존재하지 않은 아이디로 표시되는 경우</a>
-						</span>
-						</div>
-						<div class="item">
-						<span class="linked">
-							<a href="./w_customer/help_view?bbs_data=aWR4PTY1NDYmc3RhcnRQYWdlPSZsaXN0Tm89JnRhYmxlPWNzX2dvb2RzX2V0YyZjb2RlPXFuYSZzZWFyY2hfaXRlbT0mc2VhcmNoX29yZGVyPQ==||">고객센터로 메일을 보냈는데 답변이 없습니다.</a>
-						</span>
-						</div>
-					</div>
-					<div class="main-bbs-list" style="display:none">
-						<a href="w_customer/event.php" class="btn-more"></a>
-						<div class="item">
-						<span class="linked">
-							<a href="./w_customer/event_view?bbs_data=aWR4PTcwMjUmc3RhcnRQYWdlPSZsaXN0Tm89JnRhYmxlPWNzX2dvb2RzX2V0YyZjb2RlPWV2ZW50JnNlYXJjaF9pdGVtPSZzZWFyY2hfb3JkZXI9||">[6월이벤트-1] 2025 썸머 엘고르도 Verano 특별복권 (브론즈 이상응모)</a>
-						</span>
-						<span class="ico-new">NEW</span>
-						</div>
-						<div class="item">
-						<span class="linked">
-							<a href="./w_customer/event_view?bbs_data=aWR4PTcwMjAmc3RhcnRQYWdlPSZsaXN0Tm89JnRhYmxlPWNzX2dvb2RzX2V0YyZjb2RlPWV2ZW50JnNlYXJjaF9pdGVtPSZzZWFyY2hfb3JkZXI9||">[상시이벤트-5] 웰컴백 포인트증정 이벤트</a>
-						</span>
-						</div>
-						<div class="item">
-						<span class="linked">
-							<a href="./w_customer/event_view?bbs_data=aWR4PTcwMTkmc3RhcnRQYWdlPSZsaXN0Tm89JnRhYmxlPWNzX2dvb2RzX2V0YyZjb2RlPWV2ZW50JnNlYXJjaF9pdGVtPSZzZWFyY2hfb3JkZXI9||">[5월이벤트-3] 2025 Contra el Cancer 항암 특별복권 이벤트 (실버등급이상)[종료]</a>
-						</span>
-						</div>
-						<div class="item">
-						<span class="linked">
-							<a href="./w_customer/event_view?bbs_data=aWR4PTcwMTgmc3RhcnRQYWdlPSZsaXN0Tm89JnRhYmxlPWNzX2dvb2RzX2V0YyZjb2RlPWV2ZW50JnNlYXJjaF9pdGVtPSZzZWFyY2hfb3JkZXI9||">[5월이벤트-2] 파워볼 옵션플레이 수수료 FREE 이벤트[종료]</a>
-						</span>
-						</div>
-						<div class="item">
-						<span class="linked">
-							<a href="./w_customer/event_view?bbs_data=aWR4PTcwMTcmc3RhcnRQYWdlPSZsaXN0Tm89JnRhYmxlPWNzX2dvb2RzX2V0YyZjb2RlPWV2ZW50JnNlYXJjaF9pdGVtPSZzZWFyY2hfb3JkZXI9||">[5월이벤트-1] 감사의 달 보너스 충전이벤트[종료]</a>
-						</span>
-						</div>
-					</div>
-					</div>
-					<div class="faq-w">
-					<h3>자주묻는 질문</h3>
-					<a href="w_customer/faq.php" class="btn-more"></a>
-					<div class="item">
-						<span class="ico-comm bg-sky">1등당첨금</span>
-						<span class="linked">
-						<a href="./w_customer/faq_view?bbs_data=aWR4PTcwMjQmc3RhcnRQYWdlPSZsaXN0Tm89JnRhYmxlPWNzX2dvb2RzX2V0YyZjb2RlPWZhcSZzZWFyY2hfaXRlbT0mc2VhcmNoX29yZGVyPQ==||">텍사스주에서 구매대행금지를 했다는데 이를 통해 당첨금 받을 수 있나요?</a>
-						</span>
-					</div>
-					<div class="item">
-						<span class="ico-comm bg-org">주문(결제)</span>
-						<span class="linked">
-						<a href="./w_customer/faq_view?bbs_data=aWR4PTcwMDImc3RhcnRQYWdlPSZsaXN0Tm89JnRhYmxlPWNzX2dvb2RzX2V0YyZjb2RlPWZhcSZzZWFyY2hfaXRlbT0mc2VhcmNoX29yZGVyPQ==||">유로밀리언과 유로밀리언QP 마감시간 비교(2025년 3월기준)</a>
-						</span>
-					</div>
-					<div class="item">
-						<span class="ico-comm bg-sky">1등당첨금</span>
-						<span class="linked">
-						<a href="./w_customer/faq_view?bbs_data=aWR4PTY3NjQmc3RhcnRQYWdlPSZsaXN0Tm89JnRhYmxlPWNzX2dvb2RzX2V0YyZjb2RlPWZhcSZzZWFyY2hfaXRlbT0mc2VhcmNoX29yZGVyPQ==||">캐시포라이프 연금은 정말 평생 수령하나요?</a>
-						</span>
-					</div>
-					<div class="item">
-						<span class="ico-comm bg-yg">포인트/충전</span>
-						<span class="linked">
-						<a href="./w_customer/faq_view?bbs_data=aWR4PTI3Mjgmc3RhcnRQYWdlPSZsaXN0Tm89JnRhYmxlPWNzX2dvb2RzX2V0YyZjb2RlPWZhcSZzZWFyY2hfaXRlbT0mc2VhcmNoX29yZGVyPQ==||">주문가격을 할인 받고 싶어요</a>
-						</span>
-					</div>
-					<div class="item">
-						<span class="ico-comm bg-org">주문(결제)</span>
-						<span class="linked">
-						<a href="./w_customer/faq_view?bbs_data=aWR4PTEwMjEmc3RhcnRQYWdlPSZsaXN0Tm89JnRhYmxlPWNzX2dvb2RzX2V0YyZjb2RlPWZhcSZzZWFyY2hfaXRlbT0mc2VhcmNoX29yZGVyPQ==||">서명이나 이름을 싸인한 티켓을 주문하고 싶습니다.</a>
-						</span>
-					</div>
-				
-					</div>
-				</div>
 				</div>
 			</div>
 		</div>
