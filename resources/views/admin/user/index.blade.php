@@ -90,6 +90,9 @@
                             <th>은행정보</th>
                             <th>폰번호</th>
                             <th>추천코드</th>
+                            <th>총 입금</th>
+                            <th>총 출금</th>
+                            <th>총 입-출</th>
                             <th>@lang('admin/user.created_at')</th>
                             <th>@lang('admin/user.last_access_at')</th>
                             <th>@lang('admin/app.status')</th>
@@ -118,6 +121,10 @@
                             </td>
                             <td> {{$user->phone}}</td>
                             <td> {{$user->code}}</td>
+
+                            <td style="color:red"> {{number_format(floor($user->total_deposit),0)}}</td>
+                            <td style="color:blue"> {{number_format(floor($user->total_withdrawal),0)}}</td>
+                            <td style="color: {{ $user->profit >= 0 ? 'green' : 'red' }};"> {{number_format(floor($user->profit),0)}}</td>
                             
                             <td> {{$user->created_at}} </td>
                             <td> {{$user->last_access_at}} </td>

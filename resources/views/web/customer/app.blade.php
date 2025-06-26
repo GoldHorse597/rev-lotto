@@ -1,5 +1,5 @@
 @extends('web.layouts.app')
-
+<link rel="stylesheet" type="text/css" href="{{ asset('css/web/sb-admin-2.min.css') }}?v=1.2">
 @section('content')
 <section class="container">
   <h1 class="content-tit visual05">
@@ -34,4 +34,18 @@
     
   </div>
 </section>
+<script language="javascript">
+  function search(){    
+    bbs_search_form.submit();
+  }
+</script>
+
+<style>
+.search_span{
+    width: 70px;
+    border: 1px solid #e0e0e0;
+    text-align: center;
+    align-content: center;
+}
+</style>
 @endsection

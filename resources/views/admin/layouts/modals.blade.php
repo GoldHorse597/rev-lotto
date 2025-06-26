@@ -183,12 +183,12 @@
 						</div>
 					</div>
 					<div class="form-group row">
-						<label for="nickname" class="col-sm-4 col-form-label">@lang('admin/app.nickname')</label>
+						<label for="name" class="col-sm-4 col-form-label">이름</label>
 						<div class="col-sm-8">
-							<input type="text" class="form-control " id="nickname" name="nickname" value=""
-                                    data-rule-required="true" data-msg-required="{{ sprintf(trans('admin/app.required'), trans('admin/app.nickname')) }}"
-                                    data-rule-minlength="4" data-msg-minlength="{{ sprintf(trans('admin/app.min_length'), trans('admin/app.nickname'), 4) }}"
-                                    data-rule-maxlength="255" data-msg-maxlength="{{ sprintf(trans('admin/app.max_length'), trans('admin/app.nickname'), 255) }}">
+							<input type="text" class="form-control " id="name" name="name" value=""
+                                    data-rule-required="true" data-msg-required="{{ sprintf(trans('admin/app.required'), trans('admin/app.name')) }}"
+                                    data-rule-minlength="2" data-msg-minlength="{{ sprintf(trans('admin/app.min_length'), trans('admin/app.name'), 2) }}"
+                                    data-rule-maxlength="255" data-msg-maxlength="{{ sprintf(trans('admin/app.max_length'), trans('admin/app.name'), 255) }}">
 						</div>
 					</div>
 					<div class="form-group row">
@@ -200,22 +200,54 @@
                                     data-rule-maxlength="255" data-msg-maxlength="{{ sprintf(trans('admin/app.max_length'), trans('admin/app.password'), 255) }}">
 						</div>
 					</div>
-					
 					<div class="form-group row">
-						<label for="siteIdentity" class="col-sm-4 col-form-label">@lang('admin/app.site') @lang('admin/app.identity')</label>
+						<label for="bankName" class="col-sm-4 col-form-label">은행권선택</label>
 						<div class="col-sm-8">
 							<div class="input-group ">
-								<input type="text" class="form-control" id="siteIdentity" name="site_identity" value=""
-									data-rule-required="true" data-msg-required="{{ sprintf(trans('admin/app.required'), trans('admin/app.identity')) }}">
+								
+								<select class="form-control" id="bankName" name="bankName" data-rule-required="true" aria-invalid="false">
+									@foreach($_banks as $bank)
+                                    <option value="{{ $bank->name }}"> {{ $bank->name }} </option>
+									@endforeach
+									
+                                </select>
 							</div>
 						</div>
 					</div>
 					<div class="form-group row">
-						<label for="memo" class="col-sm-4 col-form-label">@lang('admin/app.memo')</label>
+						<label for="bank" class="col-sm-4 col-form-label">계좌번호</label>
 						<div class="col-sm-8">
-							<textarea class="form-control" id="memo" name="memo" rows="5"></textarea>
+							<div class="input-group ">
+								<input type="text" class="form-control" id="bank" name="bank" value="">
+							</div>
 						</div>
 					</div>
+					<div class="form-group row">
+						<label for="bankOwner" class="col-sm-4 col-form-label">예금주</label>
+						<div class="col-sm-8">
+							<div class="input-group ">
+								<input type="text" class="form-control" id="bankOwner" name="bankOwner" value="">
+							</div>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="phone" class="col-sm-4 col-form-label">휴대전화</label>
+						<div class="col-sm-8">
+							<div class="input-group ">
+								<input type="text" class="form-control" id="phone" name="phone" value="">
+							</div>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="code" class="col-sm-4 col-form-label">추천코드</label>
+						<div class="col-sm-8">
+							<div class="input-group ">
+								<input type="text" class="form-control" id="code" name="code" value=""
+									data-rule-required="true" data-msg-required="{{ sprintf(trans('admin/app.required'), trans('admin/app.identity')) }}">
+							</div>
+						</div>
+					</div>
+					
 				</div>
 				<div class="modal-footer">
 					<button class="btn btn-secondary" type="button" data-dismiss="modal">@lang('admin/app.cancel')</button>
@@ -288,6 +320,58 @@
 	</div>
 </div>
 
+<div class="modal fade" id="gameCreateModal" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<form action="{{ route('admin.lotto.create') }}" method="post">
+				@csrf
+				<div class="modal-header">
+					<h5 class="modal-title">로또 추가</h5>
+					<button class="close" type="button" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">×</span>
+					</button>
+				</div>
+				<div class="modal-body">					
+					<div class="form-group row">
+						<label for="code" class="col-sm-4 col-form-label">로또명</label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control " id="game" name="game" value="">
+						</div>
+					</div>	
+					<div class="form-group row">
+						<label for="code" class="col-sm-4 col-form-label">생략어</label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control " id="abbr" name="abbr" value="">
+						</div>
+					</div>	
+					<div class="form-group row">
+						<label for="code" class="col-sm-4 col-form-label">진행날짜</label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control " id="weekday" name="weekday" value="">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="code" class="col-sm-4 col-form-label">최신결과</label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control " id="lastresult" name="lastresult" value="">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="code" class="col-sm-4 col-form-label">보너스</label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control " id="bonus" name="bonus" value="">
+						</div>
+					</div>							
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-secondary" type="button" data-dismiss="modal">@lang('admin/app.cancel')</button>
+					<button class="btn btn-success" type="submit">@lang('admin/app.create')</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
 @if (Auth::guard('admin')->user()->parent_level == 0)
 <!-- User & Agent Send Message Modal -->
 <div class="modal fade" id="sendMessageModal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -309,12 +393,7 @@
 								<select class="form-control" id="messageReceiverType" name="receiver_type"
 									data-rule-required="true" data-msg-required="{{ sprintf(trans('admin/app.required'), trans('admin/app.receiver')) }}">
 									<option value="" selected="selected">선택하세요.</option>
-									<option value="all">@lang('admin/app.all')</option>
-									<option value="users">@lang('admin/app.user')</option>
-									<option value="agents">@lang('admin/app.agent')</option>
-									<option value="agents_1">@lang('admin/agent.level2')</option>
-									<option value="agents_2">@lang('admin/agent.level3')</option>
-									<option value="agents_3">@lang('admin/agent.level4')</option>
+									<option value="users" >@lang('admin/app.user')</option>
 								</select>
 								<input type="text" class="form-control" id="messageReceiverIdentity" name="receiver_identity" value="" placeholder="@lang('admin/app.identity')" hidden>
 							</div>

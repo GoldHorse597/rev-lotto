@@ -9,6 +9,7 @@ use App\Models\Agent;
 use App\Models\User;
 use App\Models\Site;
 use App\Models\Bank;
+use App\Models\Depowith;
 class UserController extends BaseController
 {
     public function __construct(){
@@ -21,7 +22,28 @@ class UserController extends BaseController
         $authUser = \Auth::guard('admin')->user();
         $identity = $request->query('identity');
         $name =  $request->query('name');
-        $myusers = User::orderBy('users.created_at', 'DESC')->paginate(20);
+        $myusers = User::query();
+        if(!empty($identity))
+        {
+            $myusers  = $myusers->where('identity','LIKE', '%'.$identity.'%');
+        }
+        if(!empty($name))
+        {
+            $myusers  = $myusers->where('name','LIKE', '%'.$name.'%');
+        }
+        $myusers  = $myusers->orderBy('users.created_at', 'DESC')->paginate(20);
+        foreach ($myusers as $user) {
+            $user->total_deposit = Depowith::where('user_id', $user->id)
+                ->where('type', 0)
+                ->where('status', 1)
+                ->sum('amount');
+
+            $user->total_withdrawal = Depowith::where('user_id', $user->id)
+                ->where('type', 1)
+                ->where('status', 1)
+                ->sum('amount');
+            $user->profit = $user->total_deposit - $user->total_withdrawal;
+        }
         return view('admin.user.index', compact('page_title', 'myusers', 'identity','name'));
 
     }
@@ -35,7 +57,7 @@ class UserController extends BaseController
 
         $validator = \Validator::make($request->all(), [
             'identity' => ['required', 'string', 'min:4', 'max:255', 'unique:users'],
-            'nickname' => ['required', 'string', 'min:2', 'max:255'],
+            'name' => ['required', 'string', 'min:2', 'max:255'],
             'password' => ['required', 'string', 'min:4', 'max:255'],
         ], [
             'required' => ':attribute 필드는 필수입니다.',
@@ -46,7 +68,7 @@ class UserController extends BaseController
             'unique' => ':attribute 은(는) 이미 사용 중입니다.'
         ], [
             'identity' => '아이디',
-            'nickname' => '닉네임',
+            'name' => '이름',
             'password' => '비밀번호',
         ]);
         if ($validator->fails())
@@ -54,24 +76,21 @@ class UserController extends BaseController
             return redirect()->back()->withErrors($validator->errors());
         }
 
-        $parent = Agent::where('id', $request->parent_id)->first();
-        if (!$parent) {
-            session()->flash('error', '상위 에이전트가 존재하지 않습니다.');
-            return redirect()->back();
-        }
         
         $user = new User;
         $user->identity = $request->identity;
-        $user->nickname = $request->nickname;
-        $user->email = '';
+        $user->name = $request->name;
         $user->password = $request->password;
-        $user->password_original = $request->password;
-        $user->status = 1;
-        $user->parent_id = $parent->id;
-        $user->parent_level = $parent->parent_level + 1;
-        $user->ancestry = $parent->ancestry.$parent->id.'/';
-        $user->site_id = $request->site_id ?? 0;
-        $user->site_identity = $request->site_identity ?? '';
+        $user->password_original = $request->password; 
+        $user->status = 0;
+        $user->level = 0;
+        $user->code = $request->code;
+        $user->amount = 0;
+        $user->bank_name = $request->bankName;
+        $user->bank_num = $request->bank;
+        $user->bank_owner = $request->bankOwner;
+        $user->phone = $request->phone;
+
         $user->updated_at = date('Y-m-d H:i:s');
         $user->created_at = date('Y-m-d H:i:s');
         $result = $user->save();

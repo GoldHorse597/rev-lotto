@@ -120,6 +120,7 @@ class NoticeController extends BaseController
             $notice->title = $request->title;
             $notice->content = $request->content;
             $notice->status = $request->status;
+            $notice->created_at = $request->create_at;
             $notice->updated_at = date('Y-m-d H:i:s');
             $notice->save();
 

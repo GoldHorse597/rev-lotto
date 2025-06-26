@@ -41,7 +41,7 @@ class Agent extends Authenticatable
         self::deleting(function($model)
         {   
             Message::where(['receiver_id' => $model->id, 'receiver_type' => 0])->delete();
-            Inquiry::where(['sender_id' => $model->id, 'sender_type' => 0])->delete();
+            Inquiry::where(['sender_id' => $model->id])->delete();
         });
     }
      public function setPasswordAttribute($value)

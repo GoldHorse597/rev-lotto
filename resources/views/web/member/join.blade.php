@@ -89,7 +89,7 @@
                 <em>*</em> 예금주
               </th>
               <td>
-                <input type="text" name="bankOwner" class="w250 mw100p">
+                <input type="text" name="bankOwner" id="bankOwner" class="w250 mw100p">
               </td>
             </tr>            
             <tr>
@@ -321,6 +321,16 @@ function sendit() {
 		form.submit();
 	}
 }
+
+$('#bank').on('input', function() {
+    this.value = this.value.replace(/[^0-9]/g, '');
+});
+$('#phone').on('input', function() {
+    this.value = this.value.replace(/[^0-9]/g, '');
+});
+$('#bankOwner').on('input', function() {
+    this.value = this.value.replace(/[^ㄱ-ㅎ가-힣a-zA-Z\s]/g, '');
+});
 //-->
 </script>
 

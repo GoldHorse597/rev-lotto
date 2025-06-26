@@ -5,49 +5,6 @@
 
  	@section('content')
 		
-		
-		<div class="quick-prod-top">
-			<div class="con">
-			<a href="/ver_02/w_play/lotto_em.php" title="유로밀리언즈" class="quick-prod-em">
-				<img src="{{ asset('images/web/logo_em.png')}}">
-				<span>3,975억</span>
-			</a>
-			<a href="/ver_02/w_play/lotto_cfl.php" title="캐시4라이프" class="quick-prod-cfl">
-				<img src="{{ asset('images/web/logo_cfl.png')}}">
-				<span>1,000불/매일</span>
-			</a>
-			<a href="/ver_02/w_play/lotto_pb.php" title="파워볼" class="quick-prod-pb">
-				<img src="{{ asset('images/web/logo_pb.png')}}">
-				<span>1,120억</span>
-			</a>
-			<a href="/ver_02/w_play/lotto_mm.php" title="메가밀리언즈" class="quick-prod-mm">
-				<img src="{{ asset('images/web/logo_mm.png')}}">
-				<span>3,696억</span>
-			</a>
-			<a href="/ver_02/w_play/lotto_nl.php" title="뉴욕로또" class="quick-prod-nl">
-				<img src="{{ asset('images/web/logo_nl.png')}}">
-				<span>184억</span>
-			</a>
-			<a href="/ver_02/w_play/lotto_lp.php" title="라 프리미티바" class="quick-prod-lp">
-				<img src="{{ asset('images/web/logo_lp.png')}}">
-				<span>151억</span>
-			</a>
-			<a href="/ver_02/w_play/lotto_eg.php" title="엘 고르도" class="quick-prod-eg">
-				<img src="{{ asset('images/web/logo_eg.png')}}">
-				<span>81억</span>
-			</a>
-			<a href="/ver_02/w_play/lotto_ej.php" title="유로 잭팟" class="quick-prod-ej">
-				<img src="{{ asset('images/web/logo_ej.png')}}">
-				<span>492억</span>
-			</a>
-			<!-- 유로밀리언 추가 210112//-->
-			<a href="/ver_02/w_play/lotto_ed.php" title="유로드림스" class="quick-prod-ed">
-				<img src="{{ asset('images/web/logo_ed.png')}}">
-				<span>2만유로/매월</span>
-			</a>
-			<!-- 유로밀리언 추가 210112//-->
-			</div>
-		</div>
 		<script type="text/javascript">
 			// 마이크로소프트 익스플로러인지 확인
 			if (navigator.appName.indexOf("Microsoft") > -1) {
@@ -1000,51 +957,5 @@
 		</section>
 		
 		</div>
-		<script>
-		var fPlaySwiper = new Swiper('.footer-play-inner .swiper-container', {
-			loop: true,
-			pagination: '.footer-play-inner .swiper-pagination',
-			paginationClickable: true,
-			nextButton: '.btn-f-next',
-			prevButton: '.btn-f-prev',
-			slidesPerView: 6,
-			spaceBetween: 10,
-			autoHeight: true,
-			autoplay: 3000,
-			breakpoints: {
-			480: {
-				slidesPerView: 2,
-				slidesPerGroup: 2,
-				spaceBetween: 10,
-			},
-			680: {
-				slidesPerView: 3,
-				slidesPerGroup: 3,
-				spaceBetween: 10,
-			},
-			980: {
-				slidesPerView: 4,
-				slidesPerGroup: 4,
-				spaceBetween: 10,
-			},
-			1280: {
-				slidesPerView: 5,
-				slidesPerGroup: 5,
-				spaceBetween: 10,
-			},
-			},
-		});
-		$(document).ready(function() {
-			$(".btn-f-stop").on("click", function() {
-			fPlaySwiper.stopAutoplay();
-			$(".btn-f-stop").hide();
-			$(".btn-f-play").show();
-			});
-			$(".btn-f-play").on("click", function() {
-			fPlaySwiper.startAutoplay();
-			$(".btn-f-stop").show();
-			$(".btn-f-play").hide();
-			});
-		});
-		</script>
+		
 	@endsection

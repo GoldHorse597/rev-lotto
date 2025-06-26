@@ -57,7 +57,27 @@
             </li>
             <!-- Divider -->
             <hr class="sidebar-divider">
-
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs(['admin.message.list', 'admin.inquiry.list', 'admin.inquirytemplate.list', 'admin.notice.list']) == 'active' ? '' : 'collapsed' }}"
+                        href="#" data-toggle="collapse" data-target="#collapseLottoCenter" aria-expanded="true" aria-controls="collapseLottoCenter">
+                    <i class="fas fa-fw fa-gamepad"></i>
+                    <span>로또관리</span>
+                </a>
+                <div id="collapseLottoCenter" class="collapse {{ request()->routeIs(['admin.lotto.game', 'admin.lotto.setting'], 'show') }}" aria-labelledby="headingGame">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item {{ request()->routeIs('admin.lotto.game') }}" href="{{ route('admin.lotto.game') }}">
+                            <i class="fas fa-fw fa-barcode"></i>
+                            <span>로또목록</span>
+                        </a>
+                        <a class="collapse-item {{ request()->routeIs('admin.lotto.setting') }}" href="{{ route('admin.lotto.setting') }}">
+                            <i class="fas fa-fw fa-gem"></i>
+                            <span>배당률설정</span>
+                        </a>                        
+                    </div>
+                </div>
+            </li>
+             <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
             <!-- Heading -->
             <div class="sidebar-heading">
                 @lang('admin/app.child') @lang('admin/app.manage')
@@ -89,8 +109,7 @@
 
             <!-- Divider -->
             <hr class="sidebar-divider">
-
-            <!-- Heading -->
+          
             <div class="sidebar-heading">
                 @lang('admin/app.system') @lang('admin/app.manage')
             </div>
@@ -114,10 +133,10 @@
                             <span>@lang('admin/app.inquiry')</span>
                         </a>
                         @if (Auth::guard('admin')->user()->parent_level == 0)
-                        <a class="collapse-item {{ request()->routeIs('admin.inquirytemplate.list') }}" href="{{ route('admin.inquirytemplate.list') }}">
+                        <!-- <a class="collapse-item {{ request()->routeIs('admin.inquirytemplate.list') }}" href="{{ route('admin.inquirytemplate.list') }}">
                             <i class="fas fa-fw fa-gem"></i>
                             <span>@lang('admin/app.inquiry_template')</span>
-                        </a>
+                        </a> -->
                         <a class="collapse-item {{ request()->routeIs('admin.notice.list') }}" href="{{ route('admin.notice.list') }}">
                             <i class="fas fa-fw fa-gem"></i>
                             <span>@lang('admin/app.notice')</span>
@@ -132,8 +151,7 @@
                 </div>
             </li>
 
-            <!-- Divider -->
-            <hr class="sidebar-divider d-none d-md-block">
+           
 
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">
@@ -171,6 +189,21 @@
                                     </div>
                                 </span>
                             </a>
+                        </li>
+                        <div class="topbar-divider d-none d-lg-block"></div>
+
+                        <li class="nav-item dropdown no-arrow">
+                            <div class="nav-link dropdown-toggle">
+                                <span class="d-none d-lg-inline small">
+                                    <span class="badge badge-danger badge-counter m-0" id="new_statistics_cnt" style="margin-right: 10px !important;">0</span>
+                                    <div class="text-dark text-right">
+                                        <a href="{{ route('admin.statistics') }}" style="margin-right: 20px;">
+                                            입출금신청
+                                        </a>
+                                        <audio src="{{ asset('admin/sound/new_message_alarm.mp3') }}" controls id="new_statistics_alarm" hidden></audio>
+                                    </div>                                   
+                                </span>
+                            </div>
                         </li>
                         <div class="topbar-divider d-none d-lg-block"></div>
 
@@ -215,7 +248,7 @@
                                         <audio src="{{ asset('admin/sound/new_inquiry_alarm.mp3') }}" controls id="new_inquiry_alarm" hidden></audio>
                                     </div>
                                 </span>
-                            </a>
+                            </div>
                         </li>
                         <div class="topbar-divider d-none d-lg-block"></div>
                         @endif

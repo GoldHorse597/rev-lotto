@@ -9,16 +9,21 @@ use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Web\InfoController;
 use App\Http\Controllers\web\MemberController;
 use App\Http\Controllers\web\CustomerController;
-use App\Http\Controllers\web\MypgaeController;
+use App\Http\Controllers\web\MypageController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\AgentController;
 use App\Http\Controllers\Admin\NoticeController;
 use App\Http\Controllers\Admin\EventController;
+use App\Http\Controllers\Admin\MessageController;
+use App\Http\Controllers\Admin\InquiryTemplateController;
+use App\Http\Controllers\Admin\InquiryController;
+use App\Http\Controllers\Admin\LottoController;
+use App\Http\Controllers\Web\PlayController;
 
 Route::middleware([SiteIsClosed::class])->group(function ()
 {
-    if (!env('USER'))
-        return;
+    // if (!env('USER'))
+    //     return;
    
     Route::get('/', [WebHomeController::class, 'index'])->name('web.index');
 //     //로또 안내 
@@ -52,19 +57,29 @@ Route::middleware([AuthAlertMiddleware::class])->prefix('customer')->group(funct
     Route::get('/event', [CustomerController::class, 'event'])->name('customer.event');
     Route::get('/event_view', [CustomerController::class, 'eventView'])->name('customer.event_view');
     Route::get('/faq', [CustomerController::class, 'faq'])->name('customer.faq');
+    Route::get('/faq_view', [CustomerController::class, 'faqView'])->name('customer.faq_view');
+    Route::post('/faq_write', [CustomerController::class, 'faqWrite'])->name('customer.faq_write');
     // 추가적인 customer 관련 라우트들 여기에 작성
     
 });
 Route::middleware([AuthAlertMiddleware::class])->prefix('mypage')->group(function() {
     
-    Route::get('/message', [MypgaeController::class, 'message'])->name('mypage.message');
-    Route::get('/modify', [MypgaeController::class, 'modify'])->name('mypage.modify');
-    Route::get('/buy_list', [MypgaeController::class, 'buyList'])->name('mypage.buy_list');
-    Route::get('/depo_with', [MypgaeController::class, 'depoWith'])->name('mypage.depo_with');
-    Route::get('/withdrawal', [MypgaeController::class, 'faq'])->name('mypage.withdrawal');
-    Route::get('/deposit', [MypgaeController::class, 'faq'])->name('mypage.deposit');
+    Route::get('/message', [MypageController::class, 'message'])->name('mypage.message');
+    Route::get('/message_view', [MypageController::class, 'messageView'])->name('mypage.message.view');
+    Route::post('/message/{id}', [MypageController::class, 'delete'])->name('mypage.message.delete');
+    Route::get('/modify', [MypageController::class, 'modify'])->name('mypage.modify');
+    Route::get('/buy_list', [MypageController::class, 'buyList'])->name('mypage.buy_list');
+    Route::get('/depo_with', [MypageController::class, 'depoWith'])->name('mypage.depo_with');
+    Route::get('/withdrawal', [MypageController::class, 'withdrawal'])->name('mypage.withdrawal');
+    Route::post('/withdrawal', [MypageController::class, 'postWithdrawal'])->name('mypage.postWithdrawal');
+    Route::get('/deposit', [MypageController::class, 'deposit'])->name('mypage.deposit');
+    Route::post('/deposit', [MypageController::class, 'postDeposit'])->name('mypage.postDeposit');
     // 추가적인 mypage 관련 라우트들 여기에 작성
     
+});
+
+Route::middleware([AuthAlertMiddleware::class])->prefix('play')->group(function() {
+    Route::get('/lotto_pb', [PlayController::class, 'lotto_pb'])->name('play.lotto_pb');
 });
 
 Route::middleware([SiteIsClosed::class])
@@ -84,15 +99,16 @@ Route::prefix(config('custom.admin_prefix'))
 
             Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
             Route::get('/statistics', [DashboardController::class, 'statistics'])->name('admin.statistics');
+            Route::post('/statistic/process/{id}', [DashboardController::class, 'process'])->where('id', '[0-9]+')->name('admin.statistic.process');
+
             Route::post('/tick', [DashboardController::class, 'tick'])->name('admin.tick');
-             Route::post('/betting_history', [DashboardController::class, 'betting_history'])->name('admin.betting_history');
+             Route::post('/betting_history', [HistoryController::class, 'betting_history'])->name('admin.betting_history');
             Route::post('/setting', [DashboardController::class, 'setting'])->name('admin.setting');
             Route::get('/agent/settings', [AgentController::class, 'settings'])->name('admin.agent.settings');
             Route::patch('/agent/change-password', [AgentController::class, 'changepassword'])->name('admin.agent.changepassword');
             Route::get('/agent/banks', [AgentController::class, 'banks'])->name('admin.agent.banks');
             Route::match(['get', 'put'], '/bank/{id}', [AgentController::class, 'bankedit'])->where('id', '[0-9]+')->name('admin.bank.edit');
             Route::post('/bank/process/{id}', [AgentController::class, 'bankprocess'])->where('id', '[0-9]+')->name('admin.bank.process');
-
             Route::post('/bank/create', [AgentController::class, 'bankcreate'])->name('admin.bank.create');
 
             Route::get('/agent/codes', [AgentController::class, 'codes'])->name('admin.agent.codes');           
@@ -106,11 +122,18 @@ Route::prefix(config('custom.admin_prefix'))
             Route::match(['get', 'put'], '/user/{id}', [AdminUserController::class, 'edit'])->where('id', '[0-9]+')->name('admin.user.edit');
             Route::post('/user/process/{id}', [AdminUserController::class, 'process'])->where('id', '[0-9]+')->name('admin.user.process');
 
+            Route::get('/lotto/game', [LottoController::class, 'game'])->name('admin.lotto.game');
+            Route::get('/lotto/setting', [LottoController::class, 'setting'])->name('admin.lotto.setting');
+            Route::post('/lotto/create', [LottoController::class, 'create'])->name('admin.lotto.create');
+            Route::match(['get', 'put'], '/lotto/{id}', [LottoController::class, 'edit'])->where('id', '[0-9]+')->name('admin.lotto.edit');
+            Route::post('/lotto/process/{id}', [LottoController::class, 'process'])->where('id', '[0-9]+')->name('admin.lotto.process');
+
             Route::get('/messages', [MessageController::class, 'index'])->name('admin.message.list');
             Route::post('/message/send', [MessageController::class, 'send'])->name('admin.message.send');
             Route::post('/message/{id}', [MessageController::class, 'read'])->where('id', '[0-9]+')->name('admin.message.read');
             Route::post('/message/readall', [MessageController::class, 'readall'])->name('admin.message.readall');
             Route::delete('/message/{id}/delete', [MessageController::class, 'delete'])->name('admin.message.delete');
+
             Route::delete('/message/deleteall', [MessageController::class, 'deleteall'])->name('admin.message.deleteall');
             Route::get('/inquiries', [InquiryController::class, 'index'])->name('admin.inquiry.list');
             Route::post('/inquiry/send', [InquiryController::class, 'send'])->name('admin.inquiry.send');

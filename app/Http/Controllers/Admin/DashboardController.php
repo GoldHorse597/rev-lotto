@@ -10,6 +10,7 @@ use App\Models\Agent;
 use App\Models\User;
 use App\Models\Message;
 use App\Models\Inquiry;
+use App\Models\Depowith;
 
 class DashboardController extends BaseController
 {
@@ -59,16 +60,17 @@ class DashboardController extends BaseController
             $online_users_cnt = User::where(function ($condition) use ($authUser) {
                         $condition->where('last_access_at', '>=', Carbon::now()->subSeconds(20));
                     })->count();
-            
+            $new_statistics_cnt = Depowith::where(['status' => 0])->count();
             return response()->json(['success' => true, 'msg' => '', 'data' => [
                 'new_inquiries_cnt' => $new_inquiries_cnt,
                 'new_users_cnt' => $new_users_cnt,
+                'new_statistics_cnt' => $new_statistics_cnt,
                 'online_users_cnt' => $online_users_cnt
             ]]);
         }
         else {
             $new_messages_cnt = Message::where(['receiver_id' => $authUser->id, 'receiver_type' => 0, 'status' => 0])->count();
-            $inquiry_ids = Inquiry::where(['sender_id' => $authUser->id, 'sender_type' => 0])->pluck('id');
+            $inquiry_ids = Inquiry::where(['sender_id' => $authUser->id])->pluck('id');
             $new_inquiries_cnt = Inquiry::whereIn('referer_id', $inquiry_ids)->where('status', 0)->count();
             $online_users_cnt = User::where('ancestry', 'LIKE',  $authUser->ancestry.$authUser->id.'/%')
                     ->where(function ($condition) use ($authUser) {
@@ -109,5 +111,86 @@ class DashboardController extends BaseController
         }
 
         return response()->json(['success' => false, 'msg' => '']);
+    }
+
+    public function statistics(Request $request)
+    {
+        $page_title = '입출금관리';
+        $identity = $request->query('identity');
+        $type = $request->query('type');
+        $status = $request->query('status');
+        $query = \DB::table('depowiths')
+            ->join('users', 'depowiths.user_id', '=', 'users.id')
+            ->select('depowiths.*', 'users.identity','users.name') ->orderBy('created_at', 'desc');
+
+        if (!empty($identity)) {
+            $userIds = User::where('identity', 'like', '%' . $identity . '%')->pluck('id');
+            if ($userIds->count() > 0) {
+                $query->whereIn('depowiths.user_id', $userIds);
+            } else {
+                $query->whereRaw('1=0'); // 없는 경우 빈 결과
+            }
+        }
+        if ($type !== null) {
+            $query->where('depowiths.type', $type);
+        }
+        if ($status !== null) {
+            $query->where('depowiths.status', $status);
+        }
+
+        $statistics = $query->paginate(20);
+        $total = $query->clone()->count();
+        $reqDeposit  = Depowith::where('status',0)->where('type',0)->sum('amount');
+        $reqWithdrawal  = Depowith::where('status',0)->where('type',1)->sum('amount');
+        $totalWithdrawal  = Depowith::where('status',1)->where('type',1)->sum('amount');
+        $totalDeposit  = Depowith::where('status',1)->where('type',0)->sum('amount');
+        return view('admin.dashboard.statistics', compact('statistics', 'page_title', 'total', 'identity','type','status','reqDeposit','reqWithdrawal','totalDeposit','totalWithdrawal'));
+    }
+    public function process(Request $request, $id)
+    {
+        $authUser = \Auth::guard('admin')->user();
+        if ($authUser->parent_level < 0) {
+            session()->flash('error', '귀하의 권한이 부족합니다.');
+            return redirect()->back();
+        }
+        $statistic = Depowith::where('id', $id)->first();
+        if (!$statistic) {
+            session()->flash('error', '내역이 존재하지 않습니다.');
+            return abort(404);
+        }
+        if ($request->isMethod('post')) {
+            $param = $request->param;
+            switch ($param) {
+                case 'approve':
+                    session()->flash('success', '신청을 승인하였습니다.');
+                    $statistic->status = 1;
+                    $user = User::where('id', $statistic->user_id)->first();
+                    if($statistic->type == 0)
+                        $user->amount = $user->amount + $statistic->amount;
+                    else
+                        $user->amount = $user->amount - $statistic->amount;
+                    $user->save();
+                    break;
+                case 'block':
+                    session()->flash('success', ' 신청을 취소하였습니다.');
+                    $statistic->status = 2;
+                    break;
+               
+                case 'delete':
+                    session()->flash('success', ' 신청을 삭제하였습니다.');
+                    $statistic->delete();                    
+                    break;
+            }
+
+            if ($param != 'delete') {
+                $statistic->updated_at = date('Y-m-d H:i:s');
+                $statistic->save();
+            }
+            
+            return redirect()->back();
+        }
+
+        session()->flash('error', '비법적인 호출입니다.');
+        return redirect()->back();
     }
 }

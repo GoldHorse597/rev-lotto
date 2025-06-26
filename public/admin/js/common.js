@@ -67,6 +67,7 @@ function tick() {
                 var new_messages_cnt = data.data.new_messages_cnt;
                 var new_inquiries_cnt = data.data.new_inquiries_cnt;
                 var online_users_cnt = data.data.online_users_cnt;
+                var new_statistics_cnt = data.data.new_statistics_cnt;
                 
                 $('#new_users_cnt').text(new_users_cnt);
                 if (new_users_cnt > 0)
@@ -95,6 +96,20 @@ function tick() {
                 }
                 else {
                     $('#new_message_alarm').stop();
+                }
+                $('#new_statistics_cnt').text(new_statistics_cnt);
+                if (new_statistics_cnt > 0)
+                {
+                    var promise = $('#new_statistics_alarm')[0].play();
+                    if (promise !== undefined) {
+                        promise.then(_ => {
+                        }).catch(error => {
+                            console.log(error);
+                        });
+                    }
+                }
+                else {
+                    $('#newstatistics_alarm').stop();
                 }
                 $('#new_inquiries_cnt').text(new_inquiries_cnt);
                 if (new_inquiries_cnt > 0)

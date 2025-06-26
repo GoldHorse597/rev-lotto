@@ -1,7 +1,7 @@
 <header>
   <div class="my-info"> &nbsp;
     @auth
-    <a href="/ver_02/w_mypage/modify.php" class="name">{{ Auth::user()->name }}</a>님! 반갑습니다. 
+    <a href="/mypage/modify" class="name">{{ Auth::user()->name }}</a>님! 반갑습니다. 
       <button class="grade grade-normal pointer" onclick="javascript:openIdpass2();">Normal</button>
       <span class="ml10">로또현황: 
         <a href="/mypage/buy_list">0종</a> 
@@ -22,7 +22,23 @@
       <img src="{{ asset('images/web/btn_menu_open.png')}}" alt="메뉴 열기">
     </a>
     <nav class="gnb">
+       @auth
+      <div class="my-info-mo">
+        <div>
+          <a href="/mypage/modify" class="name">{{ Auth::user()->name }}</a>님! 반갑습니다.
+          <button class="grade grade-normal pointer" onclick="javascript:openIdpass2();">Normal</button>
+        </div>
+        <div>
+          <span class="ml10">로또현황: <a href="/mypage/buy_list">0종</a></span>
+          <span class="ml10">포인트:<a href="/mypage/point_list">{{number_format(floor(Auth::user()->amount),0)}}</a>
+            <a href="/mypage/deposit" class="btn-point" title="금액충전">금액충전</a>
+            <a href="/play/cart" title="장바구니" class="btn-cart">장바구니</a>
+          </span>
+        </div>
+      </div>
+       @endauth
       <div class="sub-menu">
+       
         @auth
         
         <a href="/member/logout" title="로그아웃">로그아웃</a>
@@ -45,9 +61,7 @@
             <li>
               <a href="/play/lotto_KR" title="로또6/45(한국)">로또6/45(한국)</a>
             </li>
-            <li>
-              <a href="/play/lotto_em_qp" title="연금720(한국)">연금720(한국)</a>
-            </li>
+            
             <li>
               <a href="/play/lotto_pb" title="파워볼(미국)">파워볼(미국)</a>
             </li>
@@ -80,9 +94,7 @@
             <li>
               <a href="/jplay/lotto_KR" title="로또6/45(한국)">로또6/45(한국)</a>
             </li>
-            <li>
-              <a href="/jplay/lotto_em_qp" title="연금720(한국)">연금720(한국)</a>
-            </li>
+           
             <li>
               <a href="/jplay/lotto_pb" title="파워볼(미국)">파워볼(미국)</a>
             </li>
@@ -192,49 +204,45 @@
                 <img src="{{ asset('images/web/ico_quick2_05.png')}}" alt="자동예약">
                 <span>자동 <br>예약 </span>
               </a>
-              <a href="/customer/qa" class="item">
-                <img src="{{ asset('images/web/ico_quick2_06.png')}}" alt="Q&amp;A문의">
-                <span>Q&amp;A <br>문의 </span>
+              <a href="/customer/faq" class="item">
+                <img src="{{ asset('images/web/ico_quick2_06.png')}}" alt="1:1 문의">
+                <span>1:1 <br>문의 </span>
               </a>
               
             </div>
             <div class="quick-prod">
               <a href="/jplay/lotto_kr" title="로또6/45">
                 <img src="{{ asset('images/web/logo_kr.png')}}">
-                <span>3,975억</span>
-              </a>
-              <a href="/jplay/lotto_kr1" title="연금720">
-                <img src="{{ asset('images/web/logo_kr1.png')}}">
-                <span>1,000불/매일</span>
-              </a>
+                <span>407억</span>
+              </a>             
               <a href="/jplay/lotto_pb" title="파워볼">
                 <img src="{{ asset('images/web/logo_pb.png')}}">
-                <span>1,120억</span>
+                <span>27,000억</span>
               </a>
               <a href="/jplay/lotto_mm" title="메가밀리언즈">
                 <img src="{{ asset('images/web/logo_mm.png')}}">
-                <span>3,696억</span>
+                <span>21,000억</span>
               </a>
                <a href="/jplay/lotto_ssq" title="쌍색구">
                 <img src="{{ asset('images/web/logo_ssq.png')}}">
-                <span>184억</span>
+                <span>1,100억</span>
               </a>
               <a href="/jplay/lotto_dlt" title="따루토">
                 <img src="{{ asset('images/web/logo_dlt.png')}}">
-                <span>0억</span>
+                <span>500억</span>
               </a>
              
               <a href="/jplay/lotto_6" title="로또6">
                 <img src="{{ asset('images/web/logo_6.png')}}">
-                <span>151억</span>
+                <span>53억</span>
               </a>
               <a href="/jplay/lotto_7" title="로또7">
                 <img src="{{ asset('images/web/logo_7.png')}}">
-                <span>81억</span>
+                <span>87억</span>
               </a>
               <a href="/jplay/lotto_mini" title="미니로또">
                 <img src="{{ asset('images/web/logo_mini.png')}}">
-                <span>492억</span>
+                <span>4억</span>
               </a>
              
             </div>
@@ -250,40 +258,36 @@
     
     <a href="/jplay/lotto_kr" title="로또6/45" class="quick-prod-em">
       <img src="{{ asset('images/web/logo_kr.png')}}">
-      <span>3,975억</span>
-    </a>
-    <a href="/jplay/lotto_kr1" title="연금720" class="quick-prod-em">
-      <img src="{{ asset('images/web/logo_kr1.png')}}">
-      <span>1,000불/매일</span>
-    </a>
+      <span>407억</span>
+    </a>   
     <a href="/jplay/lotto_pb" title="파워볼" class="quick-prod-em">
       <img src="{{ asset('images/web/logo_pb.png')}}">
-      <span>1,120억</span>
+      <span>27,000억</span>
     </a>
     <a href="/jplay/lotto_mm" title="메가밀리언즈" class="quick-prod-em">
       <img src="{{ asset('images/web/logo_mm.png')}}">
-      <span>3,696억</span>
+      <span>21,000억</span>
     </a>
       <a href="/jplay/lotto_ssq" title="쌍색구" class="quick-prod-em">
       <img src="{{ asset('images/web/logo_ssq.png')}}">
-      <span>184억</span>
+      <span>1,100억</span>
     </a>
     <a href="/jplay/lotto_dlt" title="따루토" class="quick-prod-em">
       <img src="{{ asset('images/web/logo_dlt.png')}}">
-      <span>0억</span>
+      <span>500억</span>
     </a>
     
     <a href="/jplay/lotto_6" title="로또6" class="quick-prod-em">
       <img src="{{ asset('images/web/logo_6.png')}}">
-      <span>151억</span>
+      <span>52억</span>
     </a>
     <a href="/jplay/lotto_7" title="로또7" class="quick-prod-em">
       <img src="{{ asset('images/web/logo_7.png')}}">
-      <span>81억</span>
+      <span>87억</span>
     </a>
     <a href="/jplay/lotto_mini" title="미니로또" class="quick-prod-em">
       <img src="{{ asset('images/web/logo_mini.png')}}">
-      <span>492억</span>
+      <span>4억</span>
     </a>
   </div>
 </div>

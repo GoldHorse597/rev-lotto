@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Notice;
 use App\Models\Event;
 
-class HomeController extends Controller
+class HomeController extends BaseController
 {
     //
      public function index()
@@ -18,12 +18,12 @@ class HomeController extends Controller
 
         $events1 = \DB::table('events')
             ->select('id', 'title', 'content', 'created_at', \DB::raw("'event' as type"));
-
+        $games = \DB::table('games')->get();
         $news = $notices1
             ->unionAll($events1)
             ->orderBy('created_at', 'desc')
             ->limit(3)
             ->get();
-        return view('web.'.env('THEME').'.index', compact('notices', 'events','news'));
+        return view('web.'.env('THEME').'.index', compact('notices', 'events','news','games'));
     }
 }

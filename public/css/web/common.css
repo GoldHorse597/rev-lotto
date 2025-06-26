@@ -588,8 +588,8 @@ select{height:40px;border:1px solid #d0d0d0;box-sizing:border-box;outline:none;}
     .buy-etc-list .item > div.buy-date{width:100%;text-align:left;padding:5px 15px 5px 5px}
     .buy-etc-list .item > div.date{position:absolute;right:5px;top:14px;}
     .buy-etc-list .item > div.use-point:before{content:'사용금액 : ';display:inline-block;margin-right:5px;color:#494949;font-weight:normal}
-    .buy-etc-list .item > div.charge-point:before{content:'충전금액 : ';display:inline-block;margin-right:5px;color:#494949;font-weight:normal}  
-    .buy-etc-list .item > div.save:before{content:'잔액 : ';display:inline-block;margin-right:5px;color:#494949;font-weight:normal}  
+    .buy-etc-list .item > div.charge-point:before{content:'금액 : ';display:inline-block;margin-right:5px;color:#494949;font-weight:normal}  
+    .buy-etc-list .item > div.save:before{content:'신청일자 : ';display:inline-block;margin-right:5px;color:#494949;font-weight:normal}  
     .buy-etc-list .tfoot .item  {display:block;overflow:hidden;position:relative;padding:7px 0;min-height:110px}  
     .buy-etc-list .tfoot .item > div {display:inline-block}  
     .buy-etc-list .tfoot .item > div.pwauto{text-align:left;position:absolute;left:5px;top:5px}  
@@ -614,7 +614,7 @@ select{height:40px;border:1px solid #d0d0d0;box-sizing:border-box;outline:none;}
 .search-box .item{display:flex;padding:3px 0 ;border-bottom:1px solid #cacaca}
 .search-box .item:last-child{border-bottom:none}
 .search-box .item .item-inner{display:flex;align-items:center;padding:5px 0;margin-right:25px}
-.search-box .item .item-inner .tit{width:80px;font-size:16px;color:#000;background-image:url(../images/ico_tit2.png);background-repeat:no-repeat;background-position:7px 6px;padding-left:28px;}
+.search-box .item .item-inner .tit{width:80px;font-size:16px;color:#000;background-image:url(/images/web/ico_tit2.png);background-repeat:no-repeat;background-position:7px 6px;padding-left:28px;}
 .search-box .item .item-inner input[type='text']{height:35px}
 .search-box .item .item-inner select{height:35px}
 .search-box .item .item-inner .dash{text-align:center;padding:0 15px}
@@ -642,8 +642,8 @@ input[type='file'] {padding:5px 0 0 5px;box-sizing:border-box}
 
     .search-box{padding:0 10px} 
     .search-box .item .item-inner{flex-wrap:wrap;margin-right:0;padding:5px 0}
-    .search-box .item .item-inner .tit{width:100%;margin-bottom:3px;background-position:1px 8px;padding-left:16px;font-size:13px;background-size:10px}
-    .search-box .item .item-inner input[type='text']{width:35% !important;height:35px}
+    .search-box .item .item-inner .tit{margin-bottom:3px;background-position:1px 8px;padding-left:16px;font-size:13px;background-size:10px}
+    .search-box .item .item-inner input[type='text']{width:60% !important;height:35px}
     .search-box .item .item-inner .dash{padding:0 5px}
     .search-box .item-etc{flex-wrap:wrap;justify-content:space-between;}
     .search-box .item .item-order{width:100%}
@@ -800,6 +800,6 @@ input[type='file'] {padding:5px 0 0 5px;box-sizing:border-box}
     .btn-comm-mid{height:32px}
 
     .tit-h3{font-size:18px;color:#000;background-size:16px;background-position:0 5px;padding-left:23px}
-    .tit-h4{font-size:15px;color:#000;background-image:url(../images/ico_tit2.png);background-repeat:no-repeat;background-position:7px 5px;background-size:13px;padding-left:24px;margin-bottom:10px;font-weight:500}
+    .tit-h4{font-size:15px;color:#000;background-image:url(/images/web/ico_tit2.png);background-repeat:no-repeat;background-position:7px 5px;background-size:13px;padding-left:24px;margin-bottom:10px;font-weight:500}
 }
 .ui-datepicker{z-index:101 !important}

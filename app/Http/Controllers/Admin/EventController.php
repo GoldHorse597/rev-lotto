@@ -120,6 +120,7 @@ class EventController extends BaseController
             $event->title = $request->title;
             $event->content = $request->content;
             $event->status = $request->status;
+            $event->created_at = $request->create_at;
             $event->updated_at = date('Y-m-d H:i:s');
             $event->save();
 

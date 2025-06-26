@@ -72,6 +72,14 @@
                     </div>
                 </div>
                 <div class="form-group row">
+                    <label for="noticeContent" class="col-sm-12 col-form-label">@lang('admin/app.notice') 작성일자</label>
+                    <div class="col-sm-12">
+                        <div class="input-group ">
+                            <input type="text" class="form-control text-center datetimepicker" id="create_at" name="create_at" value="{{$notice->created_at}}" aria-invalid="false">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
                     <label for="noticeStatus" class="col-sm-12 col-form-label">@lang('admin/app.status')</label>
                     <div class="col-sm-12">
                         <div class="input-group">
@@ -96,6 +104,36 @@
     <script>
         $(".datepicker").datepicker({
             format: 'yyyy-mm-dd',
+        });
+
+        $(".datetimepicker").datetimepicker({
+            format: 'YYYY-MM-DD HH:mm:ss',
+            icons: {
+                time: 'fa fa-clock',
+                date: 'fa fa-calendar',
+                up: 'fa fa-chevron-up',
+                down: 'fa fa-chevron-down',
+                previous: 'fa fa-chevron-left',
+                next: 'fa fa-chevron-right',
+                today: 'fa fa-check',
+                clear: 'fa fa-trash',
+                close: 'fa fa-times'
+            }
+        });
+
+        $(".timepicker").datetimepicker({
+            format: 'HH:mm:ss',
+            icons: {
+                time: 'fa fa-clock',
+                date: 'fa fa-calendar',
+                up: 'fa fa-chevron-up',
+                down: 'fa fa-chevron-down',
+                previous: 'fa fa-chevron-left',
+                next: 'fa fa-chevron-right',
+                today: 'fa fa-check',
+                clear: 'fa fa-trash',
+                close: 'fa fa-times'
+            }
         });
 
         new FroalaEditor('textarea.rich-textarea', {

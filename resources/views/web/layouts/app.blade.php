@@ -12,9 +12,9 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <link rel="stylesheet" type="text/css" href= "{{ asset('css/web/google.font.css')}}">
         <link rel="stylesheet" type="text/css" href= "{{ asset('css/web/Montserrat.css')}}">
-        <link rel="stylesheet" type="text/css" href="{{ asset('css/web/common.css') }}?v=1.1">
+        <link rel="stylesheet" type="text/css" href="{{ asset('css/web/common.css') }}?v=1.3">
         <link rel="stylesheet" type="text/css" href="{{ asset('css/web/layout.css') }}?v=1.1">
-        <link rel="stylesheet" type="text/css" href="{{ asset('css/web/main.css') }}?v=1.1">
+        <link rel="stylesheet" type="text/css" href="{{ asset('css/web/main.css') }}?v=1.5">
         <link rel="stylesheet" type="text/css" href="{{ asset('css/web/jquery-ui.min.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ asset('css/web/sidemenu.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ asset('css/web/swiper.min.css') }}">
@@ -58,5 +58,72 @@
         {{-- Footer --}}
         @include('web.layouts.footer')
         </div>
+
+        @if(!empty($unreadMessage) && !request()->is('mypage/message*'))
+        <div id="messageModal" class="custom-modal">
+            <div class="custom-modal-content">                
+                <h2>📩 새 쪽지가 도착했어요</h2>
+                <p><strong> 확인하지 않은 메세지가 있습니다.</strong></p>
+                <p>쪽지함을 확인하세요.</p>
+                <div style="text-align:right">
+                    <a href="{{ route('mypage.message') }}" class="custom-btn">쪽지함 가기</a>
+                </div>
+            </div>
+        </div>
+        @endif
+       <script>            
+
+            document.addEventListener('DOMContentLoaded', function () {
+                var modal = document.getElementById('messageModal');
+                if (modal) {
+                modal.style.display = 'block';
+                }
+            });
+        </script>
+        <style>
+            .custom-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            }
+
+            .custom-modal-content {
+            background-color: white;
+            margin: 15% auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            position: relative;
+            }
+            
+            .custom-modal-content p{
+                margin:10px
+            }
+            .custom-close {
+            position: absolute;
+            right: 15px;
+            top: 10px;
+            font-size: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            }
+
+            .custom-btn {
+            display: inline-block;
+            padding: 8px 16px;
+            background: #007BFF;
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+            }
+            .custom-btn:hover {
+            background: #0056b3;
+            }
+        </style>
     </body>    
 </html>

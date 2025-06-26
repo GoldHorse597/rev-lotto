@@ -12,11 +12,7 @@
             <img src="{{ asset('images/web/logo_kr.png')}}" alt="로또6/45(한국)">
           </a>
         </div>
-        <div class="swiper-slide " data-swiper-slide-index="6" style="width: 207.5px; margin-right: 10px;">
-          <a href="/jplay/lotto_kr1" title="연금720(한국)">
-            <img src="{{ asset('images/web/logo_kr1.png')}}" alt="연금720(한국)">
-          </a>
-        </div>
+        
         <div class="swiper-slide " data-swiper-slide-index="7" style="width: 207.5px; margin-right: 10px;">
           <a href="/jplay/lotto_pb" title="파워볼(미국)">
             <img src="{{ asset('images/web/logo_pb.png')}}" alt="파워볼(미국)">
