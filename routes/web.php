@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\MessageController;
 use App\Http\Controllers\Admin\InquiryTemplateController;
 use App\Http\Controllers\Admin\InquiryController;
 use App\Http\Controllers\Admin\LottoController;
+use App\Http\Controllers\Admin\HistoryController;
 use App\Http\Controllers\Web\PlayController;
 
 Route::middleware([SiteIsClosed::class])->group(function ()
@@ -79,7 +80,29 @@ Route::middleware([AuthAlertMiddleware::class])->prefix('mypage')->group(functio
 });
 
 Route::middleware([AuthAlertMiddleware::class])->prefix('play')->group(function() {
+    Route::get('/lotto_live', [PlayController::class, 'lotto_live'])->name('play.lotto_live');
+    Route::get('/lotto_kr', [PlayController::class, 'lotto_kr'])->name('play.lotto_kr');
     Route::get('/lotto_pb', [PlayController::class, 'lotto_pb'])->name('play.lotto_pb');
+    Route::get('/lotto_mm', [PlayController::class, 'lotto_mm'])->name('play.lotto_mm');
+    Route::get('/lotto_dlt', [PlayController::class, 'lotto_dlt'])->name('play.lotto_dlt');
+    Route::get('/lotto_ssq', [PlayController::class, 'lotto_ssq'])->name('play.lotto_ssq');
+    Route::get('/lotto_6', [PlayController::class, 'lotto_6'])->name('play.lotto_6');
+    Route::get('/lotto_7', [PlayController::class, 'lotto_7'])->name('play.lotto_7');
+    Route::get('/lotto_mini', [PlayController::class, 'lotto_mini'])->name('play.lotto_mini');
+    Route::get('/old_number', [PlayController::class, 'old_number'])->name('play.old_number');
+    Route::get('/number_list', [PlayController::class, 'number_list'])->name('play.number_list');
+    Route::post('/number_list_ok', [PlayController::class, 'number_list_ok'])->name('play.number_list_ok');
+});
+Route::middleware([AuthAlertMiddleware::class])->prefix('jplay')->group(function() {
+    Route::get('/lotto_live', [PlayController::class, 'jlotto_live'])->name('play.jlotto_live');
+    Route::get('/lotto_kr', [PlayController::class, 'jlotto_kr'])->name('play.jlotto_kr');
+    Route::get('/lotto_pb', [PlayController::class, 'jlotto_pb'])->name('play.jlotto_pb');
+    Route::get('/lotto_mm', [PlayController::class, 'jlotto_mm'])->name('play.jlotto_mm');
+    Route::get('/lotto_dlt', [PlayController::class, 'jlotto_dlt'])->name('play.jlotto_dlt');
+    Route::get('/lotto_ssq', [PlayController::class, 'jlotto_ssq'])->name('play.jlotto_ssq');
+    Route::get('/lotto_6', [PlayController::class, 'jlotto_6'])->name('play.jlotto_6');
+    Route::get('/lotto_7', [PlayController::class, 'jlotto_7'])->name('play.jlotto_7');
+    Route::get('/lotto_mini', [PlayController::class, 'lotto_mini'])->name('play.jlotto_mini');
 });
 
 Route::middleware([SiteIsClosed::class])
@@ -102,7 +125,10 @@ Route::prefix(config('custom.admin_prefix'))
             Route::post('/statistic/process/{id}', [DashboardController::class, 'process'])->where('id', '[0-9]+')->name('admin.statistic.process');
 
             Route::post('/tick', [DashboardController::class, 'tick'])->name('admin.tick');
-             Route::post('/betting_history', [HistoryController::class, 'betting_history'])->name('admin.betting_history');
+            Route::get('/betting_history', [HistoryController::class, 'betting_history'])->name('admin.betting_history');
+            Route::post('/betting_history/process/{id}', [HistoryController::class, 'process'])->where('id', '[0-9]+')->name('admin.history.process');
+            Route::match(['get', 'put'], '/betting_history/{id}', [HistoryController::class, 'edit'])->where('id', '[0-9]+')->name('admin.history.edit');
+
             Route::post('/setting', [DashboardController::class, 'setting'])->name('admin.setting');
             Route::get('/agent/settings', [AgentController::class, 'settings'])->name('admin.agent.settings');
             Route::patch('/agent/change-password', [AgentController::class, 'changepassword'])->name('admin.agent.changepassword');
@@ -124,6 +150,8 @@ Route::prefix(config('custom.admin_prefix'))
 
             Route::get('/lotto/game', [LottoController::class, 'game'])->name('admin.lotto.game');
             Route::get('/lotto/setting', [LottoController::class, 'setting'])->name('admin.lotto.setting');
+            Route::post('/lotto/setting', [LottoController::class, 'postSetting'])->name('admin.lotto.postSetting');
+            Route::get('/lotto/scrap', [LottoController::class, 'scrap'])->name('admin.lotto.scrap');
             Route::post('/lotto/create', [LottoController::class, 'create'])->name('admin.lotto.create');
             Route::match(['get', 'put'], '/lotto/{id}', [LottoController::class, 'edit'])->where('id', '[0-9]+')->name('admin.lotto.edit');
             Route::post('/lotto/process/{id}', [LottoController::class, 'process'])->where('id', '[0-9]+')->name('admin.lotto.process');

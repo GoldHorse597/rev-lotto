@@ -59,7 +59,7 @@
               <a href="/play/lotto_live" title="실시간로또">실시간로또</a>
             </li>
             <li>
-              <a href="/play/lotto_KR" title="로또6/45(한국)">로또6/45(한국)</a>
+              <a href="/play/lotto_kr" title="로또6/45(한국)">로또6/45(한국)</a>
             </li>
             
             <li>
@@ -69,19 +69,19 @@
               <a href="/play/lotto_mm" title="메가밀리언(미국)">메가밀리언(미국)</a>
             </li>           
             <li>
-              <a href="/play/lotto_eg" title="쌍색구(중국)">쌍색구(중국)</a>
+              <a href="/play/lotto_ssq" title="쌍색구(중국)">쌍색구(중국)</a>
             </li>
             <li>
-              <a href="/play/lotto_lp" title="따루토(중국)">따루토(중국)</a>
+              <a href="/play/lotto_dlt" title="따루토(중국)">따루토(중국)</a>
             </li>
             <li>
-              <a href="/play/lotto_ej" title="로또6(일본)">로또6(일본)</a>
+              <a href="/play/lotto_6" title="로또6(일본)">로또6(일본)</a>
             </li>
             <li>
-              <a href="/play/lotto_ed" title="로또7(일본)">로또7(일본)</a>
+              <a href="/play/lotto_7" title="로또7(일본)">로또7(일본)</a>
             </li>
             <li>
-              <a href="/play/lotto_ed" title="미니(일본)">미니(일본)</a>
+              <a href="/play/lotto_mini" title="미니(일본)">미니(일본)</a>
             </li>             
           </ul>
         </li>
@@ -92,7 +92,7 @@
               <a href="/jplay/lotto_live" title="실시간로또">실시간로또</a>
             </li>
             <li>
-              <a href="/jplay/lotto_KR" title="로또6/45(한국)">로또6/45(한국)</a>
+              <a href="/jplay/lotto_kr" title="로또6/45(한국)">로또6/45(한국)</a>
             </li>
            
             <li>
@@ -102,19 +102,19 @@
               <a href="/jplay/lotto_mm" title="메가밀리언(미국)">메가밀리언(미국)</a>
             </li>           
             <li>
-              <a href="/jplay/lotto_eg" title="쌍색구(중국)">쌍색구(중국)</a>
+              <a href="/jplay/lotto_ssq" title="쌍색구(중국)">쌍색구(중국)</a>
             </li>
             <li>
-              <a href="/jplay/lotto_lp" title="따루토(중국)">따루토(중국)</a>
+              <a href="/jplay/lotto_dlt" title="따루토(중국)">따루토(중국)</a>
             </li>
             <li>
-              <a href="/jplay/lotto_ej" title="로또6(일본)">로또6(일본)</a>
+              <a href="/jplay/lotto_6" title="로또6(일본)">로또6(일본)</a>
             </li>
             <li>
-              <a href="/jplay/lotto_ed" title="로또7(일본)">로또7(일본)</a>
+              <a href="/jplay/lotto_7" title="로또7(일본)">로또7(일본)</a>
             </li>
             <li>
-              <a href="/jplay/lotto_ed" title="미니(일본)">미니(일본)</a>
+              <a href="/jplay/lotto_mini" title="미니(일본)">미니(일본)</a>
             </li>
           </ul>
         </li>

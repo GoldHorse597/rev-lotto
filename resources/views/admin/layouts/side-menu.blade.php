@@ -264,6 +264,9 @@
                                 <a class="dropdown-item " href="{{ route('admin.agent.settings') }}">
                                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i> @lang('admin/app.setting_and_info') </a>
                                 <div class="dropdown-divider"></div>
+                                <a class="dropdown-item " href="{{ route('admin.lotto.scrap') }}">
+                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>로또 결과 가져오기 </a>
+                                <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i> @lang('admin/app.logout') </a>
                             </div>

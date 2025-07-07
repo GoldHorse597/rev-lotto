@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\Game;
+use App\Models\Rate;
 
 class LottoController extends BaseController
 {
@@ -87,5 +88,44 @@ class LottoController extends BaseController
 
         session()->flash('error', '비법적인 호출입니다.');
         return redirect()->back();
+    }
+
+    public function postSetting(Request $request){
+        $authUser = \Auth::guard('admin')->user();
+        if ($authUser->parent_level == 0) {
+            $setting = Rate::first();
+            $site_closed = $request->site_closed;
+            if (!is_null($site_closed))
+                $setting->site_closed = $site_closed;
+            
+            $setting->rate_1 = $request->rate_1;
+            $setting->rate_2 = $request->rate_2;
+            $setting->rate_3 = $request->rate_3;
+            $setting->rate_4 = $request->rate_4;
+            $setting->rate_5 = $request->rate_5;
+            $setting->rate_6 = $request->rate_6;
+            $setting->rate_7 = $request->rate_7;           
+            $setting->save();
+
+            return response()->json(['success' => true, 'msg' => '']);
+        }
+
+        return response()->json(['success' => false, 'msg' => '']);
+    }
+
+    public function setting(Request $request)
+    {
+        $page_title = '로또 배당률 설정';
+
+        $setting = Rate::first();
+
+        return view('admin.lotto.settings', compact('page_title', 'setting'));
+    }
+
+    public function scrap(){
+
+
+
+        return redirect()->route('admin.lotto.game');
     }
 }
