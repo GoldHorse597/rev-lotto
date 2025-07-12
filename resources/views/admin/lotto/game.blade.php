@@ -89,6 +89,7 @@
                            
                             <td>
                                 <div class="btn-group btn-group-sm">                                    
+                                    <a class="btn btn-danger" onclick="scrap({{$game->id}})"> 정산 </a>
                                     <a class="btn btn-primary" href="{{route('admin.lotto.edit', $game->id)}}"> @lang('admin/app.modify') </a>
                                     <div class="btn-group btn-group-sm">
                                         <a class="btn btn-info dropdown-toggle text-decoration-none text-white " href="#" data-toggle="dropdown"> @lang('admin/app.manage') </a>
@@ -132,5 +133,32 @@
             let action = $(this).attr('href');
             form.attr('action', action).submit();
         });
+
+        function scrap(id){
+             $.ajax({
+                type: 'POST',
+                url: '{{ route('admin.lotto.scrap') }}',
+                data: {
+                   id:id
+                },
+                dataType: 'json',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function (data) {
+                    if (data.success) {
+                        location.reload();
+                    }
+                    else {
+                        alertify.alert('', '@lang('admin/app.setting_saving_failed')');
+                    }
+                },
+                error: function(error) {
+                    console.log(error);
+                },
+                complete : function() {
+                }
+            });
+        }
     </script>
 @endsection

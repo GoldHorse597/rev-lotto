@@ -14,9 +14,9 @@ class PlayController extends Controller
     public function lotto_live(){
         $title = "실시간로또";
         $num = 69;
-        $num1 = 26;
+        $num1 = 0;
         $normal = 6;
-        $bonus = 1;
+        $bonus = 0;
         $reverse = 0;
         $game = Game::where('id',1)->first();
         return view('web.game.index', compact('title','num','num1','game','normal','bonus','reverse'));
@@ -24,9 +24,9 @@ class PlayController extends Controller
     public function lotto_kr(){
         $title = "로또6/45(한국)";
         $num = 45;
-        $num1 = 26;
+        $num1 = 0;
         $normal = 6;
-        $bonus = 1;
+        $bonus = 0;
         $reverse = 0;
         $game = Game::where('id',2)->first();
         return view('web.game.index', compact('title','num','num1','game','normal','bonus','reverse'));
@@ -74,9 +74,9 @@ class PlayController extends Controller
     public function lotto_6(){
         $title = "로또6(일본)";
         $num = 43;
-        $num1 = 6;
+        $num1 = 0;
         $normal = 6;
-        $bonus = 1;
+        $bonus = 0;
         $reverse = 0;
         $game = Game::where('id',7)->first();
         return view('web.game.index', compact('title','num','num1','game','normal','bonus','reverse'));
@@ -84,9 +84,9 @@ class PlayController extends Controller
     public function lotto_7(){
         $title = "로또7(일본)";
         $num = 37;
-        $num1 = 7;
+        $num1 = 0;
         $normal = 7;
-        $bonus = 2;
+        $bonus = 0;
         $reverse = 0;
         $game = Game::where('id',8)->first();
         return view('web.game.index', compact('title','num','num1','game','normal','bonus','reverse'));
@@ -94,9 +94,9 @@ class PlayController extends Controller
     public function lotto_mini(){
         $title = "미니(일본)";
         $num = 31;
-        $num1 = 5;
+        $num1 = 0;
         $normal = 5;
-        $bonus = 1;
+        $bonus = 0;
         $reverse = 0;
         $game = Game::where('id',9)->first();
         return view('web.game.index', compact('title','num','num1','game','normal','bonus','reverse'));
@@ -105,9 +105,9 @@ class PlayController extends Controller
     public function jlotto_live(){
         $title = "실시간로또 - 리버스";
         $num = 69;
-        $num1 = 26;
+        $num1 = 0;
         $normal = 6;
-        $bonus = 1;
+        $bonus = 0;
         $reverse = 1;
         $game = Game::where('id',1)->first();
         return view('web.game.index', compact('title','num','num1','game','normal','bonus','reverse'));
@@ -115,9 +115,9 @@ class PlayController extends Controller
     public function jlotto_kr(){
         $title = "로또6/45(한국) - 리버스";
         $num = 45;
-        $num1 = 26;
+        $num1 = 0;
         $normal = 6;
-        $bonus = 1;
+        $bonus = 0;
         $reverse = 1;
         $game = Game::where('id',2)->first();
         return view('web.game.index', compact('title','num','num1','game','normal','bonus','reverse'));
@@ -165,9 +165,9 @@ class PlayController extends Controller
     public function jlotto_6(){
         $title = "로또6(일본) - 리버스";
         $num = 43;
-        $num1 = 6;
+        $num1 = 0;
         $normal = 6;
-        $bonus = 1;
+        $bonus = 0;
         $reverse = 1;
         $game = Game::where('id',7)->first();
         return view('web.game.index', compact('title','num','num1','game','normal','bonus','reverse'));
@@ -175,9 +175,9 @@ class PlayController extends Controller
     public function jlotto_7(){
         $title = "로또7(일본) - 리버스";
         $num = 37;
-        $num1 = 7;
+        $num1 = 0;
         $normal = 7;
-        $bonus = 2;
+        $bonus = 0;
         $reverse = 1;
         $game = Game::where('id',8)->first();
         return view('web.game.index', compact('title','num','num1','game','normal','bonus','reverse'));
@@ -185,9 +185,9 @@ class PlayController extends Controller
     public function jlotto_mini(){
         $title = "미니(일본) - 리버스";
         $num = 31;
-        $num1 = 5;
+        $num1 = 0;
         $normal = 5;
-        $bonus = 1;
+        $bonus = 0;
         $reverse = 1;
         $game = Game::where('id',9)->first();
         return view('web.game.index', compact('title','num','num1','game','normal','bonus','reverse'));
@@ -237,6 +237,88 @@ class PlayController extends Controller
                 Purchase::whereIn('id', $ids)->delete();
             }
         }
+        else if($request->mode == "purchage"){  // 구매하기
+            $arr = $request->input('arr_del_list'); // "2@3@4@5"
+            
+            if($arr==null)
+            {
+                if (!empty($request->input('del_list'))) {
+                    $purchase = Purchase::where('id', $request->input('del_list'))->first();
+                    if($authUser->amount > $purchase->amount){
+                        $exists = DB::table('histories')->where([
+                            ['user_id', '=', $purchase->user_id],
+                            ['game_id', '=', $purchase->game_id],
+                            ['amount', '=', $purchase->amount],
+                            ['list', '=', $purchase->list],
+                            ['bonus', '=', $purchase->bonus],
+                            ['reverse', '=', $purchase->reverse],
+                            ['type', '=', $purchase->type],
+                        ])->exists();
+                        if (!$exists) {
+                        DB::table('histories')->insert([
+                                'user_id' => $purchase->user_id,
+                                'game_id' => $purchase->game_id,
+                                'amount' => $purchase->amount,
+                                'list' => $purchase->list,
+                                'bonus' => $purchase->bonus,
+                                'status' => 0,
+                                'reverse' => $purchase->reverse,
+                                'type' => $purchase->type,
+                                'created_at' => now(),
+                                'updated_at' => now(),
+                            ]);
+                        }
+                        Purchase::where('id', $purchase->id)->delete();
+                        $authUser->amount -= $purchase->amount;
+                        $authUser->save();
+                    }
+                }
+            }
+            else{
+                $ids = explode('@', $arr); // ['2', '3', '4', '5']
+                // 정수로 변환 (보안상 안전하게)
+                $ids = array_filter(array_map('intval', $ids));
+
+                if (!empty($ids)) {
+                    $purchases = Purchase::whereIn('id', $ids)->get();
+                    foreach ($purchases as $purchase) {
+                        if($authUser->amount > $purchase->amount){
+                            $exists = DB::table('histories')->where([
+                                ['user_id', '=', $purchase->user_id],
+                                ['game_id', '=', $purchase->game_id],
+                                ['amount', '=', $purchase->amount],
+                                ['list', '=', $purchase->list],
+                                ['bonus', '=', $purchase->bonus],
+                                ['reverse', '=', $purchase->reverse],
+                                ['type', '=', $purchase->type],
+                            ])->exists();
+                            if (!$exists) {
+                                DB::table('histories')->insert([
+                                    'user_id' => $purchase->user_id,
+                                    'game_id' => $purchase->game_id,
+                                    'amount' => $purchase->amount,
+                                    'list' => $purchase->list,
+                                    'bonus' => $purchase->bonus,
+                                    'status' => 0,
+                                    'reverse' => $purchase->reverse,
+                                    'type' => $purchase->type,
+                                    'created_at' => now(),
+                                    'updated_at' => now(),
+                                ]);
+                            }
+                            Purchase::where('id', $purchase->id)->delete();
+                            $authUser->amount -= $purchase->amount;
+                            $authUser->save();
+                        }
+                        else{
+
+                        }
+                    }
+                }
+            }
+            // 문자열을 @ 기준으로 나눠 배열로 만듦
+           
+        }
         else{
             $purchase = new Purchase;
             $purchase->user_id = $authUser->id;
@@ -275,7 +357,8 @@ class PlayController extends Controller
         }        
         $lists = Purchase::where('user_id', $authUser->id)->where('game_id',$request->part_idx)->get();
         $gameId = $request->part_idx;
-        return view('web.game.numberlist',compact('lists','gameId'));
+        $reverse = $request->reverse;
+        return view('web.game.numberlist',compact('lists','gameId','reverse'));
     }
 
 

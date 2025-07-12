@@ -151,7 +151,7 @@ Route::prefix(config('custom.admin_prefix'))
             Route::get('/lotto/game', [LottoController::class, 'game'])->name('admin.lotto.game');
             Route::get('/lotto/setting', [LottoController::class, 'setting'])->name('admin.lotto.setting');
             Route::post('/lotto/setting', [LottoController::class, 'postSetting'])->name('admin.lotto.postSetting');
-            Route::get('/lotto/scrap', [LottoController::class, 'scrap'])->name('admin.lotto.scrap');
+            Route::post('/lotto/scrap', [LottoController::class, 'scrap'])->name('admin.lotto.scrap');
             Route::post('/lotto/create', [LottoController::class, 'create'])->name('admin.lotto.create');
             Route::match(['get', 'put'], '/lotto/{id}', [LottoController::class, 'edit'])->where('id', '[0-9]+')->name('admin.lotto.edit');
             Route::post('/lotto/process/{id}', [LottoController::class, 'process'])->where('id', '[0-9]+')->name('admin.lotto.process');

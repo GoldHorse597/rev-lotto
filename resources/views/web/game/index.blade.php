@@ -167,7 +167,8 @@
 
 			function click_clear() {
 				document.all["k_numqp"].className = ''; //QPick 있으면 없앤다.
-				document.all["bonusqp"].className = '';
+				if(no_max_bonus > 0)
+					document.all["bonusqp"].className = '';
 				for (i = 1; i <= no_max_k_num; i++) {
 					num_id = 'k_num' + i;
 					document.all[num_id].className = '';
@@ -346,18 +347,20 @@
 				if (document.form1.s_num8.value == "QP") { // 파워볼이 QPick 일때
 					form.s_num8.value = "QP";
 				} else {
-					for (i = 1; i <= no_max_bonus; i++) {
-					bonus_id = 'bonus' + i;
-					if (document.all[bonus_id].className == 'on' || document.all[bonus_id].className == 'on') {
-						no_bonus = i;
-						bonus_count++;
+					if(no_max_bonus >0){
+						for (i = 1; i <= no_max_bonus; i++) {
+							bonus_id = 'bonus' + i;
+							if (document.all[bonus_id].className == 'on' || document.all[bonus_id].className == 'on') {
+								no_bonus = i;
+								bonus_count++;
+							}
+						}
+						if (bonus_count < 1 && no_max_bonus != 0) {
+							alert('보너스를 선택하세요.');
+							return;
+						}
+						form.s_num8.value = no_bonus;
 					}
-					}
-					if (bonus_count < 1) {
-					alert('보너스를 선택하세요.');
-					return;
-					}
-					form.s_num8.value = no_bonus;
 				}
 				if (document.form1.s_num1.value == "") {
 					alert("일반번호를 선택해주세요");
@@ -382,7 +385,7 @@
 					alert("일반번호을 선택해주세요");
 					return;
 				} 
-				else if (document.form1.s_num8.value == "") {
+				else if (document.form1.s_num8.value == "" && no_max_bonus != 0) {
 					alert("파워볼을 선택해주세요");
 					return;
 				}else {
@@ -913,37 +916,39 @@
 					
 					<div class="lotto-buy-w">
 						<div class="number-select-w">
-						<h3 class="tit-h3">{{$normal}}개의 번호를 선택하세요.</h3>
-						<div class="number-select">
-							@php
-								$maxButton = floor(($num + 14) / 15) * 15 - 1;
-							@endphp
+							<h3 class="tit-h3">{{$normal}}개의 번호를 선택하세요.</h3>
+							<div class="number-select">
+								@php
+									$maxButton = floor(($num + 14) / 15) * 15 - 1;
+								@endphp
 
-							@for ($i = 1; $i <= $num; $i++)
-								<button type="button" id="k_num{{ $i }}" onclick="click_num('{{ $i }}')">{{ $i }}</button>
-							@endfor
+								@for ($i = 1; $i <= $num; $i++)
+									<button type="button" id="k_num{{ $i }}" onclick="click_num('{{ $i }}')">{{ $i }}</button>
+								@endfor
 
-							@for ($i = $num + 1; $i <= $maxButton; $i++)
-								<button type="button" class="mo-num-hide"></button>
-							@endfor
+								@for ($i = $num + 1; $i <= $maxButton; $i++)
+									<button type="button" class="mo-num-hide"></button>
+								@endfor
 
-							<button type="button" id="k_numqp" onclick="click_num_qp('QP')">QP</button>
-						</div>
-						<h3 class="tit-h3 mt30">{{$bonus}}개의 번호를 선택하세요.</h3>
-						<div class="number-select num-power">
-							@php
-								$maxBonus = floor(($num1 + 14) / 15) * 15 - 1;
-							@endphp
+								<button type="button" id="k_numqp" onclick="click_num_qp('QP')">QP</button>
+							</div>
+							@if($bonus > 0)
+							<h3 class="tit-h3 mt30">{{$bonus}}개의 번호를 선택하세요.</h3>
+							<div class="number-select num-power">
+								@php
+									$maxBonus = floor(($num1 + 14) / 15) * 15 - 1;
+								@endphp
 
-							@for ($i = 1; $i <= $num1; $i++)
-								<button type="button" id="bonus{{ $i }}" onclick="bonus_click_num('{{ $i }}')">{{ $i }}</button>
-							@endfor
+								@for ($i = 1; $i <= $num1; $i++)
+									<button type="button" id="bonus{{ $i }}" onclick="bonus_click_num('{{ $i }}')">{{ $i }}</button>
+								@endfor
 
-							@for ($i = $num1 + 1; $i <= $maxBonus; $i++)
-								<button type="button" class="mo-num-hide"></button>
-							@endfor
-							<button type="button" id="bonusqp" onclick="bonus_click_num_qp('QP')">QP</button>
-						</div>
+								@for ($i = $num1 + 1; $i <= $maxBonus; $i++)
+									<button type="button" class="mo-num-hide"></button>
+								@endfor
+								<button type="button" id="bonusqp" onclick="bonus_click_num_qp('QP')">QP</button>
+							</div>
+							@endif
 						</div>
 						<div class="number-selected-w">
 						<h3 class="tit-h3 p-l">선택한 번호 <a href="javascript:void(0);" class="bt_basic_play2" onclick="MM_openBrWindow('old_number','oldNumber','scrollbars=yes,width=520,height=600');">

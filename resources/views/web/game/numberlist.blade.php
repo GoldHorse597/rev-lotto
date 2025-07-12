@@ -99,6 +99,41 @@
           return;
         }
       }
+      function actpurchage() {
+        var f = document.forms['listform'];
+        var arr_del_list = new Array();
+        var i, j;
+        if (typeof(f.del_list) == 'object') {
+          //alert (f.del_list.length);
+          if (f.del_list.length) {
+            for (i = 0, j = 0; i < f.del_list.length; i++) {
+              if (f.del_list[i].checked) {
+                arr_del_list[i] = f.del_list[i].value;
+                j++;
+              }
+            }
+            if (!j) {
+              alert('리스트를 선택하여 주세요.');
+              return;
+            } else f.arr_del_list.value = arr_del_list.join('@');
+          } else {
+            if (!f.del_list.checked) {
+              alert('리스트를 선택하여 주세요.');
+              return;
+            }
+          }
+          if (j == 1) f.arr_del_list.value = '';
+          //exit;
+          if (confirm('구입하시겠습니까?'))
+          {
+            f.mode.value = "purchage";
+            f.submit();
+          }
+        } else {
+          alert('선택한 번호가 리스트가 없습니다.');
+          return;
+        }
+      }
     </script>
     <!--리스트 시작 -->
     <form name="form_del" method="post" action="number_list_ok">
@@ -110,7 +145,7 @@
     <div class="wrap-iframe">
         <form method="post" action="number_list_ok" name="listform">
             @csrf
-            <input type="hidden" name="mode" value="alldel">
+            <input type="hidden" id="mode" name="mode" value="alldel">
             <input type="hidden" name="arr_del_list" value="">
             <input type="hidden" name="reverse" value="{{$reverse}}">
             <input type="hidden" name="part_idx" value="{{$gameId}}">
@@ -147,7 +182,7 @@
             <div class="list-result"></div>
             </div>
             <div class="btn-buy-num">
-            <a href="#none" class="btn-comm btn-dpk" onClick="javascript:parent.location.href='cart.php';">바로구매하기</a>
+            <a href="#none" class="btn-comm btn-dpk" onClick="javascript:actpurchage()">바로구매하기</a>
             <a href="#none" class="btn-comm btn-bl" onClick="javascript:actSelect()">전체삭제</a>
             </div>
         </form>
