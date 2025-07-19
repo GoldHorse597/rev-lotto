@@ -389,7 +389,12 @@
 				else if (document.form1.s_num8.value == "" && no_max_bonus != 0) {
 					alert("파워볼을 선택해주세요");
 					return;
-				}else {
+				}else if(document.form1.amount.value == "" || document.form1.amount == "0" )
+				{
+					alert('금액을 입력해주세요.');
+					return;
+				}
+				else {
 					document.form1.mode.value = "insert";
 					//EXIT;
 					form.submit();

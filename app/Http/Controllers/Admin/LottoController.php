@@ -7,7 +7,10 @@ use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 use App\Models\Game;
 use App\Models\Rate;
+use App\Models\User;
+use App\Models\History;
 use Illuminate\Support\Facades\Http;
+use Carbon\Carbon;
 
 class LottoController extends BaseController
 {
@@ -52,6 +55,15 @@ class LottoController extends BaseController
             $game->weekday = $request->weekday; 
             $game->lastresult = $request->lastresult;
             $game->bonus = $request->bonus;
+            $game->first = $request->first;
+            $game->second = $request->second;
+            $game->third = $request->third;
+            $game->fourth = $request->fourth;
+            $game->fifth = $request->fifth;
+            $game->sixth = $request->sixth;
+            $game->seventh = $request->seventh;
+            $game->eighth = $request->eighth;
+            $game->nineth = $request->nineth;
           
             $game->save();
 
@@ -163,11 +175,12 @@ class LottoController extends BaseController
                 $this->processmini();
                 break;
         }
+        // $this->calculate($id);
         return response()->json(['success' => true]);
     }
     private function processkr(){
         $game = Game::where('id', 2)->first();
-        $round = $game->round;
+        $round = $game->round-1;
         if (is_null($round)) {
             $round = 1178;
         }
@@ -197,6 +210,7 @@ class LottoController extends BaseController
         $game->bonus = $bonus;
         $game->round = $round;
         $date = new \DateTime($drawDate);
+        $game->lastday = $date->format('Y-m-d').' 20:00:00';
         $date->modify('next saturday'); // 다음 주 토요일로 이동
         $game->weekday = $date->format('Y-m-d').' 20:00:00';
         $game->save();
@@ -303,7 +317,7 @@ class LottoController extends BaseController
 
     private function allscrap($str,$id){
         $game = Game::where('id', $id)->first();
-        $url = "https://kr.lottolyzer.com/public/rss/2.0/lottolyzer.news.xml";
+        $url = "https://en.lottolyzer.com/public/rss/2.0/lottolyzer.news.xml";
         // RSS 불러오기
         $xml = simplexml_load_file($url);
 
@@ -341,6 +355,7 @@ class LottoController extends BaseController
         switch ($id) {
             case 3:
                 $date->modify('+1 day');
+                $game->lastday = $date->format('Y-m-d').' 18:45:00';
                 $weekday = $date->format('N'); // 요일 숫자 (1: 월 ~ 7: 일)
 
                 if ($weekday == 3) { // 수요일
@@ -352,6 +367,7 @@ class LottoController extends BaseController
                 break;
             case 4:
                 $date->modify('+1 day');
+                $game->lastday = $date->format('Y-m-d').' 11:59:00';
                 $weekday = (int)$date->format('N'); // 1=월, 3=수, 6=토
                 switch ($weekday) {
                     case 2: // 화요일
@@ -369,10 +385,11 @@ class LottoController extends BaseController
                         break;
                 }
                 $game->weekday = $date->format('Y-m-d').' 11:59:00';
+                
                 break;
             case 7:
                 $weekday = $date->format('N'); // 요일 숫자 (1: 월 ~ 7: 일)
-
+                $game->lastday = $date->format('Y-m-d').' 18:45:00';
                 if ($weekday == 1) { // 월요일
                     $date->modify('next Thursday');
                 } elseif ($weekday == 4) { // 목요일
@@ -381,15 +398,684 @@ class LottoController extends BaseController
                 $game->weekday = $date->format('Y-m-d').' 18:45:00';
                 break;
             case 8:
+                $game->lastday = $date->format('Y-m-d').' 18:45:00';
                 $date->modify('next Friday');
                 $game->weekday = $date->format('Y-m-d').' 18:45:00';
                 break;
             case 9:
+                $game->lastday = $date->format('Y-m-d').' 18:45:00';
                 $date->modify('next Tuesday');
                 $game->weekday = $date->format('Y-m-d').' 18:45:00';
                 break; 
         }       
         $game->save();
+    }
+
+    public function calculate(Request $request)
+    {
+        $id = $request->id;
+        $game = Game::where('id',$id)->first();
+        $lastday = Carbon::parse($game->lastday);
+
+        // $histories = History::where('status',0)->where('game_id',$id)->where('round', '!=',  $game->round)->get();
+        $histories = History::where('status',0)->where('game_id',$id)->where('created_at', '<', $lastday)->get();
+        $rate = Rate::first();
+        switch($id)
+        {
+            case 1: 
+                foreach($histories as $history)
+                {
+                    $result_nums = explode(',',$game->lastresult);
+                    $bonus = $game->bonus;
+                    $myNumbers = explode(',',$history->list);
+                    $matched = count(array_intersect($myNumbers, $result_nums));
+                    $user = User::where('id', $history->user_id)->first();
+                    if($history->reverse == 0){
+                        if ($matched === 6) {
+                            // "1등";
+                            $history->result = 1;                            
+                            $user->amount = $user->amount + $game->first;
+                        } elseif ($matched === 5 && in_array($bonus, $myNumbers)) {
+                            // "2등";
+                            $history->result = 2;
+                            $user->amount = $user->amount + $game->second;
+                        } elseif ($matched === 5) {
+                            // "3등";
+                            $history->result = 3;
+                            $user->amount = $user->amount + $game->third;
+                        } elseif ($matched === 4) {
+                            // "4등";
+                            $history->result = 4;
+                            $user->amount = $user->amount + $game->fourth;
+                        } elseif ($matched === 3) {
+                            // "5등";
+                            $user->amount = $user->amount + $game->fifth;
+                            $history->result = 5;
+                        } else {
+                            // "꽝";                            
+                            $history->result = 0;
+                        }
+                        $history->status = 1;
+                    }
+                    else{
+                        if ($matched === 6) {
+                            // "1등";
+                            $history->result = 1;
+                            if($rate->rate_1 < 0)
+                            {
+                                $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_1) / 100);
+                            }
+                            else{
+                                $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_1 / 100);
+                            }
+
+                        } elseif ($matched === 5 && in_array($bonus, $myNumbers)) {
+                            // "2등";
+                            $history->result = 2;
+                            if($rate->rate_2 < 0)
+                            {
+                                $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_2) / 100);
+                            }
+                            else{
+                                $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_2 / 100);
+                            }
+                        } elseif ($matched === 5) {
+                            // "3등";
+                            $history->result = 3;
+                            if($rate->rate_3 < 0)
+                            {
+                                $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_3) / 100);
+                            }
+                            else{
+                                $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_3 / 100);
+                            }
+                        } elseif ($matched === 4) {
+                            // "4등";
+                            $history->result = 4;
+                            if($rate->rate_4 < 0)
+                            {
+                                $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_4) / 100);
+                            }
+                            else{
+                                $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_4 / 100);
+                            }
+                        } elseif ($matched === 3) {
+                            // "5등";
+                            $history->result = 5;
+                            if($rate->rate_5 < 0)
+                            {
+                                $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_5) / 100);
+                            }
+                            else{
+                                $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_5 / 100);
+                            }
+                        } else {
+                            // "꽝";
+                            if($rate->rate_7 < 0)
+                            {
+                                $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_7) / 100);
+                            }
+                            else{
+                                $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_7 / 100);
+                            }
+                            $history->result = 0;
+                        }
+                        $history->status = 1;
+                    }                    
+                    $user->save();                    
+                    $history->save();
+
+                }
+                break;
+                break;
+            case 2:
+                foreach($histories as $history)
+                {
+                    $result_nums = explode(',',$game->lastresult);
+                    $bonus = $game->bonus;
+                    $myNumbers = explode(',',$history->list);
+                    $matched = count(array_intersect($myNumbers, $result_nums));
+                    $user = User::where('id', $history->user_id)->first();
+                    if($history->reverse == 0){
+                        if ($matched === 6) {
+                            // "1등";
+                            $history->result = 1;                            
+                             $user->amount = $user->amount + $game->first;
+                        } elseif ($matched === 5 && in_array($bonus, $myNumbers)) {
+                            // "2등";
+                            $history->result = 2;
+                             $user->amount = $user->amount + $game->second;
+                        } elseif ($matched === 5) {
+                            // "3등";
+                            $history->result = 3;
+                             $user->amount = $user->amount + $game->third;
+                        } elseif ($matched === 4) {
+                            // "4등";
+                            $history->result = 4;
+                             $user->amount = $user->amount + $game->fourth;
+                        } elseif ($matched === 3) {
+                            // "5등";
+                            $history->result = 5;
+                            $user->amount = $user->amount + $game->fifth;
+                        } else {
+                            // "꽝";                            
+                            $history->result = 0;
+                        }
+                        $history->status = 1;
+                    }
+                    else{
+                        if ($matched === 6) {
+                            // "1등";
+                            $history->result = 1;
+                            if($rate->rate_1 < 0)
+                            {
+                                $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_1) / 100);
+                            }
+                            else{
+                                $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_1 / 100);
+                            }
+
+                        } elseif ($matched === 5 && in_array($bonus, $myNumbers)) {
+                            // "2등";
+                            $history->result = 2;
+                            if($rate->rate_2 < 0)
+                            {
+                                $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_2) / 100);
+                            }
+                            else{
+                                $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_2 / 100);
+                            }
+                        } elseif ($matched === 5) {
+                            // "3등";
+                            $history->result = 3;
+                            if($rate->rate_3 < 0)
+                            {
+                                $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_3) / 100);
+                            }
+                            else{
+                                $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_3 / 100);
+                            }
+                        } elseif ($matched === 4) {
+                            // "4등";
+                            $history->result = 4;
+                            if($rate->rate_4 < 0)
+                            {
+                                $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_4) / 100);
+                            }
+                            else{
+                                $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_4 / 100);
+                            }
+                        } elseif ($matched === 3) {
+                            // "5등";
+                            $history->result = 5;
+                            if($rate->rate_5 < 0)
+                            {
+                                $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_5) / 100);
+                            }
+                            else{
+                                $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_5 / 100);
+                            }
+                        } else {
+                            // "꽝";
+                            if($rate->rate_7 < 0)
+                            {
+                                $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_7) / 100);
+                            }
+                            else{
+                                $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_7 / 100);
+                            }
+                            $history->result = 0;
+                        }
+                        $history->status = 1;
+                    }                    
+                    $user->save();                    
+                    $history->save();
+
+                }
+                break;
+            case 3: 
+            case 4:
+                foreach($histories as $history)
+                {
+                    $result_nums = explode(',',$game->lastresult);
+                    $bonus = $game->bonus;
+                    $myNumbers = explode(',',$history->list);                    
+                    $mainMatch = count(array_intersect($myNumbers, $result_nums));
+                    $megaMatch = ($history->bonus == $bonus);
+                    $user = User::where('id', $history->user_id)->first();
+                    if($history->reverse == 0){
+                        if ($mainMatch == 5 && $megaMatch){
+                            // "1등";
+                            $history->result = 1;
+                            $user->amount = $user->amount + $game->first;
+                        } elseif ($mainMatch == 5) {
+                            // "2등";
+                            $history->result = 2;
+                             $user->amount = $user->amount + $game->second;
+                        } elseif ($mainMatch == 4 && $megaMatch) {
+                            // "3등";
+                            $history->result = 3;
+                             $user->amount = $user->amount + $game->third;
+                        } elseif ($mainMatch == 4) {
+                             $user->amount = $user->amount + $game->fourth;
+                            // "4등";
+                            $history->result = 4;
+                        } elseif ($mainMatch == 3 && $megaMatch) {
+                            // "5등";
+                            $history->result = 5;
+                            $user->amount = $user->amount + $game->fifth;
+                        }elseif ($mainMatch == 3) {
+                            // "6등";
+                            $history->result = 6;
+                            $user->amount = $user->amount + $game->sixth;
+                        }elseif ($mainMatch == 2 && $megaMatch) {
+                            // "7등";
+                            $history->result = 7;
+                            $user->amount = $user->amount + $game->seventh;
+                        }elseif ($mainMatch == 1 && $megaMatch) {
+                            // "8등";
+                            $history->result =8;
+                            $user->amount = $user->amount + $game->eighth;
+                        }
+                        elseif ($mainMatch == 0 && $megaMatch) {
+                            // "9등";
+                            $history->result = 9;
+                            $user->amount = $user->amount + $game->nineth;
+                        } else {
+                            // "꽝";
+                            $history->result = 0;
+                        }
+                        $history->status = 1;
+                    }
+                    else{
+                        if ($mainMatch == 5 && $megaMatch){
+                            // "1등";
+                            $history->result = 1;
+                            if($rate->rate_1 < 0)
+                            {
+                                $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_1) / 100);
+                            }
+                            else{
+                                $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_1 / 100);
+                            }
+
+                        } elseif ($mainMatch == 5) {
+                            // "2등";
+                            $history->result = 2;
+                            if($rate->rate_2 < 0)
+                            {
+                                $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_2) / 100);
+                            }
+                            else{
+                                $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_2 / 100);
+                            }
+                        } elseif ($mainMatch == 4 && $megaMatch) {
+                            // "3등";
+                            $history->result = 3;
+                            if($rate->rate_3 < 0)
+                            {
+                                $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_3) / 100);
+                            }
+                            else{
+                                $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_3 / 100);
+                            }
+                        } elseif ($mainMatch == 4) {
+                            // "4등";
+                            $history->result = 4;
+                            if($rate->rate_4 < 0)
+                            {
+                                $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_4) / 100);
+                            }
+                            else{
+                                $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_4 / 100);
+                            }
+                        } elseif ($mainMatch == 3 && $megaMatch) {
+                            // "5등";
+                            $history->result = 5;
+                            if($rate->rate_5 < 0)
+                            {
+                                $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_5) / 100);
+                            }
+                            else{
+                                $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_5 / 100);
+                            }
+                        } else {
+                            // "꽝";
+                            if($rate->rate_7 < 0)
+                            {
+                                $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_7) / 100);
+                            }
+                            else{
+                                $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_7 / 100);
+                            }
+                            $history->result = 0;
+                        }
+                        $history->status = 1;
+                    }                    
+                    $user->save();                    
+                    $history->save();
+
+                }           
+                break;
+            case 5: 
+                break;
+            case 6:
+                break;
+            case 7:
+                foreach($histories as $history)
+                {
+                    $result_nums = explode(',',$game->lastresult);
+                    $bonus = $game->bonus;
+                    $myNumbers = explode(',',$history->list);
+                    $matched = count(array_intersect($myNumbers, $result_nums));
+                    $hasBonus = in_array($bonus, $myNumbers);
+                    $user = User::where('id', $history->user_id)->first();
+                    if($history->reverse == 0){
+                        if ($matched === 6) {
+                            // "1등";
+                            $history->result = 1;    
+                             $user->amount = $user->amount + $game->first;                        
+                        } elseif ($matched === 5 && $hasBonus) {
+                            // "2등";
+                            $history->result = 2;
+                             $user->amount = $user->amount + $game->second;
+                            
+                        } elseif ($matched === 5) {
+                            // "3등";
+                            $history->result = 3;
+                             $user->amount = $user->amount + $game->third;
+                            
+                        } elseif ($matched === 4) {
+                            // "4등";
+                            $history->result = 4;
+                             $user->amount = $user->amount + $game->fourth;
+                            
+                        } elseif ($matched === 3) {
+                            // "5등";
+                            $history->result = 5;
+                            $user->amount = $user->amount + $game->fifth;
+                        } else {
+                            // "꽝";
+                           
+                            $history->result = 0;
+                        }
+                        $history->status = 1;
+                    }
+                    else{
+                        if ($matched === 6) {
+                            // "1등";
+                            $history->result = 1;
+                            if($rate->rate_1 < 0)
+                            {
+                                $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_1) / 100);
+                            }
+                            else{
+                                $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_1 / 100);
+                            }
+
+                        } elseif ($matched === 5 && $hasBonus) {
+                            // "2등";
+                            $history->result = 2;
+                            if($rate->rate_2 < 0)
+                            {
+                                $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_2) / 100);
+                            }
+                            else{
+                                $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_2 / 100);
+                            }
+                        } elseif ($matched === 5) {
+                            // "3등";
+                            $history->result = 3;
+                            if($rate->rate_3 < 0)
+                            {
+                                $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_3) / 100);
+                            }
+                            else{
+                                $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_3 / 100);
+                            }
+                        } elseif ($matched === 4) {
+                            // "4등";
+                            $history->result = 4;
+                            if($rate->rate_4 < 0)
+                            {
+                                $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_4) / 100);
+                            }
+                            else{
+                                $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_4 / 100);
+                            }
+                        } elseif ($matched === 3) {
+                            // "5등";
+                            $history->result = 5;
+                            if($rate->rate_5 < 0)
+                            {
+                                $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_5) / 100);
+                            }
+                            else{
+                                $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_5 / 100);
+                            }
+                        } else {
+                            // "꽝";
+                            if($rate->rate_7 < 0)
+                            {
+                                $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_7) / 100);
+                            }
+                            else{
+                                $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_7 / 100);
+                            }
+                            $history->result = 0;
+                        }
+                        $history->status = 1;
+                    }                    
+                    $user->save();                    
+                    $history->save();
+
+                }
+                break;
+            case 8: 
+                foreach($histories as $history)
+                {
+                    $result_nums = explode(',',$game->lastresult);
+                    $bonus = explode(',',$game->bonus);
+                    $myNumbers = explode(',',$history->list);
+                    $matched = count(array_intersect($myNumbers, $result_nums));
+                    $bonusMatched  = count(array_intersect($myNumbers, $bonus));
+                    $user = User::where('id', $history->user_id)->first();
+                    if($history->reverse == 0){
+                         if ($matched === 7) {
+                            // "1등";
+                            $history->result = 1;
+                             $user->amount = $user->amount + $game->first;
+                        } elseif ($matched === 6 && $bonusMatched >= 1) {
+                            // "2등";
+                            $history->result = 2;
+                             $user->amount = $user->amount + $game->second;
+                        } elseif ($matched === 6) {
+                            // "3등";
+                            $history->result = 3;
+                             $user->amount = $user->amount + $game->third;
+                        } elseif ($matched === 5) {
+                            // "4등";
+                            $history->result = 4;
+                             $user->amount = $user->amount + $game->fourth;
+                        } elseif ($matched === 4) {
+                            // "5등";
+                            $history->result = 5;
+                            $user->amount = $user->amount + $game->fifth;
+                        }elseif ($matched === 3 && $bonusMatched >= 1) {
+                            // "6등";
+                            $history->result = 6;
+                            $user->amount = $user->amount + $game->sixth;
+                        } else {
+                            // "꽝";
+                          
+                            $history->result = 0;
+                        }
+                        $history->status = 1;
+                    }
+                    else{
+                        if ($matched === 7) {
+                            // "1등";
+                            $history->result = 1;
+                            if($rate->rate_1 < 0)
+                            {
+                                $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_1) / 100);
+                            }
+                            else{
+                                $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_1 / 100);
+                            }
+
+                        } elseif ($matched === 6 && $bonusMatched >= 1) {
+                            // "2등";
+                            $history->result = 2;
+                            if($rate->rate_2 < 0)
+                            {
+                                $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_2) / 100);
+                            }
+                            else{
+                                $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_2 / 100);
+                            }
+                        } elseif ($matched === 6) {
+                            // "3등";
+                            $history->result = 3;
+                            if($rate->rate_3 < 0)
+                            {
+                                $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_3) / 100);
+                            }
+                            else{
+                                $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_3 / 100);
+                            }
+                        } elseif ($matched === 5) {
+                            // "4등";
+                            $history->result = 4;
+                            if($rate->rate_4 < 0)
+                            {
+                                $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_4) / 100);
+                            }
+                            else{
+                                $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_4 / 100);
+                            }
+                        } elseif ($matched === 4) {
+                            // "5등";
+                            $history->result = 5;
+                            if($rate->rate_5 < 0)
+                            {
+                                $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_5) / 100);
+                            }
+                            else{
+                                $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_5 / 100);
+                            }
+                        } else {
+                            // "꽝";
+                            if($rate->rate_7 < 0)
+                            {
+                                $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_7) / 100);
+                            }
+                            else{
+                                $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_7 / 100);
+                            }
+                            $history->result = 0;
+                        }
+                        $history->status = 1;
+                    }                    
+                    $user->save();                    
+                    $history->save();
+
+                }
+                break;
+            case 9:
+                foreach($histories as $history)
+                {
+                    $result_nums = explode(',',$game->lastresult);
+                    $bonus = $game->bonus;
+                    $myNumbers = explode(',',$history->list);
+                    $matched = count(array_intersect($myNumbers, $result_nums));
+                    $hasBonus = in_array($bonus, $myNumbers);
+                    $user = User::where('id', $history->user_id)->first();
+                    if($history->reverse == 0){
+                        if ($matched === 5) {
+                            // "1등";
+                            $history->result = 1;
+                             $user->amount = $user->amount + $game->first;
+                        } elseif ($matched === 4 && $hasBonus) {
+                            // "2등";
+                            $history->result = 2;
+                             $user->amount = $user->amount + $game->second;
+                        } elseif ($matched === 4) {
+                            // "3등";
+                            $history->result = 3;
+                             $user->amount = $user->amount + $game->third;
+                        } elseif ($matched === 3) {
+                            // "4등";
+                            $history->result = 4;  
+                             $user->amount = $user->amount + $game->fourth; 
+                        } else {
+                           
+                            $history->result = 0;
+                        }
+                        $history->status = 1;
+                    }
+                    else{
+                        if ($matched === 5) {
+                            // "1등";
+                            $history->result = 1;
+                            if($rate->rate_1 < 0)
+                            {
+                                $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_1) / 100);
+                            }
+                            else{
+                                $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_1 / 100);
+                            }
+
+                        } elseif ($matched === 4 && $hasBonus) {
+                            // "2등";
+                            $history->result = 2;
+                            if($rate->rate_2 < 0)
+                            {
+                                $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_2) / 100);
+                            }
+                            else{
+                                $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_2 / 100);
+                            }
+                        } elseif ($matched === 4) {
+                            // "3등";
+                            $history->result = 3;
+                            if($rate->rate_3 < 0)
+                            {
+                                $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_3) / 100);
+                            }
+                            else{
+                                $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_3 / 100);
+                            }
+                        } elseif ($matched === 3) {
+                            // "4등";
+                            $history->result = 4;
+                            if($rate->rate_4 < 0)
+                            {
+                                $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_4) / 100);
+                            }
+                            else{
+                                $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_4 / 100);
+                            }                        
+                        } else {
+                            // "꽝";
+                            if($rate->rate_7 < 0)
+                            {
+                                $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_7) / 100);
+                            }
+                            else{
+                                $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_7 / 100);
+                            }
+                            $history->result = 0;
+                        }
+                        $history->status = 1;
+                    }                    
+                    $user->save();                    
+                    $history->save();
+
+                }
+                break;
+        }
+        return response()->json(['success' => true]);
     }
     
 }

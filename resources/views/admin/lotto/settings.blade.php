@@ -82,7 +82,7 @@
                                     <td><input type="text" class="form-control" id="rate_6" name="rate_6" value="{{$setting->rate_6}}" style="display:inline-block;width:95%"> %</td>
                                 </tr>
                                 <tr>
-                                    <th>7등</th>
+                                    <th>꽝</th>
                                     <td><input type="text" class="form-control" id="rate_7" name="rate_7" value="{{$setting->rate_7}}" style="display:inline-block;width:95%"> %</td>
                                 </tr>
                             

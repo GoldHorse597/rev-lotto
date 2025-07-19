@@ -253,6 +253,7 @@ class PlayController extends Controller
                             ['amount', '=', $purchase->amount],
                             ['list', '=', $purchase->list],
                             ['bonus', '=', $purchase->bonus],
+                            ['round', '=', Game::where('id', $request->part_idx)->first()->round],
                             ['reverse', '=', $purchase->reverse],
                             ['type', '=', $purchase->type],
                         ])->exists();
@@ -262,6 +263,7 @@ class PlayController extends Controller
                                 'game_id' => $purchase->game_id,
                                 'amount' => $purchase->amount,
                                 'list' => $purchase->list,
+                                'round' => Game::where('id', $request->part_idx)->first()->round,
                                 'bonus' => $purchase->bonus,
                                 'status' => 0,
                                 'reverse' => $purchase->reverse,
@@ -290,6 +292,7 @@ class PlayController extends Controller
                                 ['game_id', '=', $purchase->game_id],
                                 ['amount', '=', $purchase->amount],
                                 ['list', '=', $purchase->list],
+                                ['round', '=', Game::where('id', $request->part_idx)->first()->round],
                                 ['bonus', '=', $purchase->bonus],
                                 ['reverse', '=', $purchase->reverse],
                                 ['type', '=', $purchase->type],
@@ -301,6 +304,7 @@ class PlayController extends Controller
                                     'amount' => $purchase->amount,
                                     'list' => $purchase->list,
                                     'bonus' => $purchase->bonus,
+                                    'round' => Game::where('id', $request->part_idx)->first()->round,
                                     'status' => 0,
                                     'reverse' => $purchase->reverse,
                                     'type' => $purchase->type,
@@ -327,7 +331,12 @@ class PlayController extends Controller
             $purchase->game_id = $request->part_idx;
             $purchase->type = $request->cho_method;
             if($request->reverse == 0)
-                $purchase->amount = 1000;
+            {
+                if($request->part_idx == 1 || $request->part_idx == 2 || $request->part_idx == 5 || $request->part_idx == 6  )
+                    $purchase->amount = 1100;
+                else
+                    $purchase->amount = 3300;
+            }
             else
                 $purchase->amount =(int)str_replace(',', '', $request->amount);
             // 숫자 리스트 7자리

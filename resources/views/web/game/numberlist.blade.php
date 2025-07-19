@@ -122,6 +122,7 @@
               return;
             }
           }
+          
           if (j == 1) f.arr_del_list.value = '';
           //exit;
           if (confirm('구입하시겠습니까?'))

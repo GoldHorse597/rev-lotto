@@ -99,8 +99,78 @@
                                             </div>
                                         </td>
                                     </tr>
-                                    
-                                    
+                                    <tr>
+                                        <th>1등 당첨금</th>
+                                        <td class="form-group">
+                                            <div class="input-group" style="max-width: 400px;">
+                                                <input type="text" class="form-control" id="first" name="first" value="{{$game->first}}">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>2등 당첨금</th>
+                                        <td class="form-group">
+                                            <div class="input-group" style="max-width: 400px;">
+                                                <input type="text" class="form-control" id="second" name="second" value="{{$game->second}}">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>3등 당첨금</th>
+                                        <td class="form-group">
+                                            <div class="input-group" style="max-width: 400px;">
+                                                <input type="text" class="form-control" id="third" name="third" value="{{$game->third}}">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>4등 당첨금</th>
+                                        <td class="form-group">
+                                            <div class="input-group" style="max-width: 400px;">
+                                                <input type="text" class="form-control" id="fourth" name="fourth" value="{{$game->fourth}}">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>5등 당첨금</th>
+                                        <td class="form-group">
+                                            <div class="input-group" style="max-width: 400px;">
+                                                <input type="text" class="form-control" id="fifth" name="fifth" value="{{$game->fifth}}">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>6등 당첨금</th>
+                                        <td class="form-group">
+                                            <div class="input-group" style="max-width: 400px;">
+                                                <input type="text" class="form-control" id="sixth" name="sixth" value="{{$game->sixth}}">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                     <tr>
+                                        <th>7등 당첨금</th>
+                                        <td class="form-group">
+                                            <div class="input-group" style="max-width: 400px;">
+                                                <input type="text" class="form-control" id="seventh" name="seventh" value="{{$game->seventh}}">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>8등 당첨금</th>
+                                        <td class="form-group">
+                                            <div class="input-group" style="max-width: 400px;">
+                                                <input type="text" class="form-control" id="eighth" name="eighth" value="{{$game->eighth}}">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>9등 당첨금</th>
+                                        <td class="form-group">
+                                            <div class="input-group" style="max-width: 400px;">
+                                                <input type="text" class="form-control" id="nineth" name="nineth" value="{{$game->nineth}}">
+                                            </div>
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
