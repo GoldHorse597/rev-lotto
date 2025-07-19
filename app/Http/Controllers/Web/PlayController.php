@@ -200,6 +200,8 @@ class PlayController extends Controller
 
         $lists = DB::table('histories')
             ->where('histories.user_id', $authUser->id)
+            ->where('histories.game_id', $request->id)
+            ->where('histories.reverse', $request->reverse)
             ->join('games', 'histories.game_id', '=', 'games.id')
             ->select('histories.*', 'games.game as game') // histories의 모든 필드 + games.name
             ->orderBy('histories.created_at', 'desc')
@@ -324,8 +326,10 @@ class PlayController extends Controller
             $purchase->user_id = $authUser->id;
             $purchase->game_id = $request->part_idx;
             $purchase->type = $request->cho_method;
-            $purchase->amount = 1000;
-           
+            if($request->reverse == 0)
+                $purchase->amount = 1000;
+            else
+                $purchase->amount =(int)str_replace(',', '', $request->amount);
             // 숫자 리스트 7자리
             $normalNumbers = array_filter([
                 $request->s_num1, $request->s_num2, $request->s_num3,

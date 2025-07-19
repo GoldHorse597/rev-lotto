@@ -156,6 +156,7 @@
                     <input type="checkbox" name="allchk" onClick="allCheck();this.blur()">
                 </label> 번호 <span class="mo-hide">(선택시 삭제)</span>
                 </div>
+                <div class="pwauto">금액</div>
                 <div class="pwauto">선택번호</div>
                 <div class="pw15p">선택 <br class="mo-view">방법 </div>
                 <div class="pw15p">삭제</div>
@@ -168,6 +169,7 @@
                         <input type="checkbox" name="del_list" value="{{$list->id}}">
                         </label> {{$index}}
                     </div>
+                    <div class="pwauto">{{number_format(floor($list->amount),0)}}</span></div>
                     <div class="pwauto">{{$list->list}}&nbsp;<span style='color:red'>{{$list->bonus}}</span>
                     </div>
                     <div class="pw15p">{{ $list->type == 1 ? '수동선택' : ($list->type == 2 ? '자동선택' : '반자동선택') }}</div>

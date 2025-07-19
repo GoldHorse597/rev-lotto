@@ -6,6 +6,7 @@
  	@section('content')
 		
 		<script type="text/javascript">
+			
 			if (navigator.appName.indexOf("Microsoft") > -1) {
 				if (navigator.appVersion.indexOf("MSIE 6") > -1) {
 				} else if (navigator.appVersion.indexOf("MSIE 7") > -1) {}
@@ -951,7 +952,7 @@
 							@endif
 						</div>
 						<div class="number-selected-w">
-						<h3 class="tit-h3 p-l">선택한 번호 <a href="javascript:void(0);" class="bt_basic_play2" onclick="MM_openBrWindow('old_number','oldNumber','scrollbars=yes,width=520,height=600');">
+						<h3 class="tit-h3 p-l">선택한 번호 <a href="javascript:void(0);" class="bt_basic_play2" onclick="MM_openBrWindow('old_number?id={{$game->id}}&reverse={{$reverse}}','oldNumber','scrollbars=yes,width=520,height=600');">
 							<button type="button" class="btn-prev-num btn-comm-mid">
 								<img src="{{asset('/images/web/ico_prev_num.png')}}" alt="icon"> 이전구매한번호 </button>
 							</a>
@@ -969,7 +970,14 @@
 							
 							</div>							
 						</div>
+						@if($reverse == 1)
+						<div>
+							<h3 class="tit-h3 p-l" style="display:inline-block;margin-right:9px">금액</h3>
+							<input type="text" name="amount" id="amount" value="" class="w300 ">
+						</div>
+						@endif
 						<div class="btn-number">
+							
 							<a href="#none" onclick="click_clear();" class="btn-comm-mid btn-gy">삭제</a>
 							<a href="#none" onclick="click_random();" class="btn-comm-mid btn-gy">자동선택</a>
 							<a href="#none" onclick="click_half_random();" class="btn-comm-mid btn-gy">반자동선택</a>
@@ -979,7 +987,7 @@
 							<a href="#none" onclick="num_save();">
 							<img src="{{asset('/images/web/ico_in_cart.png')}}" alt="icon" class="mr5"> 선택된 번호 구매리스트에 담기 </a>
 						</div>
-						<div class="btn-select">
+						<!-- <div class="btn-select">
 							<select name="game_su" id="game_su">
 							<option value="1">- 1게임</option>
 							<option value="2">- 2게임</option>
@@ -999,7 +1007,7 @@
 							</select>
 							<a href="javascript:num_many_save();" class="btn-comm-mid btn-gy" title="일괄자동선택">일괄자동선택</a>
 							<a href="javascript:num_many_save_qp();" class="btn-comm-mid btn-gy" title="QP선택">QP선택</a>
-						</div>
+						</div> -->
 						</div>
 					</div>
 				</form>
@@ -1024,5 +1032,12 @@
 		</section>
 		
 		</div>
-		
+	<script>
+		$('#amount').on('input', function() {
+			let value = $(this).val();
+			value = value.replace(/[^0-9]/g, ''); // 숫자만 남기기
+			value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 천단위 , 찍기
+			$(this).val(value);
+		});
+	</script>	
 	@endsection

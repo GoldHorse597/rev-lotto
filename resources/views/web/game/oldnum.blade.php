@@ -41,7 +41,7 @@
                         @foreach($lists as $list)
                         <div class="item">
                             <div class="w20p">{{ \Carbon\Carbon::parse($list->created_at)->format('Y-m-d H:i:s') }}</div>
-                            <div class="w20p">{{$list->game}}</div>
+                            <div class="w20p">{{$list->game}}{{$list->reverse == 1?' - 리버스로또':''}}</div>
                             <div class="pwauto">{{$list->list}},<span style="color:red">{{$list->bonus}}</span></div>
                             <div class="w15p">
                                 @if ($list->status == 0)

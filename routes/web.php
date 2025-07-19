@@ -103,6 +103,9 @@ Route::middleware([AuthAlertMiddleware::class])->prefix('jplay')->group(function
     Route::get('/lotto_6', [PlayController::class, 'jlotto_6'])->name('play.jlotto_6');
     Route::get('/lotto_7', [PlayController::class, 'jlotto_7'])->name('play.jlotto_7');
     Route::get('/lotto_mini', [PlayController::class, 'lotto_mini'])->name('play.jlotto_mini');
+    Route::get('/old_number', [PlayController::class, 'old_number'])->name('play.old_number');
+    Route::get('/number_list', [PlayController::class, 'number_list'])->name('play.number_list');
+    Route::post('/number_list_ok', [PlayController::class, 'number_list_ok'])->name('play.number_list_ok');
 });
 
 Route::middleware([SiteIsClosed::class])

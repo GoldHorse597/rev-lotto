@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Depowith;
 use App\Models\Message;
+use App\Models\Game;
+use Illuminate\Support\Facades\DB;
 
 class MypageController extends BaseController
 {
@@ -120,9 +122,20 @@ class MypageController extends BaseController
 
     public function buyList(request $request){
 
-
-        return view('web.mypage.buyList');
-    }
-    
+        $authUser = \Auth::guard('web')->user();
+        $part_idx = $request->part_idx;
+       
+        $games = Game::all();
+        $query = DB::table('histories')
+            ->where('histories.user_id', $authUser->id)
+            ->join('games', 'histories.game_id', '=', 'games.id')
+            ->select('histories.*', 'games.game as game') // histories의 모든 필드 + games.name
+            ->orderBy('histories.created_at', 'desc');
+        if (!empty($part_idx)) {
+            $query->where('histories.game_id', $part_idx);
+        }
+        $lists = $query->paginate(10);
+        return view('web.mypage.buylist', compact('lists','games','part_idx'));
+    }  
 
 }
