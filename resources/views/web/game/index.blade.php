@@ -30,7 +30,7 @@
 					document.all["bonus"].className = ''; //QPick 있으면 없앤다.
 					bonus_view.innerHTML = "";
 				}
-				document.all["k_numqp"].className = ''; //QPick 있으면 없앤다.
+				// document.all["k_numqp"].className = ''; //QPick 있으면 없앤다.
 				if (document.all[num_id].className == '') { // 번호를 선택하면
 					// 번호가 몇개 선택되었는지 확인 한다
 					for (i = 1; i <= no_max_k_num; i++) {
@@ -167,7 +167,7 @@
 			}
 
 			function click_clear() {
-				document.all["k_numqp"].className = ''; //QPick 있으면 없앤다.
+				// document.all["k_numqp"].className = ''; //QPick 있으면 없앤다.
 				if(no_max_bonus > 0)
 					document.all["bonusqp"].className = '';
 				for (i = 1; i <= no_max_k_num; i++) {
@@ -433,11 +433,11 @@
 					num_id = 'k_num' + i;
 					document.all[num_id].className = '';
 					}
-					if (NVM == "TRIDENT") {
-					document.all["k_numqp"].className = 'on';
-					} else {
-					document.all["k_numqp"].className = 'on';
-					}
+					// if (NVM == "TRIDENT") {
+					// 	document.all["k_numqp"].className = 'on';
+					// } else {
+					// 	document.all["k_numqp"].className = 'on';
+					// }
 					document.form1.s_num1.value = 'QP';
 					document.form1.s_num2.value = 'QP';
 					document.form1.s_num3.value = 'QP';
@@ -477,11 +477,11 @@
 					num_id = 'k_num' + i;
 					document.all[num_id].className = '';
 					}
-					if (NVM == "TRIDENT") {
-					document.all["k_numqp"].className = 'on';
-					} else {
-					document.all["k_numqp"].className = 'on';
-					}
+					// if (NVM == "TRIDENT") {
+					// document.all["k_numqp"].className = 'on';
+					// } else {
+					// document.all["k_numqp"].className = 'on';
+					// }
 					document.form1.s_num1.value = 'QP';
 					document.form1.s_num2.value = 'QP';
 					document.form1.s_num3.value = 'QP';

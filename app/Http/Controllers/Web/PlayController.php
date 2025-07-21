@@ -13,7 +13,7 @@ class PlayController extends BaseController
 {
     public function lotto_live(){
         $title = "실시간로또";
-        $num = 69;
+        $num = 45;
         $num1 = 0;
         $normal = 6;
         $bonus = 0;
@@ -63,7 +63,7 @@ class PlayController extends BaseController
     }
     public function lotto_ssq(){
         $title = "쌍색구(중국)";
-        $num = 133;
+        $num = 33;
         $num1 = 16;
         $normal = 6;
         $bonus = 1;
@@ -104,7 +104,7 @@ class PlayController extends BaseController
 
     public function jlotto_live(){
         $title = "실시간로또 - 리버스";
-        $num = 69;
+        $num = 45;
         $num1 = 0;
         $normal = 6;
         $bonus = 0;
@@ -154,7 +154,7 @@ class PlayController extends BaseController
     }
     public function jlotto_ssq(){
         $title = "쌍색구(중국) - 리버스";
-        $num = 133;
+        $num = 33;
         $num1 = 16;
         $normal = 6;
         $bonus = 1;
