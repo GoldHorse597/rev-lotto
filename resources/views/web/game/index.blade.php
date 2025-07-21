@@ -1011,6 +1011,7 @@
 							<a href="#none" onclick="num_save();">
 							<img src="{{asset('/images/web/ico_in_cart.png')}}" alt="icon" class="mr5"> 선택된 번호 구매리스트에 담기 </a>
 						</div>
+						@if($reverse == 0)
 						<div class="btn-select">
 							<select name="game_su" id="game_su">
 							<option value="1">- 1게임</option>
@@ -1032,6 +1033,7 @@
 							<a href="javascript:num_many_save();" class="btn-comm-mid btn-gy" title="일괄자동선택">일괄자동선택</a>
 							<!-- <a href="javascript:num_many_save_qp();" class="btn-comm-mid btn-gy" title="QP선택">QP선택</a> -->
 						</div>
+						@endif
 						</div>
 					</div>
 				</form>
