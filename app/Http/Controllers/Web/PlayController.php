@@ -356,7 +356,7 @@ class PlayController extends BaseController
                         shuffle($numbers);             // 배열 섞기
                         $randomSix = array_slice($numbers, 0, 5); // 앞에서 6개 자르기
                         sort($randomSix);
-                        $numbers1 = range(1, 25);       // 1부터 45까지 숫자 배열                        
+                        $numbers1 = rand(1, 25);       // 1부터 45까지 숫자 배열                        
                         $purchase->bonus = $numbers1;
                         break;
                     case 4:
@@ -364,15 +364,15 @@ class PlayController extends BaseController
                         shuffle($numbers);             // 배열 섞기
                         $randomSix = array_slice($numbers, 0, 5); 
                         sort($randomSix);
-                        $numbers1 = range(1, 26);                            
+                        $numbers1 = rand(1, 26);                            
                         $purchase->bonus = $numbers1;
                         break; 
                     case 5:
-                        $numbers = range(1, 133);       
+                        $numbers = range(1, 33);       
                         shuffle($numbers);             // 배열 섞기
                         $randomSix = array_slice($numbers, 0, 5); 
                         sort($randomSix);
-                        $numbers1 = range(1, 16);                            
+                        $numbers1 = rand(1, 16);                            
                         $purchase->bonus = $numbers1;
                         break;
                     case 6:
@@ -381,7 +381,7 @@ class PlayController extends BaseController
                         $randomSix = array_slice($numbers, 0, 5); 
                         sort($randomSix);
                         $numbers1 = range(1, 12);  
-                         shuffle($numbers1);             // 배열 섞기
+                        shuffle($numbers1);             // 배열 섞기
                         $randomSix1 = array_slice($numbers1, 0, 2); 
                         sort($randomSix1);                          
                         $purchase->bonus = implode(',', $randomSix1);
