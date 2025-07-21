@@ -19,12 +19,17 @@
         <form name="search_form" method="post" action="/mypage/{{$type == 1? 'deposit':'withdrawal'}}">
             @csrf
             <div class="search-box al-left">
-            <div class="item  item-etc" style="justify-content: center" >
-                <div class="item-inner m-justify-space">
-                <span class="tit">신청금액</span>
-                <input type="text" name="amount" id="amount" value="" class="w300 " onblur="roundToManUnit(this)">  
+                <div class="item  item-etc" style="justify-content: center" >
+                    <div class="item-inner m-justify-space" style="display:block">
+                        <span class="tit">신청금액</span>
+                        <input type="text" name="amount" id="amount" value="" class="w300 " onblur="roundToManUnit(this)">  
+                    </div>                  
                 </div>
-            </div>
+                <div class="item  item-etc" style="justify-content: center" >                    
+                    <div class="m-justify-space">
+                        <span class="tit">현재 보유 : {{number_format(floor(Auth::user()->amount),0)}}</span>                    
+                    </div>
+                </div>
             </div>  
             <div class="mt30 al-center">
                 <a href="#none" onclick="javascript:searchit();" class="btn-comm btn-bl w250">신 청</a>
