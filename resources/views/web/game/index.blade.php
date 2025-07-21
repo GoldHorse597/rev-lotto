@@ -951,11 +951,11 @@
 									<button type="button" id="k_num{{ $i }}" onclick="click_num('{{ $i }}')">{{ $i }}</button>
 								@endfor
 
-								@for ($i = $num + 1; $i <= $maxButton; $i++)
+								<!-- @for ($i = $num + 1; $i <= $maxButton; $i++)
 									<button type="button" class="mo-num-hide"></button>
 								@endfor
 
-								<button type="button" id="k_numqp" onclick="click_num_qp('QP')">QP</button>
+								<button type="button" id="k_numqp" onclick="click_num_qp('QP')">QP</button> -->
 							</div>
 							@if($bonus > 0)
 							<h3 class="tit-h3 mt30">{{$bonus}}개의 번호를 선택하세요.</h3>
@@ -968,10 +968,10 @@
 									<button type="button" id="bonus{{ $i }}" onclick="bonus_click_num('{{ $i }}')">{{ $i }}</button>
 								@endfor
 
-								@for ($i = $num1 + 1; $i <= $maxBonus; $i++)
+								<!-- @for ($i = $num1 + 1; $i <= $maxBonus; $i++)
 									<button type="button" class="mo-num-hide"></button>
 								@endfor
-								<button type="button" id="bonusqp" onclick="bonus_click_num_qp('QP')">QP</button>
+								<button type="button" id="bonusqp" onclick="bonus_click_num_qp('QP')">QP</button> -->
 							</div>
 							@endif
 						</div>
