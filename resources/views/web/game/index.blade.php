@@ -168,8 +168,8 @@
 
 			function click_clear() {
 				// document.all["k_numqp"].className = ''; //QPick 있으면 없앤다.
-				if(no_max_bonus > 0)
-					document.all["bonusqp"].className = '';
+				// if(no_max_bonus > 0)
+				// 	document.all["bonusqp"].className = '';
 				for (i = 1; i <= no_max_k_num; i++) {
 					num_id = 'k_num' + i;
 					document.all[num_id].className = '';
@@ -1004,7 +1004,7 @@
 							
 							<a href="#none" onclick="click_clear();" class="btn-comm-mid btn-gy">삭제</a>
 							<a href="#none" onclick="click_random();" class="btn-comm-mid btn-gy">자동선택</a>
-							<a href="#none" onclick="click_half_random();" class="btn-comm-mid btn-gy">반자동선택</a>
+							<!-- <a href="#none" onclick="click_half_random();" class="btn-comm-mid btn-gy">반자동선택</a> -->
 							<!-- <a href="#none" onclick="click_mynumber();" class="btn-comm-mid btn-gy">번호보관</a> -->
 						</div>
 						<div class="btn-cart">
@@ -1030,7 +1030,7 @@
 							<option value="100">- 100게임</option>
 							</select>
 							<a href="javascript:num_many_save();" class="btn-comm-mid btn-gy" title="일괄자동선택">일괄자동선택</a>
-							<a href="javascript:num_many_save_qp();" class="btn-comm-mid btn-gy" title="QP선택">QP선택</a>
+							<!-- <a href="javascript:num_many_save_qp();" class="btn-comm-mid btn-gy" title="QP선택">QP선택</a> -->
 						</div>
 						</div>
 					</div>
