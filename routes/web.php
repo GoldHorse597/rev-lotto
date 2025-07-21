@@ -190,5 +190,7 @@ Route::prefix(config('custom.admin_prefix'))
             Route::match(['get', 'put'], '/event/{id}', [EventController::class, 'edit'])->where('id', '[0-9]+')->name('admin.event.edit');
             Route::delete('/event/{id}/delete', [EventController::class, 'delete'])->name('admin.event.delete');
 
+            Route::get('/live', [LottoController::class, 'live'])->name('admin.live');
+
         });
 require __DIR__.'/auth.php';

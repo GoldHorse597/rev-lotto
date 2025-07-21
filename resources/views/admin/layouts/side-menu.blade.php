@@ -151,7 +151,13 @@
                 </div>
             </li>
 
-           
+            <hr class="sidebar-divider">
+
+            <li class="nav-item {{ request()->routeIs('admin.live') }}">
+                <a class="nav-link" href="{{ route('admin.live') }}">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>실시간로또</span></a>
+            </li>
 
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">

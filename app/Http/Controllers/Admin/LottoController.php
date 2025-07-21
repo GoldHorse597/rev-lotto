@@ -1078,4 +1078,7 @@ class LottoController extends BaseController
         return response()->json(['success' => true]);
     }
     
+    public function live(){
+        return view('admin.lotto.live');
+    }
 }

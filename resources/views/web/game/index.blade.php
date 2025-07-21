@@ -1040,19 +1040,41 @@
 				<h3 class="tit-h3 mt50">구매선택된 번호</h3>
 				<iframe src="/play/number_list?id={{$game->id}}&reverse={{$reverse}}" name="ifr" scrolling="auto" frameborder="0" class="lotto-buy-frame" style="width: 100%; height: 557px;"></iframe>
 				<h3 class="tit-h3 mt50">로또 구매관련 안내</h3>
+				
 				<div class="message-box-gy ">
-				<div class="dot-item">Powerplay옵션은 뉴욕주에서 티켓을 구매할시에 장바구니에서 선택가능하며, 옵션1게임당 1불 및 수수료가 추가됩니다. (* 구매는 뉴욕주.캘리포니아주, 메릴렌드주에서 번갈아 구매되고 있습니다. 캘리포니아주는 옵션플레이가 없습니다)</div>
-				<div class="dot-item">번호는 수동번호를 직접 선택하거나 빠른 "자동선택" 또는 "반자동(일부번호 선택 후 나머지번호자동선택)" "일괄자동선택" QP등을 이용할 수 있습니다.</div>
-				<div class="dot-item">선택번호는 번호보관함에 저장해두고 필요시마다 꺼내어 같은번호로 다시 주문할 수 있습니다. 선택한번호의 당첨확률은 선택번호 우측 Smart Analysis (%)에서 확인가능합니다.</div>
-				<div class="dot-item">선택번호의 당첨등수 히스토리는 당첨번호 페이지 내번호분석페이지에서 가능합니다.</div>
-				<div class="dot-item">QP구매는 공식판매소 컴퓨터에서 발행하는 랜덤한 번호를 받는 주문방식입니다. QP번호확인은 티켓이 업로드된 구매완료 후 가능합니다.</div>
-				<div class="dot-item">Powerplay옵션은 장바구니에서 선택 가능합니다.</div>
-				<div class="dot-item">멀티 &amp; 낙첨복권등 기타상품은 기타특별복권구매하기 미국탭코너를 이용하세요.</div>
-				<div class="dot-item">주문시 반드시 상단당첨금박스의 추첨날짜와 시간을 확인하세요, 마감중 주문은 다음회차로 접수가 되며, 정산후 당첨금액이 변동될 수 있습니다.</div>
-				<div class="dot-item">같은 로또를 한장바구니에서 결제하지 않고 시간을 달리해 여러건으로 나누어 주문하는 경우는 구매완료 이메일은 1건만 발송될 수 있습니다.</div>
-				<div class="dot-item">일정수량게임이상의 할인은 장바구니화면에서 처리됩니다.</div>
-				<div class="dot-item">룰과 당첨의 자세한 사항은 로또안내 페이지를 참고하세요.</div>
+				
+					<div class="dot-item">실시간로또 게임당 1,100원 매일 1회 (19:30 이후)</div>
+					<div class="dot-item">한국(6/45) 게임당 1,100원 매주 토 (20:35 이후)</div>
+					<div class="dot-item">중국(쌍색구) 게임당 1,100원 매주 화/목/일 (21:30 이후)</div>
+					<div class="dot-item">중국(따루토) 게임당 1,100원 매주 월/수/토 (22:00 이후)</div>
+					<div class="dot-item">미국(파워볼) 게임당 3,300원 매주 화/목/일 (13:00 이후)</div>
+					<div class="dot-item">미국(메가밀리언) 게임당 3,300원 매주 수/토 (13:00 이후)</div>
+					<div class="dot-item">일본(로또6) 게임당 3,300원 매주 월/목 (19:00 이후)</div>
+					<div class="dot-item">일본(로또7) 게임당 3,300원 매주 금 (19:00 이후)</div>
+					<div class="dot-item">일본(로또미니) 게임당 3,300원 매주 화 (19:00 이후)</div></br>
+					<div class="dot-item">당첨결과는 현지 추첨완료 시간으로부터 +2시간 까지 소요될 수 있습니다.</div></br>
+					@if($reverse == 0)
+					<div class="dot-item">- 당첨금안내</div>
+					<div class="dot-item">실시간로또 고정 당첨금액 </div>
+					<div class="dot-item">1등 30억 (1등당첨차 n/1)</div>
+					<div class="dot-item">2등 10억 (2등당첨자 n/1)</div>
+					<div class="dot-item">3등 200만원 </div>
+					<div class="dot-item">4등 5만원</div>
+					<div class="dot-item">5등 5천원</div></br>
+
+					<div class="dot-item">그 외 로또 - 정식게임 해당회차 당첨금 반영</div>
+					@elseif($reverse == 1)
+					<div class="dot-item">- 당첨금안내</div>
+					<div class="dot-item">1등 원금 100% 손실 </div>
+					<div class="dot-item">2등 원금 30% 손실</div>
+					<div class="dot-item">3등 배당금 0.3% </div>
+					<div class="dot-item">4등 배당금 0.5% </div>
+					<div class="dot-item">5등 배당금 0.7% </div>
+					<div class="dot-item">그외 배당금 1.0%</div>
+					@endif
 				</div>
+				
+				
 			</div>
 			</div>
 		</section>
