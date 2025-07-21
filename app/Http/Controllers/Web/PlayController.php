@@ -325,6 +325,94 @@ class PlayController extends BaseController
             // 문자열을 @ 기준으로 나눠 배열로 만듦
            
         }
+        else if($request->mode == "manyinsert"){
+            for($i = 0; $i < $request->game_su;$i++)
+            {
+                $purchase = new Purchase;
+                $purchase->user_id = $authUser->id;
+                $purchase->type = 1;
+                $purchase->game_id = $request->part_idx;
+                $purchase->reverse = $request->reverse;
+                if($request->reverse == 0)
+                {
+                    if($request->part_idx == 1 || $request->part_idx == 2 || $request->part_idx == 5 || $request->part_idx == 6  )
+                        $purchase->amount = 1100;
+                    else
+                        $purchase->amount = 3300;
+                }
+                else
+                    $purchase->amount =(int)str_replace(',', '', $request->amount);
+                switch($request->part_idx)
+                {
+                    case 1:                        
+                    case 2:
+                        $numbers = range(1, 45);       // 1부터 45까지 숫자 배열
+                        shuffle($numbers);             // 배열 섞기
+                        $randomSix = array_slice($numbers, 0, 6); // 앞에서 6개 자르기
+                        sort($randomSix);  
+                        break;
+                    case 3:
+                        $numbers = range(1, 70);       // 1부터 45까지 숫자 배열
+                        shuffle($numbers);             // 배열 섞기
+                        $randomSix = array_slice($numbers, 0, 5); // 앞에서 6개 자르기
+                        sort($randomSix);
+                        $numbers1 = range(1, 25);       // 1부터 45까지 숫자 배열                        
+                        $purchase->bonus = $numbers1;
+                        break;
+                    case 4:
+                        $numbers = range(1, 69);       
+                        shuffle($numbers);             // 배열 섞기
+                        $randomSix = array_slice($numbers, 0, 5); 
+                        sort($randomSix);
+                        $numbers1 = range(1, 26);                            
+                        $purchase->bonus = $numbers1;
+                        break; 
+                    case 5:
+                        $numbers = range(1, 133);       
+                        shuffle($numbers);             // 배열 섞기
+                        $randomSix = array_slice($numbers, 0, 5); 
+                        sort($randomSix);
+                        $numbers1 = range(1, 116);                            
+                        $purchase->bonus = $numbers1;
+                        break;
+                    case 6:
+                        $numbers = range(1, 35);       
+                        shuffle($numbers);             // 배열 섞기
+                        $randomSix = array_slice($numbers, 0, 5); 
+                        sort($randomSix);
+                        $numbers1 = range(1, 12);  
+                         shuffle($numbers1);             // 배열 섞기
+                        $randomSix1 = array_slice($numbers1, 0, 2); 
+                        sort($randomSix1);                          
+                        $purchase->bonus = implode(',', $randomSix1);
+                        break;
+                    case 7:
+                        $numbers = range(1, 43);       // 1부터 45까지 숫자 배열
+                        shuffle($numbers);             // 배열 섞기
+                        $randomSix = array_slice($numbers, 0, 6); // 앞에서 6개 자르기
+                        sort($randomSix);  
+                        break;
+                    case 8:
+                        $numbers = range(1, 37);       // 1부터 37까지 숫자 배열
+                        shuffle($numbers);             // 배열 섞기
+                        $randomSix = array_slice($numbers, 0, 7); // 앞에서 7개 자르기
+                        sort($randomSix);
+                        break;   
+                    case 9:
+                         $numbers = range(1, 31);       // 1부터 31까지 숫자 배열
+                        shuffle($numbers);             // 배열 섞기
+                        $randomSix = array_slice($numbers, 0, 5); // 앞에서 5개 자르기
+                        sort($randomSix);
+                        break; 
+                }
+                $purchase->list = implode(',', $randomSix);
+                $purchase->save();
+            }
+            $lists = Purchase::where('user_id', $authUser->id)->where('game_id',$request->part_idx)->get();
+            $gameId = $request->part_idx;
+            $reverse = $request->reverse;
+            return view('web.game.numberlist',compact('lists','gameId','reverse'));
+        }
         else{
             $purchase = new Purchase;
             $purchase->user_id = $authUser->id;
