@@ -64,7 +64,7 @@ class PlayController extends BaseController
     public function lotto_ssq(){
         $title = "쌍색구(중국)";
         $num = 133;
-        $num1 = 116;
+        $num1 = 16;
         $normal = 6;
         $bonus = 1;
         $reverse = 0;
@@ -155,7 +155,7 @@ class PlayController extends BaseController
     public function jlotto_ssq(){
         $title = "쌍색구(중국) - 리버스";
         $num = 133;
-        $num1 = 116;
+        $num1 = 16;
         $normal = 6;
         $bonus = 1;
         $reverse = 1;
@@ -372,7 +372,7 @@ class PlayController extends BaseController
                         shuffle($numbers);             // 배열 섞기
                         $randomSix = array_slice($numbers, 0, 5); 
                         sort($randomSix);
-                        $numbers1 = range(1, 116);                            
+                        $numbers1 = range(1, 16);                            
                         $purchase->bonus = $numbers1;
                         break;
                     case 6:
