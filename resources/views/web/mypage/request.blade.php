@@ -22,7 +22,7 @@
             <div class="item  item-etc" style="justify-content: center" >
                 <div class="item-inner m-justify-space">
                 <span class="tit">신청금액</span>
-                <input type="text" name="amount" id="amount" value="" class="w300 ">  
+                <input type="text" name="amount" id="amount" value="" class="w300 " onblur="roundToManUnit(this)">  
                 </div>
             </div>
             </div>  
@@ -68,9 +68,21 @@
 </section>
 <script>
     function searchit(){
+
 		frm = document.search_form;
 		frm.submit();		
 	}
+    function roundToManUnit(input) {
+        const value = parseInt(input.value);
+    
+        if (isNaN(value)) return;
+
+        if (value % 10000 !== 0) {
+            alert("금액은 만(10,000) 단위로만 입력 가능합니다.");
+            input.value = ""; // 입력값 지우기
+            input.focus();    // 다시 포커스 주기
+        }
+    }
     $('#amount').on('input', function() {
         let value = $(this).val();
         value = value.replace(/[^0-9]/g, ''); // 숫자만 남기기

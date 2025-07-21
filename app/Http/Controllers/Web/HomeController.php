@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\web;
+namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Models\Notice;
 use App\Models\Event;
+use App\Models\History;
 
 class HomeController extends BaseController
 {
@@ -24,6 +25,7 @@ class HomeController extends BaseController
             ->orderBy('created_at', 'desc')
             ->limit(3)
             ->get();
+      
         return view('web.'.env('THEME').'.index', compact('notices', 'events','news','games'));
     }
 }

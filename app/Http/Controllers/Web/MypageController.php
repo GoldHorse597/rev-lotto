@@ -124,7 +124,7 @@ class MypageController extends BaseController
 
         $authUser = \Auth::guard('web')->user();
         $part_idx = $request->part_idx;
-       
+        $status = $request->status;
         $games = Game::all();
         $query = DB::table('histories')
             ->where('histories.user_id', $authUser->id)
@@ -134,8 +134,11 @@ class MypageController extends BaseController
         if (!empty($part_idx)) {
             $query->where('histories.game_id', $part_idx);
         }
+        if (is_numeric($status)) {
+            $query->where('histories.status', $status);
+        }
         $lists = $query->paginate(10);
-        return view('web.mypage.buylist', compact('lists','games','part_idx'));
+        return view('web.mypage.buylist', compact('lists','games','part_idx','status'));
     }  
 
 }

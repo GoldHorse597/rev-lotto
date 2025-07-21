@@ -42,11 +42,11 @@ class HistoryController extends BaseController
             $histories = $histories->where('histories.status', $status); 
         }
 
-        $histories = $histories->orderBy('users.created_at', 'DESC')->paginate(20);
+        $histories = $histories->orderBy('histories.created_at', 'DESC')->paginate(20);
 
         return view('admin.history.index', compact('page_title', 'histories', 'game_id','status', 'identity', 'name'));
     }
-     public function process(Request $request, $id)
+    public function process(Request $request, $id)
     {
         $authUser = \Auth::guard('admin')->user();
         if ($authUser->parent_level < 0) {

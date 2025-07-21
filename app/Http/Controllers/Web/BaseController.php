@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Message;
+use App\Models\History;
 
 class BaseController extends Controller
 {
@@ -20,8 +21,9 @@ class BaseController extends Controller
                     ->where('status', 0)
                     ->latest()
                     ->first();
-
-                \View::share(compact('unreadMessage'));
+                $authUser = \Auth::guard('web')->user();
+                $cnt = History::where('status', 0)->where('user_id',$authUser->id)->count();
+                \View::share(compact('unreadMessage','cnt'));
             }
 
             return $next($request);

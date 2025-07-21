@@ -9,7 +9,7 @@ use App\Models\History;
 use App\Models\Game;
 use App\Models\Purchase;
 
-class PlayController extends Controller
+class PlayController extends BaseController
 {
     public function lotto_live(){
         $title = "실시간로또";

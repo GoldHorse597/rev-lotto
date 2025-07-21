@@ -197,7 +197,7 @@
                                 <span class="d-none d-lg-inline small">
                                     <span class="badge badge-danger badge-counter m-0" id="new_statistics_cnt" style="margin-right: 10px !important;">0</span>
                                     <div class="text-dark text-right">
-                                        <a href="{{ route('admin.statistics') }}" style="margin-right: 20px;">
+                                        <a href="{{ route('admin.statistics') }}?status=0" style="margin-right: 20px;">
                                             입출금신청
                                         </a>
                                         <audio src="{{ asset('admin/sound/new_message_alarm.mp3') }}" controls id="new_statistics_alarm" hidden></audio>

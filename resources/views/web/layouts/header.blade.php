@@ -4,12 +4,12 @@
     <a href="/mypage/modify" class="name">{{ Auth::user()->name }}</a>님! 반갑습니다. 
       <button class="grade grade-normal pointer" onclick="javascript:openIdpass2();">Normal</button>
       <span class="ml10">로또현황: 
-        <a href="/mypage/buy_list">0종</a> 
+        <a href="{{ url('/mypage/buy_list') }}?status=0">{{$cnt}}종</a> 
         | 보유금액: 
         <a href="/mypage/depo_with">{{number_format(floor(Auth::user()->amount),0)}}</a>
         <a href="/mypage/deposit" class="btn-point" title="금액충전">금액충전</a>
       </span>
-    <a href="/play/cart" title="장바구니" class="btn-cart">장바구니</a>
+    
     @endauth
   </div>
   <div class="max-wrapper">
@@ -32,7 +32,7 @@
           <span class="ml10">로또현황: <a href="/mypage/buy_list">0종</a></span>
           <span class="ml10">포인트:<a href="/mypage/point_list">{{number_format(floor(Auth::user()->amount),0)}}</a>
             <a href="/mypage/deposit" class="btn-point" title="금액충전">금액충전</a>
-            <a href="/play/cart" title="장바구니" class="btn-cart">장바구니</a>
+           
           </span>
         </div>
       </div>
@@ -176,7 +176,7 @@
       <a href="javascript:void(0)" class="btn-nav  btn-nav-close1">
         <img src="{{ asset('images/web/btn_menu_close.png')}}" alt="메뉴 닫기">
       </a>
-      <div class="quick-menu-w" style="right: -58px;">
+      <!-- <div class="quick-menu-w" style="right: -58px;">
         <div class="con">
           <div class="btn-quick-close">
             <img src="{{ asset('images/web/btn_quick_close2.jpg')}}" class="quick-close" style="display: none;">
@@ -248,7 +248,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
     </nav>
   </div>
 </header>

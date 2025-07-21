@@ -51,6 +51,17 @@
                             </select>
 
                         </div>
+                        <div class="item-inner item-stats">
+                            <span class="tit">결과</span> 
+
+							<select name="status" id="status" class="w150">
+                                <option value="" selected="selected">전체</option>
+                                <option value="0" {{ $status == 0 ? 'selected' : '' }}>결과 대기중</option>
+                                <option value="1" {{ $status == 1 ? 'selected' : '' }}>결과 처리됨</option>
+                               
+                            </select>
+
+                        </div>
                     </div>
                 </div>
                 <div class="mt30 al-center">
