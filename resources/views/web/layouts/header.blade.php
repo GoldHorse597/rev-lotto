@@ -68,12 +68,12 @@
             <li>
               <a href="/play/lotto_mm" title="메가밀리언(미국)">메가밀리언(미국)</a>
             </li>           
-            <li>
+            <!-- <li>
               <a href="/play/lotto_ssq" title="쌍색구(중국)">쌍색구(중국)</a>
             </li>
             <li>
               <a href="/play/lotto_dlt" title="따루토(중국)">따루토(중국)</a>
-            </li>
+            </li> -->
             <li>
               <a href="/play/lotto_6" title="로또6(일본)">로또6(일본)</a>
             </li>
@@ -101,12 +101,12 @@
             <li>
               <a href="/jplay/lotto_mm" title="메가밀리언(미국)">메가밀리언(미국)</a>
             </li>           
-            <li>
+            <!-- <li>
               <a href="/jplay/lotto_ssq" title="쌍색구(중국)">쌍색구(중국)</a>
             </li>
             <li>
               <a href="/jplay/lotto_dlt" title="따루토(중국)">따루토(중국)</a>
-            </li>
+            </li> -->
             <li>
               <a href="/jplay/lotto_6" title="로또6(일본)">로또6(일본)</a>
             </li>
@@ -268,14 +268,14 @@
       <img src="{{ asset('images/web/logo_mm.png')}}">
       <span>21,000억</span>
     </a>
-      <a href="/jplay/lotto_ssq" title="쌍색구" class="quick-prod-em">
+    <!-- <a href="/jplay/lotto_ssq" title="쌍색구" class="quick-prod-em">
       <img src="{{ asset('images/web/logo_ssq.png')}}">
       <span>1,100억</span>
     </a>
     <a href="/jplay/lotto_dlt" title="따루토" class="quick-prod-em">
       <img src="{{ asset('images/web/logo_dlt.png')}}">
       <span>500억</span>
-    </a>
+    </a> -->
     
     <a href="/jplay/lotto_6" title="로또6" class="quick-prod-em">
       <img src="{{ asset('images/web/logo_6.png')}}">

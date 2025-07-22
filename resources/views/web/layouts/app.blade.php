@@ -20,7 +20,7 @@
         <link rel="stylesheet" type="text/css" href="{{ asset('css/web/swiper.min.css') }}">
         <link rel="shortcut icon" href="{{ asset('images/web/favicon.png')}}" type="image/x-icon">
 
-        <script async="" charset="utf-8" src="https://v2.zopim.com/?4iDvTLu9CVmKR7XoWuLCVpJmOksn4IME" type="text/javascript"></script>
+        <!-- <script async="" charset="utf-8" src="https://v2.zopim.com/?4iDvTLu9CVmKR7XoWuLCVpJmOksn4IME" type="text/javascript"></script> -->
         <script src="{{ asset('js/web/jquery.min.js') }}"></script>
         <script src="{{ asset('js/web/jquery-ui.min.js') }}"></script>
         <script src="{{ asset('js/web/common.js') }}"></script>
@@ -31,16 +31,16 @@
     
         <script>
         function openIdpass2() {
-            window.open("/ver_02/w_member/grade.php", "LottoCamp","scrollbars=no, width=500,height=650");
+            // window.open("/member/grade", "리버스로또","scrollbars=no, width=500,height=650");
         }
         </script>
         <!--Start of Zendesk Chat Script-->
         <script type="text/javascript">
-        window.$zopim||(function(d,s){var z=$zopim=function(c){z._.push(c)},$=z.s=
-        d.createElement(s),e=d.getElementsByTagName(s)[0];z.set=function(o){z.set.
-        _.push(o)};z._=[];z.set._=[];$.async=!0;$.setAttribute("charset","utf-8");
-        $.src="https://v2.zopim.com/?4iDvTLu9CVmKR7XoWuLCVpJmOksn4IME";z.t=+new Date;$.
-        type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
+        // window.$zopim||(function(d,s){var z=$zopim=function(c){z._.push(c)},$=z.s=
+        // d.createElement(s),e=d.getElementsByTagName(s)[0];z.set=function(o){z.set.
+        // _.push(o)};z._=[];z.set._=[];$.async=!0;$.setAttribute("charset","utf-8");
+        // $.src="https://v2.zopim.com/?4iDvTLu9CVmKR7XoWuLCVpJmOksn4IME";z.t=+new Date;$.
+        // type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
         </script>
         <!--End of Zendesk Chat Script-->
 

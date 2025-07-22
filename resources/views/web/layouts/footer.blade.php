@@ -23,7 +23,7 @@
             <img src="{{ asset('images/web/logo_mm.png')}}" alt="메가밀리언(미국)">
           </a>
         </div>
-        <div class="swiper-slide " data-swiper-slide-index="9" style="width: 207.5px; margin-right: 10px;">
+        <!-- <div class="swiper-slide " data-swiper-slide-index="9" style="width: 207.5px; margin-right: 10px;">
           <a href="/jplay/lotto_ssq" title="쌍색구(중국)">
             <img src="{{ asset('images/web/logo_ssq.png')}}" alt="쌍색구(중국)">
           </a>
@@ -32,7 +32,7 @@
           <a href="/jplay/lotto_dlt" title="따루토(중국)">
             <img src="{{ asset('images/web/logo_dlt.png')}}" alt="따루토(중국)">
           </a>
-        </div>
+        </div> -->
         <div class="swiper-slide " data-swiper-slide-index="1" style="width: 207.5px; margin-right: 10px;">
           <a href="/jplay/lotto_6" title="로또6(일본)">
             <img src="{{ asset('images/web/logo_6.png')}}" alt="로또6(일본)">
