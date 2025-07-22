@@ -78,7 +78,7 @@
 		frm.submit();		
 	}
     function roundToManUnit(input) {
-        const value = parseInt(input.value);
+        const value = parseInt(input.value.replace(/,/g, ""));
     
         if (isNaN(value)) return;
 

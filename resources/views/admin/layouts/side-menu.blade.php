@@ -27,56 +27,13 @@
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>@lang('admin/app.dashboard')</span></a>
             </li>
-            <li class="nav-item {{ request()->routeIs('admin.agent.settings') }}">
-                <a class="nav-link" href="{{ route('admin.agent.settings') }}">
-                    <i class="fas fa-fw fa-cog"></i>
-                    <span>@lang('admin/app.setting_and_info')</span></a>
-            </li>
-
-             <hr class="sidebar-divider">
-             
-            <li class="nav-item {{ request()->routeIs('admin.agent.banks') }}">
-                <a class="nav-link" href="{{ route('admin.agent.banks') }}">
-                    <i class="fas fa-fw fa-cog"></i>
-                    <span>@lang('admin/app.banks')</span></a>
-            </li>
-            <li class="nav-item {{ request()->routeIs('admin.agent.codes') }}">
-                <a class="nav-link" href="{{ route('admin.agent.codes') }}">
-                    <i class="fas fa-fw fa-cog"></i>
-                    <span>@lang('admin/app.codes')</span></a>
-            </li>
-            <li class="nav-item {{ request()->routeIs('admin.statistics') }}">
-                <a class="nav-link" href="{{ route('admin.statistics') }}">
-                    <i class="fas fa-fw fa-cog"></i>
-                    <span>@lang('admin/app.statistics')</span></a>
-            </li>
-            <li class="nav-item {{ request()->routeIs('admin.betting_history') }}">
-                <a class="nav-link" href="{{ route('admin.betting_history') }}">
-                    <i class="fas fa-fw fa-cog"></i>
-                    <span>@lang('admin/app.betting_history')</span></a>
-            </li>
-            <!-- Divider -->
             <hr class="sidebar-divider">
-            <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs(['admin.message.list', 'admin.inquiry.list', 'admin.inquirytemplate.list', 'admin.notice.list']) == 'active' ? '' : 'collapsed' }}"
-                        href="#" data-toggle="collapse" data-target="#collapseLottoCenter" aria-expanded="true" aria-controls="collapseLottoCenter">
-                    <i class="fas fa-fw fa-gamepad"></i>
-                    <span>로또관리</span>
-                </a>
-                <div id="collapseLottoCenter" class="collapse {{ request()->routeIs(['admin.lotto.game', 'admin.lotto.setting'], 'show') }}" aria-labelledby="headingGame">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item {{ request()->routeIs('admin.lotto.game') }}" href="{{ route('admin.lotto.game') }}">
-                            <i class="fas fa-fw fa-barcode"></i>
-                            <span>로또목록</span>
-                        </a>
-                        <a class="collapse-item {{ request()->routeIs('admin.lotto.setting') }}" href="{{ route('admin.lotto.setting') }}">
-                            <i class="fas fa-fw fa-gem"></i>
-                            <span>배당률설정</span>
-                        </a>                        
-                    </div>
-                </div>
+
+            <li class="nav-item {{ request()->routeIs('admin.live') }}">
+                <a class="nav-link" href="{{ route('admin.live') }}">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>실시간로또</span></a>
             </li>
-             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
             <!-- Heading -->
             <div class="sidebar-heading">
@@ -107,6 +64,20 @@
                 </div>
             </li>
 
+           
+
+             <hr class="sidebar-divider">
+            
+            
+            <li class="nav-item {{ request()->routeIs('admin.statistics') }}">
+                <a class="nav-link" href="{{ route('admin.statistics') }}">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>@lang('admin/app.statistics')</span></a>
+            </li>
+            
+           
+             <!-- Divider -->
+            
             <!-- Divider -->
             <hr class="sidebar-divider">
           
@@ -150,15 +121,47 @@
                     </div>
                 </div>
             </li>
-
+             <!-- Divider -->
             <hr class="sidebar-divider">
-
-            <li class="nav-item {{ request()->routeIs('admin.live') }}">
-                <a class="nav-link" href="{{ route('admin.live') }}">
-                    <i class="fas fa-fw fa-cog"></i>
-                    <span>실시간로또</span></a>
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs(['admin.message.list', 'admin.inquiry.list', 'admin.inquirytemplate.list', 'admin.notice.list']) == 'active' ? '' : 'collapsed' }}"
+                        href="#" data-toggle="collapse" data-target="#collapseLottoCenter" aria-expanded="true" aria-controls="collapseLottoCenter">
+                    <i class="fas fa-fw fa-gamepad"></i>
+                    <span>로또관리</span>
+                </a>
+                <div id="collapseLottoCenter" class="collapse {{ request()->routeIs(['admin.lotto.game', 'admin.lotto.setting'], 'show') }}" aria-labelledby="headingGame">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item {{ request()->routeIs('admin.lotto.game') }}" href="{{ route('admin.lotto.game') }}">
+                            <i class="fas fa-fw fa-barcode"></i>
+                            <span>로또목록</span>
+                        </a>
+                        <a class="collapse-item {{ request()->routeIs('admin.lotto.setting') }}" href="{{ route('admin.lotto.setting') }}">
+                            <i class="fas fa-fw fa-gem"></i>
+                            <span>배당률설정</span>
+                        </a>                        
+                    </div>
+                </div>
             </li>
-
+            <li class="nav-item {{ request()->routeIs('admin.betting_history') }}">
+                <a class="nav-link" href="{{ route('admin.betting_history') }}">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>@lang('admin/app.betting_history')</span></a>
+            </li>
+            <li class="nav-item {{ request()->routeIs('admin.agent.codes') }}">
+                <a class="nav-link" href="{{ route('admin.agent.codes') }}">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>@lang('admin/app.codes')</span></a>
+            </li>
+            <li class="nav-item {{ request()->routeIs('admin.agent.banks') }}">
+                <a class="nav-link" href="{{ route('admin.agent.banks') }}">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>@lang('admin/app.banks')</span></a>
+            </li>
+            <li class="nav-item {{ request()->routeIs('admin.agent.settings') }}">
+                <a class="nav-link" href="{{ route('admin.agent.settings') }}">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>@lang('admin/app.setting_and_info')</span></a>
+            </li>
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>

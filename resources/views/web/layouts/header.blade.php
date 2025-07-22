@@ -29,7 +29,7 @@
           <button class="grade grade-normal pointer" onclick="javascript:openIdpass2();">Normal</button>
         </div>
         <div>
-          <span class="ml10">로또현황: <a href="/mypage/buy_list">0종</a></span>
+          <span class="ml10">로또현황: <a href="{{ url('/mypage/buy_list') }}?status=0">{{$cnt}}종</a></span>
           <span class="ml10">포인트:<a href="/mypage/point_list">{{number_format(floor(Auth::user()->amount),0)}}</a>
             <a href="/mypage/deposit" class="btn-point" title="금액충전">금액충전</a>
            
