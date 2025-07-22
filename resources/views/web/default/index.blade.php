@@ -80,73 +80,98 @@
 									$dt = \Carbon\Carbon::parse($game->weekday);
 									$weekdays = ['일', '월', '화', '수', '목', '금', '토'];
 								@endphp
-							<script type="text/javascript">
-								function getTime{{$index}}() {
-									now = new Date();
-									k_year{{$index}} = Number("{{ $dt->format('Y') }}");     // 2025
-									k_month{{$index}} = Number("{{ $dt->format('m') }}") - 1; // 5 (JavaScript는 0부터 시작)
-									k_day{{$index}} = Number("{{ $dt->format('d') }}");       // 26
-									k_hour{{$index}} = Number("{{ $dt->format('H') }}");      // 00
-									k_min{{$index}} = Number("{{ $dt->format('i') }}");  
-									//alert(k_year);
-									dday{{$index}} = new Date(k_year{{$index}}, k_month{{$index}}, k_day{{$index}}, k_hour{{$index}}, k_min{{$index}}, '59');
-									//alert(dday);
-									days{{$index}} = (dday{{$index}} - now) / 1000 / 60 / 60 / 24;
-									//alert (days);
-									daysRound{{$index}} = Math.floor(days{{$index}});
-									hours{{$index}} = (dday{{$index}} - now) / 1000 / 60 / 60 - (24 * daysRound{{$index}});
-									hoursRound{{$index}} = Math.floor(hours{{$index}});
-									minutes{{$index}} = (dday{{$index}} - now) / 1000 / 60 - (24 * 60 * daysRound{{$index}}) - (60 * hoursRound{{$index}});
-									minutesRound{{$index}} = Math.floor(minutes{{$index}});
-									seconds{{$index}} = (dday{{$index}} - now) / 1000 - (24 * 60 * 60 * daysRound{{$index}}) - (60 * 60 * hoursRound{{$index}}) - (60 * minutesRound{{$index}});
-									secondsRound{{$index}}= Math.round(seconds{{$index}});
-									//alert (getTime);
-									//alert (daysRound  + "-" + hoursRound + "-" + minutesRound + "-" + secondsRound);
-									if (Number(daysRound{{$index}} + "" + hoursRound{{$index}} + "" + minutesRound{{$index}} + "" + secondsRound{{$index}}) > 0) {
-									if (hoursRound{{$index}} < 10) {
-										hoursRound_str{{$index}} = "0" + hoursRound{{$index}};
-									} else {
-										hoursRound_str{{$index}} = hoursRound{{$index}};
-									}
-									if (minutesRound{{$index}} < 10) {
-										minutesRound_str{{$index}} = "0" + minutesRound{{$index}};
-									} else {
-										minutesRound_str{{$index}} = minutesRound{{$index}};
-									}
-									if (secondsRound{{$index}} < 10) {
-										secondsRound_str{{$index}} = "0" + secondsRound{{$index}};
-									} else {
-										secondsRound_str{{$index}} = secondsRound{{$index}};
-									}
-									document.getElementById("show_cate_str{{$index}}").innerHTML = daysRound{{$index}} + "일 " + hoursRound_str{{$index}} + ":" + minutesRound_str{{$index}} + ":" + secondsRound_str{{$index}} + " ";
-									} else {
-									document.getElementById("show_cate_str{{$index}}").innerHTML = "마감";
-									}
-									newtime{{$index}} = window.setTimeout("getTime{{$index}}();", 1000);
-								}
-							</script>
-							
-							<div class="swiper-slide {{$index == 1 ? 'swiper-slide-active' :''}}" style="width: 245.4px; margin-right: 20px;">
-								<div class="logo">
-									<img src="{{ asset('/images/web/logo/logo2_' . $game->abbr . '.png') }}">
+
+								@if($game->abbr == 'live')
+								<div class="swiper-slide {{$index == 1 ? 'swiper-slide-active' :''}}" style="width: 245.4px; margin-right: 20px;">
+									<div class="logo">
+										<img src="{{ asset('/images/web/logo/logo2_' . $game->abbr . '.png') }}">
+									</div>
+									<div class="pay">추첨후 표기</div>
+									<div class="date">추첨 : 매일 19:30</div>
+									<div class="end-date">주문마감 : 상시구매가능
+										<script>
+										getTime{{$index}}();
+										</script>
+									</div>
+									<div class="num">
+										<!--em class="bg-sky">이월</em-->
+										<a href="javascript:sign();">
+										<em class="bg-red">마감</em>
+										</a> {{$game->lastresult}} <span class="t-red">{{$game->bonus}}</span>
+									</div>
+									<div class="btn">
+										<a href="/play/lotto_{{$game->abbr}}" class="btn-comm btn-pk">구매하기</a>
+									</div>
 								</div>
-								<div class="pay">추첨후 표기</div>
-								<div class="date">추첨 : {{ $dt->format('Y.m.d') }} ({{ $weekdays[$dt->dayOfWeek] }}) {{ $dt->format('H:i') }}</div>
-								<div class="end-date">주문마감 : <span id="show_cate_str{{$index}}">1일 12:37:53 </span>
-									<script>
-									getTime{{$index}}();
-									</script>
+								@else
+								<script type="text/javascript">
+									function getTime{{$index}}() {
+										now = new Date();
+										k_year{{$index}} = Number("{{ $dt->format('Y') }}");     // 2025
+										k_month{{$index}} = Number("{{ $dt->format('m') }}") - 1; // 5 (JavaScript는 0부터 시작)
+										k_day{{$index}} = Number("{{ $dt->format('d') }}");       // 26
+										k_hour{{$index}} = Number("{{ $dt->format('H') }}");      // 00
+										k_min{{$index}} = Number("{{ $dt->format('i') }}");  
+										//alert(k_year);
+										dday{{$index}} = new Date(k_year{{$index}}, k_month{{$index}}, k_day{{$index}}, k_hour{{$index}}, k_min{{$index}}, '59');
+										//alert(dday);
+										days{{$index}} = (dday{{$index}} - now) / 1000 / 60 / 60 / 24;
+										//alert (days);
+										daysRound{{$index}} = Math.floor(days{{$index}});
+										hours{{$index}} = (dday{{$index}} - now) / 1000 / 60 / 60 - (24 * daysRound{{$index}});
+										hoursRound{{$index}} = Math.floor(hours{{$index}});
+										minutes{{$index}} = (dday{{$index}} - now) / 1000 / 60 - (24 * 60 * daysRound{{$index}}) - (60 * hoursRound{{$index}});
+										minutesRound{{$index}} = Math.floor(minutes{{$index}});
+										seconds{{$index}} = (dday{{$index}} - now) / 1000 - (24 * 60 * 60 * daysRound{{$index}}) - (60 * 60 * hoursRound{{$index}}) - (60 * minutesRound{{$index}});
+										secondsRound{{$index}}= Math.round(seconds{{$index}});
+										//alert (getTime);
+										//alert (daysRound  + "-" + hoursRound + "-" + minutesRound + "-" + secondsRound);
+										if (Number(daysRound{{$index}} + "" + hoursRound{{$index}} + "" + minutesRound{{$index}} + "" + secondsRound{{$index}}) > 0) {
+										if (hoursRound{{$index}} < 10) {
+											hoursRound_str{{$index}} = "0" + hoursRound{{$index}};
+										} else {
+											hoursRound_str{{$index}} = hoursRound{{$index}};
+										}
+										if (minutesRound{{$index}} < 10) {
+											minutesRound_str{{$index}} = "0" + minutesRound{{$index}};
+										} else {
+											minutesRound_str{{$index}} = minutesRound{{$index}};
+										}
+										if (secondsRound{{$index}} < 10) {
+											secondsRound_str{{$index}} = "0" + secondsRound{{$index}};
+										} else {
+											secondsRound_str{{$index}} = secondsRound{{$index}};
+										}
+										document.getElementById("show_cate_str{{$index}}").innerHTML = daysRound{{$index}} + "일 " + hoursRound_str{{$index}} + ":" + minutesRound_str{{$index}} + ":" + secondsRound_str{{$index}} + " ";
+										} else {
+										document.getElementById("show_cate_str{{$index}}").innerHTML = "마감";
+										}
+										newtime{{$index}} = window.setTimeout("getTime{{$index}}();", 1000);
+									}
+								</script>
+								
+								<div class="swiper-slide {{$index == 1 ? 'swiper-slide-active' :''}}" style="width: 245.4px; margin-right: 20px;">
+									<div class="logo">
+										<img src="{{ asset('/images/web/logo/logo2_' . $game->abbr . '.png') }}">
+									</div>
+									<div class="pay">추첨후 표기</div>
+									<div class="date">추첨 : {{ $dt->format('Y.m.d') }} ({{ $weekdays[$dt->dayOfWeek] }}) {{ $dt->format('H:i') }}</div>
+									<div class="end-date">주문마감 : <span id="show_cate_str{{$index}}">1일 12:37:53 </span>
+										<script>
+										getTime{{$index}}();
+										</script>
+									</div>
+									<div class="num">
+										<!--em class="bg-sky">이월</em-->
+										<a href="javascript:sign();">
+										<em class="bg-red">마감</em>
+										</a> {{$game->lastresult}} <span class="t-red">{{$game->bonus}}</span>
+									</div>
+									<div class="btn">
+										<a href="/play/lotto_{{$game->abbr}}" class="btn-comm btn-pk">구매하기</a>
+									</div>
 								</div>
-								<div class="num">
-									<!--em class="bg-sky">이월</em-->
-									<a href="javascript:sign();">
-									<em class="bg-red">마감</em>
-									</a> {{$game->lastresult}} <span class="t-red">{{$game->bonus}}</span>
-								</div>
-								<div class="btn">
-									<a href="/play/lotto_{{$game->abbr}}" class="btn-comm btn-pk">구매하기</a>
-								</div>
-							</div>
+								@endif
 							@endforeach
 						</div>
 					</div>
