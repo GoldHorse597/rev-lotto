@@ -134,7 +134,7 @@ class MypageController extends BaseController
         if (!empty($part_idx)) {
             $query->where('histories.game_id', $part_idx);
         }
-        if (is_numeric($status)) {
+        if ($status !== null) {
             $query->where('histories.status', $status);
         }
         $lists = $query->paginate(10);
