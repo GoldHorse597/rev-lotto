@@ -94,7 +94,7 @@
                 }).catch(error => {
                     console.error('Heartbeat error:', error);
                 });
-            }, 5 * 1000); 
+            }, 10 * 1000); 
 
         </script>
         <style>
