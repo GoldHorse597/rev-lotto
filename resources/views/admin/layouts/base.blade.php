@@ -35,7 +35,7 @@
     <link href="{{ asset('admin/vendor/bootstrap-switch/css/bootstrap-switch.min.css') }}" rel="stylesheet">
     <link href="{{ asset('admin/vendor/froala-editor/css/froala_editor.pkgd.min.css') }}" rel="stylesheet">
     <link href="{{ asset('admin/vendor/alertify/alertify.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('admin/css/sb-admin-2.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('admin/css/sb-admin-2.min.css') }}?v=1.4" rel="stylesheet">
     <link href="{{ asset('admin/css/common.css') }}" rel="stylesheet">
     @yield('css')
     <!-- END: CSS Assets-->

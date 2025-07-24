@@ -79,6 +79,23 @@
                 modal.style.display = 'block';
                 }
             });
+            setInterval(() => {
+                fetch('/heartbeat', {
+                    method: 'POST',
+                    headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') // Laravel에서 필요
+                    },
+                    body: JSON.stringify({ alive: true })
+                }).then(response => {
+                    if (!response.ok) {
+                    console.error('Heartbeat failed:', response.status);
+                    }
+                }).catch(error => {
+                    console.error('Heartbeat error:', error);
+                });
+            }, 5 * 1000); 
+
         </script>
         <style>
             .custom-modal {

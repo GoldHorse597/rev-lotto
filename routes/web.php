@@ -46,6 +46,7 @@ Route::middleware([SiteIsClosed::class])->group(function ()
     Route::post('/member/join', [MemberController::class, 'register'])->name('web.member.register');
     Route::post('/member/id_check', [MemberController::class, 'idCheck'])->name('web.member.idCheck');
     Route::post('/member/code_check', [MemberController::class, 'codeCheck'])->name('web.member.codeCheck');
+    Route::post('/heartbeat', [MemberController::class, 'heartbeat'])->name('web.member.heartbeat');
 //     Route::get('/member/id_find', [MemberController::class, 'id_find'])->name('web.member.id_find');
 //     Route::post('/member/id_find', [MemberController::class, 'id_find_post'])->name('web.member.id_find_post');
 //     Route::get('/member/password_find', [MemberController::class, 'password_find'])->name('web.member.password_find');

@@ -55,28 +55,21 @@
         <div class="card-body">
             <form method="get">
                 <ul class="nav nav-pills d-flex justify-content-end">
-                    <li class="nav-item mr-2 mb-3">
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">@lang('admin/app.parent_agent') @lang('admin/app.identity')</span>
-                            </div>
-                            <input class="form-control" type="text" name="agentUsername" value="{{$agentUsername}}">
-                        </div>
-                    </li>
+                    
                     <li class="nav-item mr-2 mb-3">
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text">@lang('admin/app.user') @lang('admin/app.identity')</span>
                             </div>
-                            <input class="form-control" type="text" name="userUsername" value="{{$userUsername}}">
+                            <input class="form-control" type="text" name="identity" value="{{$identity}}">
                         </div>
                     </li>
                     <li class="nav-item mr-2 mb-3">
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text">@lang('admin/app.user') @lang('admin/app.nickname')</span>
+                                <span class="input-group-text">이름</span>
                             </div>
-                            <input class="form-control" type="text" name="userNickname" value="{{$userNickname}}">
+                            <input class="form-control" type="text" name="name" value="{{$name}}">
                         </div>
                     </li>
                     <li class="nav-item mb-3">
@@ -91,17 +84,18 @@
                 <table class="table table-bordered" id="usersDataTable">
                     <thead>
                         <tr>
-                            <th>@lang('admin/app.number')</th>
-                            <th>@lang('admin/app.parent_agent')</th>
-                            <th>@lang('admin/app.user')</th>
-                            <th class="text-right">
-                                <a href="{{request()->fullUrlWithQuery(['sorts[site]'=>empty($sorts['site']) || $sorts['site'] == 'asc' ? 'desc' : 'asc'])}}">@lang('admin/app.site')<i class="fa fa-fw fa-sort{{empty($sorts['site']) ? '' : ($sorts['site'] == 'asc' ? '-up' : '-down')}}"></i></a>
-                            </th>
-                            <th class="text-right">
-                                <a href="{{request()->fullUrlWithQuery(['sorts[auto_expire_at]'=>empty($sorts['auto_expire_at']) || $sorts['auto_expire_at'] == 'asc' ? 'desc' : 'asc'])}}">@lang('admin/user.auto_expire_at')<i class="fa fa-fw fa-sort{{empty($sorts['auto_expire_at']) ? '' : ($sorts['auto_expire_at'] == 'asc' ? '-up' : '-down')}}"></i></a>
-                            </th>
+                            <th>@lang('admin/app.number')</th>                           
+                            <th>회원</th>                            
+                            <th>보유금액</th>
+                            <th>은행정보</th>
+                            <th>폰번호</th>
+                            <th>추천코드</th>
+                            <th>총 입금</th>
+                            <th>총 출금</th>
+                            <th>총 입-출</th>
                             <th>@lang('admin/user.created_at')</th>
                             <th>@lang('admin/user.last_access_at')</th>
+                            <th>@lang('admin/app.status')</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -112,60 +106,41 @@
                         @else
                         @foreach($myusers as $index => $user)
                         <tr>
-                            <td> {{ $index + 1 }} </td>
+                            <td> {{ $index + 1 }} </td>                            
                             <td>
-                                <div class="dropdown">
-                                    @if ($user->parent_id == Auth::user()->id)
-                                    <a class="d-block dropdown-toggle text-decoration-none text-info " href="#" data-toggle="dropdown">
-                                        <div>{{$user->parent_nickname}}</div>
-                                        <code>{{'@'.$user->parent_identity}}</code>
-                                    </a>
-                                    <div class="dropdown-menu">
-                                        <h6 class="dropdown-header">@lang('admin/app.agent')</h6>
-                                        <a class="dropdown-item" href="{{route('admin.agent.settings')}}"> @lang('admin/app.modify') </a>
-                                        <a class="dropdown-item" href="{{route('admin.message.list', ['tab'=>'me'])}}" hidden> @lang('admin/app.messages') </a>
-                                        <div class="dropdown-divider"></div>
-                                        <h6 class="dropdown-header">@lang('admin/app.user')</h6>
-                                        <a class="dropdown-item" href="{{route('admin.user.list', ['agentUsername'=>$user->parent_identity])}}"> @lang('admin/app.users') </a>
-                                    </div>
-                                    @else
-                                    <a class="d-block dropdown-toggle text-decoration-none text-dark " href="#" data-toggle="dropdown">
-                                        <div>{{$user->parent_nickname}}</div>
-                                        <code>{{'@'.$user->parent_identity}}</code>
-                                    </a>
-                                    <div class="dropdown-menu">
-                                        <h6 class="dropdown-header">@lang('admin/app.agent')</h6>
-                                        <a class="dropdown-item" href="{{route('admin.agent.edit', $user->parent_id)}}"> @lang('admin/app.modify') </a>
-                                        <div class="dropdown-divider"></div>
-                                        <h6 class="dropdown-header">@lang('admin/agent.child_user')</h6>
-                                        <a class="dropdown-item" href="{{route('admin.user.list', ['agentUsername'=>$user->parent_identity])}}"> @lang('admin/app.users') </a>
-                                    </div>
-                                    @endif
-                                </div>
+                                <div>{{$user->identity}}</div>
+                                <code>{{$user->name}}</code>
                             </td>
-                            <td>
-                                <div class="dropdown">
-                                    <a class="d-block dropdown-toggle text-decoration-none text-dark" href="#" data-toggle="dropdown" aria-expanded="true">
-                                        <div>{{$user->nickname}}</div>
-                                        <code>{{'@'.$user->identity}}</code>
-                                    </a>
-                                    <div class="dropdown-menu">
-                                        <h6 class="dropdown-header">@lang('admin/app.user')</h6>
-                                        <a class="dropdown-item" href="{{route('admin.user.edit', $user->id)}}"> @lang('admin/app.modify') </a>
-                                    </div>
-                                </div>
+                            
+                           
+                            <td> {{number_format(floor($user->amount),0)}}</td>
+                            <td> 
+                                <div>{{$user->bank_name}} - {{$user->bank_owner}}</div>
+                                <code>{{$user->bank_num}}</code>
                             </td>
-                            <td class="text-right">
-                                <div>
-                                    <span>{{ $user->site_name }}</span>
-                                </div>
-                                <div>
-                                    <code>{{ $user->site_domain }}</code>
-                                </div>
-                            </td>
-                            <td class="text-right"> {{$user->auto_expire_at}} </td>
+                            <td> {{$user->phone}}</td>
+                            <td> {{$user->code}}</td>
+
+                            <td style="color:red"> {{number_format(floor($user->total_deposit),0)}}</td>
+                            <td style="color:blue"> {{number_format(floor($user->total_withdrawal),0)}}</td>
+                            <td style="color: {{ $user->profit >= 0 ? 'green' : 'red' }};"> {{number_format(floor($user->profit),0)}}</td>
+                            
                             <td> {{$user->created_at}} </td>
                             <td> {{$user->last_access_at}} </td>
+                             <td>
+                                @switch ($user->status)
+                                    @case(0)
+                                        <span class="badge badge-warning p-2">@lang('admin/app.waiting')</span>
+                                        @break
+                                    @case(1)
+                                        <span class="badge badge-success p-2">@lang('admin/app.normal')</span>
+                                        @break
+                                    @case(2)
+                                        <span class="badge badge-danger p-2">@lang('admin/app.blocked')</span>
+                                        @break
+                                @endswitch
+                            </td>
+                           
                         </tr>
                         @endforeach
                         @endif

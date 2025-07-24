@@ -103,4 +103,12 @@ class MemberController extends Controller
         Auth::guard('web')->logout();
         return redirect()->route('web.index');
     }
+
+    public function heartbeat(Request $request)
+    {
+        $authUser = \Auth::guard('web')->user();
+        $authUser->last_access_at = date('Y-m-d H:i:s');
+        $authUser->save();
+        return response()->json(['status' => 'ok']);
+    }
 }

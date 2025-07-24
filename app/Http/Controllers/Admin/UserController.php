@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Request;
-
+use Carbon\Carbon;
 use App\Models\Agent;
 use App\Models\User;
 use App\Models\Site;
@@ -46,6 +46,38 @@ class UserController extends BaseController
         }
         return view('admin.user.index', compact('page_title', 'myusers', 'identity','name'));
 
+    }
+
+    public function onlineusers(Request $request)
+    {
+        $page_title = '접속자 목록';
+
+        $authUser = \Auth::guard('admin')->user();
+        $identity = $request->query('identity');
+        $name =  $request->query('name');
+        $myusers = User::query();
+        if(!empty($identity))
+        {
+            $myusers  = $myusers->where('identity','LIKE', '%'.$identity.'%');
+        }
+        if(!empty($name))
+        {
+            $myusers  = $myusers->where('name','LIKE', '%'.$name.'%');
+        }
+        $myusers  = $myusers->where('users.last_access_at', '>=', Carbon::now()->subSeconds(20))->orderBy('users.created_at', 'DESC')->paginate(20);
+        foreach ($myusers as $user) {
+            $user->total_deposit = Depowith::where('user_id', $user->id)
+                ->where('type', 0)
+                ->where('status', 1)
+                ->sum('amount');
+
+            $user->total_withdrawal = Depowith::where('user_id', $user->id)
+                ->where('type', 1)
+                ->where('status', 1)
+                ->sum('amount');
+            $user->profit = $user->total_deposit - $user->total_withdrawal;
+        }
+        return view('admin.user.onlineusers', compact('page_title', 'myusers', 'identity','name'));
     }
     public function create(Request $request)
     {

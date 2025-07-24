@@ -89,9 +89,7 @@
 									<div class="pay">추첨후 표기</div>
 									<div class="date">추첨 : 매일 19:30</div>
 									<div class="end-date">주문마감 : 상시구매가능
-										<script>
-										getTime{{$index}}();
-										</script>
+										
 									</div>
 									<div class="num">
 										<!--em class="bg-sky">이월</em-->

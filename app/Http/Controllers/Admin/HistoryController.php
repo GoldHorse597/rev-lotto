@@ -18,6 +18,7 @@ class HistoryController extends BaseController
         $identity = $request->query('identity');
         $name = $request->query('name');
         $status = $request->query('status');
+        $reverse = $request->query('reverse');
         $game_id = $request->query('game_id');
 
         // History + users + games 조인
@@ -34,6 +35,10 @@ class HistoryController extends BaseController
             $histories = $histories->where('users.name', 'LIKE', '%' . $name . '%');
         }
 
+         if (is_numeric($reverse)) {
+            $histories = $histories->where('histories.reverse', $reverse);
+        }
+
         if ($game_id !== null) {
             $histories = $histories->where('histories.game_id', $game_id); // depowiths는 오타일 가능성 있음
         }
@@ -44,7 +49,7 @@ class HistoryController extends BaseController
 
         $histories = $histories->orderBy('histories.created_at', 'DESC')->paginate(20);
 
-        return view('admin.history.index', compact('page_title', 'histories', 'game_id','status', 'identity', 'name'));
+        return view('admin.history.index', compact('page_title', 'histories', 'game_id','status', 'identity', 'name','reverse'));
     }
     public function process(Request $request, $id)
     {

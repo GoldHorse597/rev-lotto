@@ -55,12 +55,29 @@
         <div class="card-body">
             <form method="get">
                 <ul class="nav nav-pills d-flex justify-content-end">
+                    <li class="nav-item mr-2 mb-3">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">로또종류</span>
+                            </div>
+                            <select class="form-control" name="reverse" aria-invalid="false">
+                                <option value="" {{ $reverse == '' ? 'selected' : '' }}> 전체 </option>
+                                <option value="0" {{ $reverse === '0' ? 'selected' : '' }}> 로또구매대행 </option>
+                                <option value="1" {{ $reverse === '1' ? 'selected' : '' }}> 리버스로또  </option>
+                            </select>
+                        </div>
+                    </li>
                     <li class="nav-item mr-2">
-                        <select class="form-control" name="status" aria-invalid="false">
-                            <option value="" {{ $status == '' ? 'selected' : '' }}> 전체 </option>
-                            <option value="0" {{ $status === '0' ? 'selected' : '' }}> 대기중 </option>
-                            <option value="1" {{ $status === '1' ? 'selected' : '' }}> 처리됨 </option>
-                        </select>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                    <span class="input-group-text">당첨결과</span>
+                                </div>
+                            <select class="form-control" name="status" aria-invalid="false">
+                                <option value="" {{ $status == '' ? 'selected' : '' }}> 전체 </option>
+                                <option value="0" {{ $status === '0' ? 'selected' : '' }}> 대기중 </option>
+                                <option value="1" {{ $status === '1' ? 'selected' : '' }}> 처리됨 </option>
+                            </select>
+                        </div>
                     </li>
                     <li class="nav-item mr-2 mb-3">
                         <div class="input-group">
@@ -112,9 +129,9 @@
                             <td> {{ $index + 1 }} </td>                            
                             <td>
                                 <div>{{$history->identity}}</div>
-                                <code>{{$history->name}}</code>
+                                <code>{{ $history->name}}</code>
                             </td>
-                            <td> {{ $history->game_title }} </td>   
+                            <td> {{ $history->game_title . ($history->reverse == 1 ? ' - 리버스로또' : '') }} </td>   
                             <td> {{ number_format(floor($history->amount),0) }} </td>   
                             <td> {{ $history->list }},<span style="color:red">{{ $history->bonus }}</span></td>   
                             <td>

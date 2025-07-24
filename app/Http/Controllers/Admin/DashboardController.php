@@ -11,6 +11,8 @@ use App\Models\User;
 use App\Models\Message;
 use App\Models\Inquiry;
 use App\Models\Depowith;
+use App\Models\History;
+use App\Models\Prize;
 
 class DashboardController extends BaseController
 {
@@ -36,7 +38,20 @@ class DashboardController extends BaseController
             return abort(404);
         }
 
-        return view('admin.dashboard.index', compact('page_title', 'searchAgent'));
+        $todayUser = User::whereDate('created_at', Carbon::today())->count();
+        $totaldepo = Depowith::where('type', 0)
+            ->where('status', 1)
+            ->whereDate('created_at', Carbon::today())
+            ->sum('amount');
+        $totalwith =Depowith::where('type', 1)
+            ->where('status', 1)
+            ->whereDate('created_at', Carbon::today())
+            ->sum('amount');
+        $totalmoney =History::whereDate('created_at', Carbon::today())
+            ->sum('amount');
+        $totalprize  =Prize::whereDate('created_at', Carbon::today())
+            ->sum('money');
+        return view('admin.dashboard.index', compact('page_title', 'searchAgent','todayUser','totaldepo','totalwith','totalmoney','totalprize'));
     }
 
     public function tick(Request $request)
