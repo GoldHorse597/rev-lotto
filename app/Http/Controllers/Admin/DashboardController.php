@@ -49,8 +49,10 @@ class DashboardController extends BaseController
             ->sum('amount');
         $totalmoney =History::whereDate('created_at', Carbon::today())
             ->sum('amount');
-        $totalprize  =Prize::whereDate('created_at', Carbon::today())
-            ->sum('money');
+        $totalprize = Prize::whereDate('created_at', Carbon::today())
+                ->where('type', 1)
+                ->where('title', 'not like', '%관리자%')
+                ->sum('money');
         return view('admin.dashboard.index', compact('page_title', 'searchAgent','todayUser','totaldepo','totalwith','totalmoney','totalprize'));
     }
 
