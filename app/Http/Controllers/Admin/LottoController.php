@@ -1420,6 +1420,7 @@ class LottoController extends BaseController
     }
     
     public function live(){
-        return view('admin.lotto.live');
+         $page_title = '로또 목록';
+        return view('admin.lotto.live', compact('page_title'));
     }
 }

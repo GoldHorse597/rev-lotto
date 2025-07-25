@@ -12,6 +12,7 @@ use Laravel\Sanctum\HasApiTokens;
 class Agent extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
+     protected $guard = 'agent';
     protected $fillable = [
         'identity',  
         'password_original',        
