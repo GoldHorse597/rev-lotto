@@ -247,7 +247,7 @@ class PlayController extends BaseController
             {
                 if (!empty($request->input('del_list'))) {
                     $purchase = Purchase::where('id', $request->input('del_list'))->first();
-                    if($authUser->amount > $purchase->amount){
+                    if($authUser->amount >= $purchase->amount){
                         $exists = DB::table('histories')->where([
                             ['user_id', '=', $purchase->user_id],
                             ['game_id', '=', $purchase->game_id],
@@ -301,7 +301,7 @@ class PlayController extends BaseController
                 if (!empty($ids)) {
                     $purchases = Purchase::whereIn('id', $ids)->get();
                     foreach ($purchases as $purchase) {
-                        if($authUser->amount > $purchase->amount){
+                        if($authUser->amount >= $purchase->amount){
                             $exists = DB::table('histories')->where([
                                 ['user_id', '=', $purchase->user_id],
                                 ['game_id', '=', $purchase->game_id],
