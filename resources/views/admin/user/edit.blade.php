@@ -98,7 +98,26 @@
                                             <a href="#none" onclick="javascript:searchit(2);" class="btn btn-danger w250">회수</a>
                                         </td>
                                     </tr>
-                                    
+                                     <tr>
+                                        <th>회원등급</th>
+                                        <td>  
+                                            <select name="level" id="level" class="w250 mw100p" style="text-align:center">
+                                               
+                                                <option value="0"
+                                                    @if ($user->level == 0) selected @endif>
+                                                    Normal
+                                                </option>   
+                                                <option value="1"
+                                                    @if ($user->level == 1) selected @endif>
+                                                    VIP
+                                                </option>   
+                                                <option value="2"
+                                                    @if ($user->level == 2) selected @endif>
+                                                    VVIP
+                                                </option>             
+                                            </select>
+                                        </td>
+                                    </tr>
                                     <tr>
                                         <th>은행</th>
                                         <td>  
@@ -124,6 +143,7 @@
                                         <th>휴대전화</th>
                                         <td>  <input type="text" class="form-control" id="phone" name="phone" value="{{$user->phone}}" ></td>
                                     </tr>
+                                   
                                    
                                     <tr>
                                         <th>@lang('admin/user.last_access_at')</th>

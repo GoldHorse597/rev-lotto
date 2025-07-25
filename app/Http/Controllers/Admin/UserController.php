@@ -166,6 +166,7 @@ class UserController extends BaseController
                     $user->bank_name = $request->bank_name;
                     $user->bank_num = $request->bank_num;
                     $user->bank_owner = $request->bank_owner;
+                    $user->level = $request->level;
                     $user->phone = $request->phone;
                 }
             }

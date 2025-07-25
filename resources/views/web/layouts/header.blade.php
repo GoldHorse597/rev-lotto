@@ -2,7 +2,7 @@
   <div class="my-info"> &nbsp;
     @auth
     <a href="/mypage/modify" class="name">{{ Auth::user()->name }}</a>님! 반갑습니다. 
-      @if (Auth::user()->level == 0)
+          @if (Auth::user()->level == 0)
               <button class="grade grade-normal pointer" onclick="javascript:openIdpass2();">Normal</button>
           @elseif (Auth::user()->level == 1)
               <button class="grade grade-vip pointer" onclick="javascript:openIdpass2();">VIP</button>

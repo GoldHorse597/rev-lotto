@@ -184,23 +184,20 @@ class DashboardController extends BaseController
                         $user->amount = $user->amount + $statistic->amount;
                     else
                         $user->amount = $user->amount - $statistic->amount;
-                    $statistic->updated_at = date('Y-m-d H:i:s');
-                    $statistic->save();
-                    $total  = Depowith::where('user_id',$user->id)->where('type', 0)->where('status', 1)->sum('amount');
-                    if ($total < 5000000) {
-                        $user->level = 0;
-                    } elseif ($total < 30000000) {
-                       $user->level = 1;
-                    } else {
-                        $user->level = 2;
-                    }
+                   
+                    // $total  = Depowith::where('user_id',$user->id)->where('type', 0)->where('status', 1)->sum('amount');
+                    // if ($total < 5000000) {
+                    //     $user->level = 0;
+                    // } elseif ($total < 30000000) {
+                    //    $user->level = 1;
+                    // } else {
+                    //     $user->level = 2;
+                    // }
                     $user->save();
                     break;
                 case 'block':
                     session()->flash('success', ' 신청을 취소하였습니다.');
-                    $statistic->status = 2;
-                    $statistic->updated_at = date('Y-m-d H:i:s');
-                    $statistic->save();
+                    $statistic->status = 2;                   
                     break;
                
                 case 'delete':
@@ -210,7 +207,8 @@ class DashboardController extends BaseController
             }
 
             if ($param != 'delete') {
-                
+                $statistic->updated_at = date('Y-m-d H:i:s');
+                $statistic->save();
             }
             
             return redirect()->back();
