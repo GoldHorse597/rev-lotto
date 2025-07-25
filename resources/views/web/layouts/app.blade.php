@@ -31,7 +31,7 @@
     
         <script>
         function openIdpass2() {
-            // window.open("/member/grade", "리버스로또","scrollbars=no, width=500,height=650");
+            window.open("/member/grade", "리버스로또","scrollbars=no, width=500,height=650");
         }
         </script>
         <!--Start of Zendesk Chat Script-->

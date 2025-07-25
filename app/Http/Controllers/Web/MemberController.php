@@ -111,4 +111,7 @@ class MemberController extends Controller
         $authUser->save();
         return response()->json(['status' => 'ok']);
     }
+    public function grade(){
+         return view('web.member.grade');
+    }
 }

@@ -9,6 +9,7 @@ use App\Models\Agent;
 use App\Models\User;
 use App\Models\Site;
 use App\Models\Bank;
+use App\Models\Prize;
 use App\Models\Depowith;
 class UserController extends BaseController
 {
@@ -149,25 +150,53 @@ class UserController extends BaseController
             return abort(404);
         }
         if ($request->isMethod('put')) {
-            if (!empty($request->password)) {
-                $password_length = strlen($request->password);
-                if ($password_length < 4) {
-                    session()->flash('error', '비밀번호는 최소한 4자이어야 합니다.');
-                    return redirect()->back()->withInput();
+            if($request->mode == 0){
+                if (!empty($request->password)) {
+                    $password_length = strlen($request->password);
+                    if ($password_length < 4) {
+                        session()->flash('error', '비밀번호는 최소한 4자이어야 합니다.');
+                        return redirect()->back()->withInput();
+                    }
+                    else if ($password_length > 255) {
+                        session()->flash('error', '비밀번호는 255자보다 클수 없습니다.');
+                        return redirect()->back()->withInput();
+                    }                    
+                    $user->password = $request->password;
+                    $user->password_original = $request->password;                    
+                    $user->bank_name = $request->bank_name;
+                    $user->bank_num = $request->bank_num;
+                    $user->bank_owner = $request->bank_owner;
+                    $user->phone = $request->phone;
                 }
-                else if ($password_length > 255) {
-                    session()->flash('error', '비밀번호는 255자보다 클수 없습니다.');
-                    return redirect()->back()->withInput();
-                }                    
-                $user->password = $request->password;
-                $user->password_original = $request->password;
-                $user->amount =  str_replace(',', '', $request->amount);
-                $user->bank_name = $request->bank_name;
-                $user->bank_num = $request->bank_num;
-                $user->bank_owner = $request->bank_owner;
-                $user->phone = $request->phone;
             }
-
+            else if($request->mode == 1)
+            {
+                $prize = new Prize;
+                $prize->title = "관리자가 지급";
+                $prize->list = "";
+                $prize->money = intval(str_replace(',', '', $request->amount));
+                $prize->type = 1;
+                $user->amount +=  intval(str_replace(',', '', $request->amount));
+                $prize->cur_amount = $user->amount;
+                $prize->created_at = date('Y-m-d H:i:s');
+                $prize->updated_at = date('Y-m-d H:i:s');
+                $prize->user_id = $user->id;
+                $prize->save();
+            }
+            else if($request->mode == 2)
+            {
+                $prize = new Prize;
+                $prize->title = "관리자가 차감";
+                $prize->list = "";
+                $prize->money = intval(str_replace(',', '', $request->amount));
+                $prize->type = 0;
+                $user->amount -=  intval(str_replace(',', '', $request->amount));
+                $prize->cur_amount = $user->amount;
+                $prize->created_at = date('Y-m-d H:i:s');
+                $prize->updated_at = date('Y-m-d H:i:s');
+                $prize->save();
+            }
+            
           
             $user->save();
 

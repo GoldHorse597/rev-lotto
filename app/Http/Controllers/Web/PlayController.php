@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\History;
 use App\Models\Game;
+use App\Models\Prize;
 use App\Models\Purchase;
 
 class PlayController extends BaseController
@@ -275,6 +276,20 @@ class PlayController extends BaseController
                         Purchase::where('id', $purchase->id)->delete();
                         $authUser->amount -= $purchase->amount;
                         $authUser->save();
+
+                        $prize = new Prize;
+                         if($purchase->reverse == 0)
+                                $prize->title = Game::where('id', $request->part_idx)->first()->game." 배팅";
+                            else 
+                                $prize->title = Game::where('id', $request->part_idx)->first()->game."-리버스 배팅";
+                        $prize->list =  $purchase->list."  ".$purchase->bonus;
+                        $prize->money = intval(str_replace(',', '', $purchase->amount));
+                        $prize->type = 0;                       
+                        $prize->cur_amount = $authUser->amount;
+                        $prize->created_at = date('Y-m-d H:i:s');
+                        $prize->updated_at = date('Y-m-d H:i:s');
+                        $prize->user_id = $authUser->id;
+                        $prize->save();
                     }
                 }
             }
@@ -315,6 +330,20 @@ class PlayController extends BaseController
                             Purchase::where('id', $purchase->id)->delete();
                             $authUser->amount -= $purchase->amount;
                             $authUser->save();
+
+                            $prize = new Prize;
+                            if($purchase->reverse == 0)
+                                $prize->title = Game::where('id', $request->part_idx)->first()->game." 배팅";
+                            else 
+                                $prize->title = Game::where('id', $request->part_idx)->first()->game."-리버스 배팅";
+                            $prize->list =  $purchase->list."  ".$purchase->bonus;
+                            $prize->money = intval(str_replace(',', '', $purchase->amount));
+                            $prize->type = 0;                       
+                            $prize->cur_amount = $authUser->amount;
+                            $prize->user_id = $authUser->id;
+                            $prize->created_at = date('Y-m-d H:i:s');
+                            $prize->updated_at = date('Y-m-d H:i:s');
+                            $prize->save();
                         }
                         else{
 

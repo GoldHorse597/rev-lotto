@@ -2,7 +2,13 @@
   <div class="my-info"> &nbsp;
     @auth
     <a href="/mypage/modify" class="name">{{ Auth::user()->name }}</a>님! 반갑습니다. 
-      <button class="grade grade-normal pointer" onclick="javascript:openIdpass2();">Normal</button>
+      @if (Auth::user()->level == 0)
+              <button class="grade grade-normal pointer" onclick="javascript:openIdpass2();">Normal</button>
+          @elseif (Auth::user()->level == 1)
+              <button class="grade grade-vip pointer" onclick="javascript:openIdpass2();">VIP</button>
+          @elseif (Auth::user()->level == 2)
+              <button class="grade grade-vvip pointer" onclick="javascript:openIdpass2();">VVIP</button>
+          @endif
       <span class="ml10">로또현황: 
         <a href="{{ url('/mypage/buy_list') }}?status=0">{{$cnt}}종</a> 
         | 보유금액: 
@@ -26,7 +32,13 @@
       <div class="my-info-mo">
         <div>
           <a href="/mypage/modify" class="name">{{ Auth::user()->name }}</a>님! 반갑습니다.
-          <button class="grade grade-normal pointer" onclick="javascript:openIdpass2();">Normal</button>
+          @if (Auth::user()->level == 0)
+              <button class="grade grade-normal pointer" onclick="javascript:openIdpass2();">Normal</button>
+          @elseif (Auth::user()->level == 1)
+              <button class="grade grade-vip pointer" onclick="javascript:openIdpass2();">VIP</button>
+          @elseif (Auth::user()->level == 2)
+              <button class="grade grade-vvip pointer" onclick="javascript:openIdpass2();">VVIP</button>
+          @endif
         </div>
         <div>
           <span class="ml10">로또현황: <a href="{{ url('/mypage/buy_list') }}?status=0">{{$cnt}}종</a></span>

@@ -8,6 +8,7 @@ use GuzzleHttp\Client;
 use App\Models\Game;
 use App\Models\Rate;
 use App\Models\User;
+use App\Models\Prize;
 use App\Models\History;
 use Illuminate\Support\Facades\Http;
 use Carbon\Carbon;
@@ -106,7 +107,7 @@ class LottoController extends BaseController
     public function postSetting(Request $request){
         $authUser = \Auth::guard('admin')->user();
         if ($authUser->parent_level == 0) {
-            $setting = Rate::first();
+            $setting = Rate::where('id',$request->set_id)->first();
             $site_closed = $request->site_closed;
             if (!is_null($site_closed))
                 $setting->site_closed = $site_closed;
@@ -116,7 +117,6 @@ class LottoController extends BaseController
             $setting->rate_3 = $request->rate_3;
             $setting->rate_4 = $request->rate_4;
             $setting->rate_5 = $request->rate_5;
-            $setting->rate_6 = $request->rate_6;
             $setting->rate_7 = $request->rate_7;           
             $setting->save();
 
@@ -130,9 +130,17 @@ class LottoController extends BaseController
     {
         $page_title = '로또 배당률 설정';
 
-        $setting = Rate::first();
+        $settings = Rate::all();
 
-        return view('admin.lotto.settings', compact('page_title', 'setting'));
+        return view('admin.lotto.settings', compact('page_title', 'settings'));
+    }
+
+    public function settingedit(Request $request){
+        $page_title = '로또 배당률 설정';
+
+        $setting = Rate::where('id',$request->id)->first();
+
+        return view('admin.lotto.settingedit', compact('page_title', 'setting'));
     }
 
     public function scrap(Request $request){
@@ -419,7 +427,7 @@ class LottoController extends BaseController
 
         // $histories = History::where('status',0)->where('game_id',$id)->where('round', '!=',  $game->round)->get();
         $histories = History::where('status',0)->where('game_id',$id)->where('created_at', '<', $lastday)->get();
-        $rate = Rate::first();
+        
         switch($id)
         {
             case 1: 
@@ -430,27 +438,54 @@ class LottoController extends BaseController
                     $myNumbers = explode(',',$history->list);
                     $matched = count(array_intersect($myNumbers, $result_nums));
                     $user = User::where('id', $history->user_id)->first();
+                    $rate = Rate::where('level',$user->level)->first();
+                    $prize = new Prize;
+                    if($history->reverse == 0)
+                        $prize->title = Game::where('id', $game->id)->first()->game." 배팅";
+                    else 
+                        $prize->title = Game::where('id', $game->id)->first()->game."-리버스 배팅";
+                    $prize->list =  $history->list."  ".$history->bonus;                    
+                    $prize->user_id = $user->id;
+                    $prize->created_at = date('Y-m-d H:i:s');
+                    $prize->updated_at = date('Y-m-d H:i:s');
+                    
                     if($history->reverse == 0){
+                        $prize->type = 1;     
                         if ($matched === 6) {
                             // "1등";
                             $history->result = 1;                            
                             $user->amount = $user->amount + $game->first;
+                            $prize->money = $game->first;                                              
+                            $prize->cur_amount = $user->amount;
+                            $prize->save();
                         } elseif ($matched === 5 && in_array($bonus, $myNumbers)) {
                             // "2등";
                             $history->result = 2;
                             $user->amount = $user->amount + $game->second;
+                            $prize->money = $game->second;                                              
+                            $prize->cur_amount = $user->amount;
+                            $prize->save();
                         } elseif ($matched === 5) {
                             // "3등";
                             $history->result = 3;
                             $user->amount = $user->amount + $game->third;
+                            $prize->money = $game->third;                                              
+                            $prize->cur_amount = $user->amount;
+                            $prize->save();
                         } elseif ($matched === 4) {
                             // "4등";
                             $history->result = 4;
                             $user->amount = $user->amount + $game->fourth;
+                            $prize->money = $game->fourth;                                              
+                            $prize->cur_amount = $user->amount;
+                            $prize->save();
                         } elseif ($matched === 3) {
                             // "5등";
                             $user->amount = $user->amount + $game->fifth;
                             $history->result = 5;
+                            $prize->money = $game->fifth;                                              
+                            $prize->cur_amount = $user->amount;
+                            $prize->save();
                         } else {
                             // "꽝";                            
                             $history->result = 0;
@@ -464,63 +499,93 @@ class LottoController extends BaseController
                             if($rate->rate_1 < 0)
                             {
                                 $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_1) / 100);
+                                $prize->type = 0;
+                                $prize->money = $history->amount - ($history->amount * abs($rate->rate_1) / 100);   
                             }
                             else{
+                                $prize->type = 1;  
                                 $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_1 / 100);
+                                $prize->money = $history->amount + ($history->amount *  $rate->rate_1 / 100);   
                             }
-
                         } elseif ($matched === 5 && in_array($bonus, $myNumbers)) {
                             // "2등";
                             $history->result = 2;
                             if($rate->rate_2 < 0)
                             {
+                                $prize->type = 0;
                                 $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_2) / 100);
+                                $prize->money = $history->amount - ($history->amount * abs($rate->rate_2) / 100); 
                             }
                             else{
+                                
                                 $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_2 / 100);
-                            }
+                                $prize->type = 1;  
+                                $prize->money = $history->amount + ($history->amount *  $rate->rate_2 / 100);   
+                            }                            
                         } elseif ($matched === 5) {
                             // "3등";
                             $history->result = 3;
                             if($rate->rate_3 < 0)
                             {
+                                $prize->type = 0;
                                 $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_3) / 100);
+                                $prize->money = $history->amount - ($history->amount * abs($rate->rate_3) / 100); 
                             }
                             else{
+                                $prize->type = 1;  
                                 $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_3 / 100);
+                                $prize->money = $history->amount + ($history->amount *  $rate->rate_3 / 100);   
                             }
                         } elseif ($matched === 4) {
                             // "4등";
                             $history->result = 4;
                             if($rate->rate_4 < 0)
                             {
+                                $prize->type = 0;
                                 $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_4) / 100);
+                                $prize->money = $history->amount - ($history->amount * abs($rate->rate_4) / 100); 
                             }
                             else{
+                                $prize->type = 1;  
                                 $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_4 / 100);
+                                $prize->money = $history->amount + ($history->amount *  $rate->rate_4 / 100);   
                             }
+                            
                         } elseif ($matched === 3) {
                             // "5등";
                             $history->result = 5;
                             if($rate->rate_5 < 0)
                             {
+                                $prize->type = 0;
                                 $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_5) / 100);
+                                $prize->money = $history->amount - ($history->amount * abs($rate->rate_5) / 100); 
                             }
                             else{
+                                $prize->type = 1;  
                                 $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_5 / 100);
+                                $prize->money = $history->amount + ($history->amount *  $rate->rate_5 / 100);   
                             }
                         } else {
                             // "꽝";
                             if($rate->rate_7 < 0)
                             {
+                                $prize->type = 0;
                                 $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_7) / 100);
+                                $prize->money = $history->amount - ($history->amount * abs($rate->rate_7) / 100); 
                             }
                             else{
+                                $prize->type = 1;  
                                 $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_7 / 100);
+                                $prize->money = $history->amount + ($history->amount *  $rate->rate_7 / 100);   
                             }
                             $history->result = 0;
                         }
                         $history->status = 1;
+                        if($prize->money != 0)   
+                        {
+                            $prize->cur_amount = $user->amount;
+                            $prize->save();
+                        }
                     }                    
                     $user->save();                    
                     $history->save();
@@ -536,27 +601,53 @@ class LottoController extends BaseController
                     $myNumbers = explode(',',$history->list);
                     $matched = count(array_intersect($myNumbers, $result_nums));
                     $user = User::where('id', $history->user_id)->first();
+                    $rate = Rate::where('level',$user->level)->first();
+                    $prize = new Prize;
+                    if($history->reverse == 0)
+                        $prize->title = Game::where('id', $game->id)->first()->game." 배팅";
+                    else 
+                        $prize->title = Game::where('id', $game->id)->first()->game."-리버스 배팅";
+                    $prize->list =  $history->list."  ".$history->bonus;                    
+                    $prize->user_id = $user->id;
+                    $prize->created_at = date('Y-m-d H:i:s');
+                    $prize->updated_at = date('Y-m-d H:i:s');
                     if($history->reverse == 0){
+                        $prize->type = 1;
                         if ($matched === 6) {
                             // "1등";
                             $history->result = 1;                            
-                             $user->amount = $user->amount + $game->first;
+                            $user->amount = $user->amount + $game->first;
+                            $prize->money = $game->first;                                              
+                            $prize->cur_amount = $user->amount;
+                            $prize->save();
                         } elseif ($matched === 5 && in_array($bonus, $myNumbers)) {
                             // "2등";
                             $history->result = 2;
                              $user->amount = $user->amount + $game->second;
+                              $prize->money = $game->second;                                              
+                            $prize->cur_amount = $user->amount;
+                            $prize->save();
                         } elseif ($matched === 5) {
                             // "3등";
                             $history->result = 3;
                              $user->amount = $user->amount + $game->third;
+                              $prize->money = $game->third;                                              
+                            $prize->cur_amount = $user->amount;
+                            $prize->save();
                         } elseif ($matched === 4) {
                             // "4등";
                             $history->result = 4;
                              $user->amount = $user->amount + $game->fourth;
+                              $prize->money = $game->fourth;                                              
+                            $prize->cur_amount = $user->amount;
+                            $prize->save();
                         } elseif ($matched === 3) {
                             // "5등";
                             $history->result = 5;
                             $user->amount = $user->amount + $game->fifth;
+                            $prize->money = $game->fifth;                                              
+                            $prize->cur_amount = $user->amount;
+                            $prize->save();
                         } else {
                             // "꽝";                            
                             $history->result = 0;
@@ -570,9 +661,13 @@ class LottoController extends BaseController
                             if($rate->rate_1 < 0)
                             {
                                 $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_1) / 100);
+                                 $prize->type = 0;
+                                $prize->money = $history->amount - ($history->amount * abs($rate->rate_1) / 100);   
                             }
                             else{
                                 $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_1 / 100);
+                                $prize->type = 1;  
+                                $prize->money = $history->amount + ($history->amount *  $rate->rate_1 / 100);  
                             }
 
                         } elseif ($matched === 5 && in_array($bonus, $myNumbers)) {
@@ -581,9 +676,13 @@ class LottoController extends BaseController
                             if($rate->rate_2 < 0)
                             {
                                 $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_2) / 100);
+                                 $prize->type = 0;
+                                $prize->money = $history->amount - ($history->amount * abs($rate->rate_2) / 100);   
                             }
                             else{
                                 $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_2 / 100);
+                                $prize->type = 1;  
+                                $prize->money = $history->amount + ($history->amount *  $rate->rate_2 / 100);  
                             }
                         } elseif ($matched === 5) {
                             // "3등";
@@ -591,9 +690,13 @@ class LottoController extends BaseController
                             if($rate->rate_3 < 0)
                             {
                                 $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_3) / 100);
+                                 $prize->type = 0;
+                                $prize->money = $history->amount - ($history->amount * abs($rate->rate_3) / 100);   
                             }
                             else{
                                 $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_3 / 100);
+                                $prize->type = 1;  
+                                $prize->money = $history->amount + ($history->amount *  $rate->rate_3 / 100);  
                             }
                         } elseif ($matched === 4) {
                             // "4등";
@@ -601,9 +704,13 @@ class LottoController extends BaseController
                             if($rate->rate_4 < 0)
                             {
                                 $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_4) / 100);
+                                 $prize->type = 0;
+                                $prize->money = $history->amount - ($history->amount * abs($rate->rate_4) / 100);   
                             }
                             else{
                                 $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_4 / 100);
+                                $prize->type = 1;  
+                                $prize->money = $history->amount + ($history->amount *  $rate->rate_4 / 100);  
                             }
                         } elseif ($matched === 3) {
                             // "5등";
@@ -611,22 +718,35 @@ class LottoController extends BaseController
                             if($rate->rate_5 < 0)
                             {
                                 $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_5) / 100);
+                                 $prize->type = 0;
+                                $prize->money = $history->amount - ($history->amount * abs($rate->rate_5) / 100);   
                             }
                             else{
                                 $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_5 / 100);
+                                $prize->type = 1;  
+                                $prize->money = $history->amount + ($history->amount *  $rate->rate_5 / 100);  
                             }
                         } else {
                             // "꽝";
                             if($rate->rate_7 < 0)
                             {
                                 $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_7) / 100);
+                                 $prize->type = 0;
+                                $prize->money = $history->amount - ($history->amount * abs($rate->rate_7) / 100);   
                             }
                             else{
                                 $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_7 / 100);
+                                $prize->type = 1;  
+                                $prize->money = $history->amount + ($history->amount *  $rate->rate_7 / 100);  
                             }
                             $history->result = 0;
                         }
                         $history->status = 1;
+                        if($prize->money != 0)   
+                        {
+                            $prize->cur_amount = $user->amount;
+                            $prize->save();
+                        }
                     }                    
                     $user->save();                    
                     $history->save();
@@ -643,44 +763,82 @@ class LottoController extends BaseController
                     $mainMatch = count(array_intersect($myNumbers, $result_nums));
                     $megaMatch = ($history->bonus == $bonus);
                     $user = User::where('id', $history->user_id)->first();
+                    $rate = Rate::where('level',$user->level)->first();
+                    $prize = new Prize;
+                    if($history->reverse == 0)
+                        $prize->title = Game::where('id', $game->id)->first()->game." 배팅";
+                    else 
+                        $prize->title = Game::where('id', $game->id)->first()->game."-리버스 배팅";
+                    $prize->list =  $history->list."  ".$history->bonus;                    
+                    $prize->user_id = $user->id;
+                    $prize->created_at = date('Y-m-d H:i:s');
+                    $prize->updated_at = date('Y-m-d H:i:s');
                     if($history->reverse == 0){
+                        $prize->type = 1;
                         if ($mainMatch == 5 && $megaMatch){
                             // "1등";
                             $history->result = 1;
                             $user->amount = $user->amount + $game->first;
+                            $prize->money = $game->first;                                              
+                            $prize->cur_amount = $user->amount;
+                            $prize->save();
                         } elseif ($mainMatch == 5) {
                             // "2등";
                             $history->result = 2;
                              $user->amount = $user->amount + $game->second;
+                             $prize->money = $game->second;                                              
+                            $prize->cur_amount = $user->amount;
+                            $prize->save();
                         } elseif ($mainMatch == 4 && $megaMatch) {
                             // "3등";
                             $history->result = 3;
                              $user->amount = $user->amount + $game->third;
+                             $prize->money = $game->third;                                              
+                            $prize->cur_amount = $user->amount;
+                            $prize->save();
                         } elseif ($mainMatch == 4) {
                              $user->amount = $user->amount + $game->fourth;
+                             $prize->money = $game->fourth;                                              
+                            $prize->cur_amount = $user->amount;
+                            $prize->save();
                             // "4등";
                             $history->result = 4;
                         } elseif ($mainMatch == 3 && $megaMatch) {
                             // "5등";
                             $history->result = 5;
                             $user->amount = $user->amount + $game->fifth;
+                            $prize->money = $game->fifth;                                              
+                            $prize->cur_amount = $user->amount;
+                            $prize->save();
                         }elseif ($mainMatch == 3) {
                             // "6등";
                             $history->result = 6;
                             $user->amount = $user->amount + $game->sixth;
+                            $prize->money = $game->sixth;                                              
+                            $prize->cur_amount = $user->amount;
+                            $prize->save();
                         }elseif ($mainMatch == 2 && $megaMatch) {
                             // "7등";
                             $history->result = 7;
                             $user->amount = $user->amount + $game->seventh;
+                            $prize->money = $game->seventh;                                              
+                            $prize->cur_amount = $user->amount;
+                            $prize->save();
                         }elseif ($mainMatch == 1 && $megaMatch) {
                             // "8등";
                             $history->result =8;
                             $user->amount = $user->amount + $game->eighth;
+                            $prize->money = $game->eighth;                                              
+                            $prize->cur_amount = $user->amount;
+                            $prize->save();
                         }
                         elseif ($mainMatch == 0 && $megaMatch) {
                             // "9등";
                             $history->result = 9;
                             $user->amount = $user->amount + $game->nineth;
+                            $prize->money = $game->nineth;                                              
+                            $prize->cur_amount = $user->amount;
+                            $prize->save();
                         } else {
                             // "꽝";
                             $history->result = 0;
@@ -694,9 +852,13 @@ class LottoController extends BaseController
                             if($rate->rate_1 < 0)
                             {
                                 $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_1) / 100);
+                                $prize->type = 0;
+                                $prize->money = $history->amount - ($history->amount * abs($rate->rate_1) / 100);
                             }
                             else{
                                 $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_1 / 100);
+                                $prize->type = 1;  
+                                $prize->money = $history->amount + ($history->amount *  $rate->rate_1 / 100);  
                             }
 
                         } elseif ($mainMatch == 5) {
@@ -705,9 +867,13 @@ class LottoController extends BaseController
                             if($rate->rate_2 < 0)
                             {
                                 $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_2) / 100);
+                                $prize->type = 0;
+                                $prize->money = $history->amount - ($history->amount * abs($rate->rate_2) / 100);
                             }
                             else{
                                 $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_2 / 100);
+                                $prize->type = 1;  
+                                $prize->money = $history->amount + ($history->amount *  $rate->rate_2 / 100);  
                             }
                         } elseif ($mainMatch == 4 && $megaMatch) {
                             // "3등";
@@ -715,9 +881,13 @@ class LottoController extends BaseController
                             if($rate->rate_3 < 0)
                             {
                                 $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_3) / 100);
+                                $prize->type = 0;
+                                $prize->money = $history->amount - ($history->amount * abs($rate->rate_3) / 100);
                             }
                             else{
                                 $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_3 / 100);
+                                $prize->type = 1;  
+                                $prize->money = $history->amount + ($history->amount *  $rate->rate_3 / 100);  
                             }
                         } elseif ($mainMatch == 4) {
                             // "4등";
@@ -725,9 +895,13 @@ class LottoController extends BaseController
                             if($rate->rate_4 < 0)
                             {
                                 $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_4) / 100);
+                                $prize->type = 0;
+                                $prize->money = $history->amount - ($history->amount * abs($rate->rate_4) / 100);
                             }
                             else{
                                 $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_4 / 100);
+                                $prize->type = 1;  
+                                $prize->money = $history->amount + ($history->amount *  $rate->rate_4 / 100);  
                             }
                         } elseif ($mainMatch == 3 && $megaMatch) {
                             // "5등";
@@ -735,32 +909,41 @@ class LottoController extends BaseController
                             if($rate->rate_5 < 0)
                             {
                                 $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_5) / 100);
+                                $prize->type = 0;
+                                $prize->money = $history->amount - ($history->amount * abs($rate->rate_5) / 100);
                             }
                             else{
                                 $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_5 / 100);
+                                $prize->type = 1;  
+                                $prize->money = $history->amount + ($history->amount *  $rate->rate_5 / 100);  
                             }
                         } else {
                             // "꽝";
                             if($rate->rate_7 < 0)
                             {
                                 $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_7) / 100);
+                                $prize->type = 0;
+                                $prize->money = $history->amount - ($history->amount * abs($rate->rate_7) / 100);
                             }
                             else{
                                 $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_7 / 100);
+                                $prize->type = 1;  
+                                $prize->money = $history->amount + ($history->amount *  $rate->rate_7 / 100);  
                             }
                             $history->result = 0;
                         }
                         $history->status = 1;
+                        if($prize->money != 0)   
+                        {
+                            $prize->cur_amount = $user->amount;
+                            $prize->save();
+                        }
                     }                    
                     $user->save();                    
                     $history->save();
 
                 }           
-                break;
-            case 5: 
-                break;
-            case 6:
-                break;
+                break;           
             case 7:
                 foreach($histories as $history)
                 {
@@ -770,30 +953,56 @@ class LottoController extends BaseController
                     $matched = count(array_intersect($myNumbers, $result_nums));
                     $hasBonus = in_array($bonus, $myNumbers);
                     $user = User::where('id', $history->user_id)->first();
+                    $rate = Rate::where('level',$user->level)->first();
+                    $prize = new Prize;
+                    if($history->reverse == 0)
+                        $prize->title = Game::where('id', $game->id)->first()->game." 배팅";
+                    else 
+                        $prize->title = Game::where('id', $game->id)->first()->game."-리버스 배팅";
+                    $prize->list =  $history->list."  ".$history->bonus;                    
+                    $prize->user_id = $user->id;
+                    $prize->created_at = date('Y-m-d H:i:s');
+                    $prize->updated_at = date('Y-m-d H:i:s');
                     if($history->reverse == 0){
+                        $prize->type = 1;
                         if ($matched === 6) {
                             // "1등";
                             $history->result = 1;    
-                             $user->amount = $user->amount + $game->first;                        
+                             $user->amount = $user->amount + $game->first;    
+                             $prize->money = $game->first;                                              
+                            $prize->cur_amount = $user->amount;
+                            $prize->save();                    
                         } elseif ($matched === 5 && $hasBonus) {
                             // "2등";
                             $history->result = 2;
                              $user->amount = $user->amount + $game->second;
+                             $prize->money = $game->second;                                              
+                            $prize->cur_amount = $user->amount;
+                            $prize->save();
                             
                         } elseif ($matched === 5) {
                             // "3등";
                             $history->result = 3;
                              $user->amount = $user->amount + $game->third;
+                             $prize->money = $game->third;                                              
+                            $prize->cur_amount = $user->amount;
+                            $prize->save();
                             
                         } elseif ($matched === 4) {
                             // "4등";
                             $history->result = 4;
                              $user->amount = $user->amount + $game->fourth;
+                             $prize->money = $game->fourth;                                              
+                            $prize->cur_amount = $user->amount;
+                            $prize->save();
                             
                         } elseif ($matched === 3) {
                             // "5등";
                             $history->result = 5;
                             $user->amount = $user->amount + $game->fifth;
+                            $prize->money = $game->fifth;                                              
+                            $prize->cur_amount = $user->amount;
+                            $prize->save();
                         } else {
                             // "꽝";
                            
@@ -808,9 +1017,13 @@ class LottoController extends BaseController
                             if($rate->rate_1 < 0)
                             {
                                 $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_1) / 100);
+                                $prize->type = 0;
+                                $prize->money = $history->amount - ($history->amount * abs($rate->rate_1) / 100);
                             }
                             else{
                                 $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_1 / 100);
+                                $prize->type = 1;  
+                                $prize->money = $history->amount + ($history->amount *  $rate->rate_1 / 100);  
                             }
 
                         } elseif ($matched === 5 && $hasBonus) {
@@ -819,9 +1032,13 @@ class LottoController extends BaseController
                             if($rate->rate_2 < 0)
                             {
                                 $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_2) / 100);
+                                $prize->type = 0;
+                                $prize->money = $history->amount - ($history->amount * abs($rate->rate_2) / 100);
                             }
                             else{
                                 $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_2 / 100);
+                                $prize->type = 1;  
+                                $prize->money = $history->amount + ($history->amount *  $rate->rate_2 / 100);  
                             }
                         } elseif ($matched === 5) {
                             // "3등";
@@ -829,9 +1046,13 @@ class LottoController extends BaseController
                             if($rate->rate_3 < 0)
                             {
                                 $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_3) / 100);
+                                $prize->type = 0;
+                                $prize->money = $history->amount - ($history->amount * abs($rate->rate_3) / 100);
                             }
                             else{
                                 $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_3 / 100);
+                                $prize->type = 1;  
+                                $prize->money = $history->amount + ($history->amount *  $rate->rate_3 / 100);  
                             }
                         } elseif ($matched === 4) {
                             // "4등";
@@ -839,9 +1060,13 @@ class LottoController extends BaseController
                             if($rate->rate_4 < 0)
                             {
                                 $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_4) / 100);
+                                $prize->type = 0;
+                                $prize->money = $history->amount - ($history->amount * abs($rate->rate_4) / 100);
                             }
                             else{
                                 $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_4 / 100);
+                                $prize->type = 1;  
+                                $prize->money = $history->amount + ($history->amount *  $rate->rate_4 / 100);  
                             }
                         } elseif ($matched === 3) {
                             // "5등";
@@ -849,22 +1074,35 @@ class LottoController extends BaseController
                             if($rate->rate_5 < 0)
                             {
                                 $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_5) / 100);
+                                $prize->type = 0;
+                                $prize->money = $history->amount - ($history->amount * abs($rate->rate_5) / 100);
                             }
                             else{
                                 $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_5 / 100);
+                                $prize->type = 1;  
+                                $prize->money = $history->amount + ($history->amount *  $rate->rate_5 / 100);  
                             }
                         } else {
                             // "꽝";
                             if($rate->rate_7 < 0)
                             {
                                 $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_7) / 100);
+                                $prize->type = 0;
+                                $prize->money = $history->amount - ($history->amount * abs($rate->rate_7) / 100);
                             }
                             else{
                                 $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_7 / 100);
+                                $prize->type = 1;  
+                                $prize->money = $history->amount + ($history->amount *  $rate->rate_7 / 100);  
                             }
                             $history->result = 0;
                         }
                         $history->status = 1;
+                        if($prize->money != 0)   
+                        {
+                            $prize->cur_amount = $user->amount;
+                            $prize->save();
+                        }
                     }                    
                     $user->save();                    
                     $history->save();
@@ -880,27 +1118,53 @@ class LottoController extends BaseController
                     $matched = count(array_intersect($myNumbers, $result_nums));
                     $bonusMatched  = count(array_intersect($myNumbers, $bonus));
                     $user = User::where('id', $history->user_id)->first();
+                    $rate = Rate::where('level',$user->level)->first();
+                    $prize = new Prize;
+                    if($history->reverse == 0)
+                        $prize->title = Game::where('id', $game->id)->first()->game." 배팅";
+                    else 
+                        $prize->title = Game::where('id', $game->id)->first()->game."-리버스 배팅";
+                    $prize->list =  $history->list."  ".$history->bonus;                    
+                    $prize->user_id = $user->id;
+                    $prize->created_at = date('Y-m-d H:i:s');
+                    $prize->updated_at = date('Y-m-d H:i:s');
                     if($history->reverse == 0){
+                        $prize->type = 1;
                          if ($matched === 7) {
                             // "1등";
                             $history->result = 1;
-                             $user->amount = $user->amount + $game->first;
+                            $user->amount = $user->amount + $game->first;
+                             $prize->money = $game->first;                                              
+                            $prize->cur_amount = $user->amount;
+                            $prize->save();
                         } elseif ($matched === 6 && $bonusMatched >= 1) {
                             // "2등";
                             $history->result = 2;
                              $user->amount = $user->amount + $game->second;
+                              $prize->money = $game->second;                                              
+                            $prize->cur_amount = $user->amount;
+                            $prize->save();
                         } elseif ($matched === 6) {
                             // "3등";
                             $history->result = 3;
                              $user->amount = $user->amount + $game->third;
+                              $prize->money = $game->third;                                              
+                            $prize->cur_amount = $user->amount;
+                            $prize->save();
                         } elseif ($matched === 5) {
                             // "4등";
                             $history->result = 4;
                              $user->amount = $user->amount + $game->fourth;
+                              $prize->money = $game->fourth;                                              
+                            $prize->cur_amount = $user->amount;
+                            $prize->save();
                         } elseif ($matched === 4) {
                             // "5등";
                             $history->result = 5;
                             $user->amount = $user->amount + $game->fifth;
+                             $prize->money = $game->fifth;                                              
+                            $prize->cur_amount = $user->amount;
+                            $prize->save();
                         }elseif ($matched === 3 && $bonusMatched >= 1) {
                             // "6등";
                             $history->result = 6;
@@ -919,9 +1183,13 @@ class LottoController extends BaseController
                             if($rate->rate_1 < 0)
                             {
                                 $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_1) / 100);
+                                $prize->type = 0;
+                                $prize->money = $history->amount - ($history->amount * abs($rate->rate_1) / 100);
                             }
                             else{
                                 $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_1 / 100);
+                                $prize->type = 1;  
+                                $prize->money = $history->amount + ($history->amount *  $rate->rate_1 / 100);  
                             }
 
                         } elseif ($matched === 6 && $bonusMatched >= 1) {
@@ -930,9 +1198,13 @@ class LottoController extends BaseController
                             if($rate->rate_2 < 0)
                             {
                                 $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_2) / 100);
+                                $prize->type = 0;
+                                $prize->money = $history->amount - ($history->amount * abs($rate->rate_2) / 100);
                             }
                             else{
                                 $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_2 / 100);
+                                $prize->type = 1;  
+                                $prize->money = $history->amount + ($history->amount *  $rate->rate_2 / 100);  
                             }
                         } elseif ($matched === 6) {
                             // "3등";
@@ -940,9 +1212,13 @@ class LottoController extends BaseController
                             if($rate->rate_3 < 0)
                             {
                                 $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_3) / 100);
+                                $prize->type = 0;
+                                $prize->money = $history->amount - ($history->amount * abs($rate->rate_3) / 100);
                             }
                             else{
                                 $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_3 / 100);
+                                $prize->type = 1;  
+                                $prize->money = $history->amount + ($history->amount *  $rate->rate_3 / 100);  
                             }
                         } elseif ($matched === 5) {
                             // "4등";
@@ -950,9 +1226,13 @@ class LottoController extends BaseController
                             if($rate->rate_4 < 0)
                             {
                                 $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_4) / 100);
+                                $prize->type = 0;
+                                $prize->money = $history->amount - ($history->amount * abs($rate->rate_4) / 100);
                             }
                             else{
                                 $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_4 / 100);
+                                $prize->type = 1;  
+                                $prize->money = $history->amount + ($history->amount *  $rate->rate_4 / 100);  
                             }
                         } elseif ($matched === 4) {
                             // "5등";
@@ -960,22 +1240,35 @@ class LottoController extends BaseController
                             if($rate->rate_5 < 0)
                             {
                                 $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_5) / 100);
+                                $prize->type = 0;
+                                $prize->money = $history->amount - ($history->amount * abs($rate->rate_5) / 100);
                             }
                             else{
                                 $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_5 / 100);
+                                $prize->type = 1;  
+                                $prize->money = $history->amount + ($history->amount *  $rate->rate_5 / 100);  
                             }
                         } else {
                             // "꽝";
                             if($rate->rate_7 < 0)
                             {
                                 $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_7) / 100);
+                                $prize->type = 0;
+                                $prize->money = $history->amount - ($history->amount * abs($rate->rate_7) / 100);
                             }
                             else{
                                 $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_7 / 100);
+                                $prize->type = 1;  
+                                $prize->money = $history->amount + ($history->amount *  $rate->rate_7 / 100);  
                             }
                             $history->result = 0;
                         }
                         $history->status = 1;
+                        if($prize->money != 0)   
+                        {
+                            $prize->cur_amount = $user->amount;
+                            $prize->save();
+                        }
                     }                    
                     $user->save();                    
                     $history->save();
@@ -991,28 +1284,51 @@ class LottoController extends BaseController
                     $matched = count(array_intersect($myNumbers, $result_nums));
                     $hasBonus = in_array($bonus, $myNumbers);
                     $user = User::where('id', $history->user_id)->first();
+                    $prize = new Prize;
+                    if($history->reverse == 0)
+                        $prize->title = Game::where('id', $game->id)->first()->game." 배팅";
+                    else 
+                        $prize->title = Game::where('id', $game->id)->first()->game."-리버스 배팅";
+                    $prize->list =  $history->list."  ".$history->bonus;                    
+                    $prize->user_id = $user->id;
+                    $prize->created_at = date('Y-m-d H:i:s');
+                    $prize->updated_at = date('Y-m-d H:i:s');
                     if($history->reverse == 0){
+                        $prize->type = 1;
                         if ($matched === 5) {
                             // "1등";
                             $history->result = 1;
                              $user->amount = $user->amount + $game->first;
+                             $prize->money = $game->first;                                              
+                            $prize->cur_amount = $user->amount;
+                            $prize->save();
                         } elseif ($matched === 4 && $hasBonus) {
                             // "2등";
                             $history->result = 2;
                              $user->amount = $user->amount + $game->second;
+                             $prize->money = $game->second;                                              
+                            $prize->cur_amount = $user->amount;
+                            $prize->save();
                         } elseif ($matched === 4) {
                             // "3등";
                             $history->result = 3;
                              $user->amount = $user->amount + $game->third;
+                             $prize->money = $game->third;                                              
+                            $prize->cur_amount = $user->amount;
+                            $prize->save();
                         } elseif ($matched === 3) {
                             // "4등";
                             $history->result = 4;  
                              $user->amount = $user->amount + $game->fourth; 
+                             $prize->money = $game->fourth;                                              
+                            $prize->cur_amount = $user->amount;
+                            $prize->save();
                         } else {
                            
                             $history->result = 0;
                         }
                         $history->status = 1;
+                        
                     }
                     else{
                         if ($matched === 5) {
@@ -1021,9 +1337,13 @@ class LottoController extends BaseController
                             if($rate->rate_1 < 0)
                             {
                                 $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_1) / 100);
+                                $prize->type = 0;
+                                $prize->money = $history->amount - ($history->amount * abs($rate->rate_1) / 100);
                             }
                             else{
                                 $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_1 / 100);
+                                $prize->type = 1;  
+                                $prize->money = $history->amount + ($history->amount *  $rate->rate_1 / 100);  
                             }
 
                         } elseif ($matched === 4 && $hasBonus) {
@@ -1032,9 +1352,13 @@ class LottoController extends BaseController
                             if($rate->rate_2 < 0)
                             {
                                 $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_2) / 100);
+                                $prize->type = 0;
+                                $prize->money = $history->amount - ($history->amount * abs($rate->rate_2) / 100);
                             }
                             else{
                                 $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_2 / 100);
+                                $prize->type = 1;  
+                                $prize->money = $history->amount + ($history->amount *  $rate->rate_2 / 100);  
                             }
                         } elseif ($matched === 4) {
                             // "3등";
@@ -1042,9 +1366,13 @@ class LottoController extends BaseController
                             if($rate->rate_3 < 0)
                             {
                                 $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_3) / 100);
+                                $prize->type = 0;
+                                $prize->money = $history->amount - ($history->amount * abs($rate->rate_3) / 100);
                             }
                             else{
                                 $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_3 / 100);
+                                $prize->type = 1;  
+                                $prize->money = $history->amount + ($history->amount *  $rate->rate_3 / 100);  
                             }
                         } elseif ($matched === 3) {
                             // "4등";
@@ -1052,22 +1380,35 @@ class LottoController extends BaseController
                             if($rate->rate_4 < 0)
                             {
                                 $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_4) / 100);
+                                $prize->type = 0;
+                                $prize->money = $history->amount - ($history->amount * abs($rate->rate_4) / 100);
                             }
                             else{
                                 $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_4 / 100);
+                                $prize->type = 1;  
+                                $prize->money = $history->amount + ($history->amount *  $rate->rate_4 / 100);  
                             }                        
                         } else {
                             // "꽝";
                             if($rate->rate_7 < 0)
                             {
                                 $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_7) / 100);
+                                $prize->type = 0;
+                                $prize->money = $history->amount - ($history->amount * abs($rate->rate_7) / 100);
                             }
                             else{
                                 $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_7 / 100);
+                                $prize->type = 1;  
+                                $prize->money = $history->amount + ($history->amount *  $rate->rate_7 / 100);  
                             }
                             $history->result = 0;
                         }
                         $history->status = 1;
+                        if($prize->money != 0)   
+                        {
+                            $prize->cur_amount = $user->amount;
+                            $prize->save();
+                        }
                     }                    
                     $user->save();                    
                     $history->save();

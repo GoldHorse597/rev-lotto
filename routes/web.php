@@ -47,6 +47,7 @@ Route::middleware([SiteIsClosed::class])->group(function ()
     Route::post('/member/id_check', [MemberController::class, 'idCheck'])->name('web.member.idCheck');
     Route::post('/member/code_check', [MemberController::class, 'codeCheck'])->name('web.member.codeCheck');
     Route::post('/heartbeat', [MemberController::class, 'heartbeat'])->name('web.member.heartbeat');
+    Route::get('/member/grade', [MemberController::class, 'grade'])->name('web.member.grade');
 //     Route::get('/member/id_find', [MemberController::class, 'id_find'])->name('web.member.id_find');
 //     Route::post('/member/id_find', [MemberController::class, 'id_find_post'])->name('web.member.id_find_post');
 //     Route::get('/member/password_find', [MemberController::class, 'password_find'])->name('web.member.password_find');
@@ -154,6 +155,7 @@ Route::prefix(config('custom.admin_prefix'))
 
             Route::get('/lotto/game', [LottoController::class, 'game'])->name('admin.lotto.game');
             Route::get('/lotto/setting', [LottoController::class, 'setting'])->name('admin.lotto.setting');
+            Route::get('/lotto/settingedit', [LottoController::class, 'settingedit'])->name('admin.lotto.settingedit');
             Route::post('/lotto/setting', [LottoController::class, 'postSetting'])->name('admin.lotto.postSetting');
             Route::post('/lotto/scrap', [LottoController::class, 'scrap'])->name('admin.lotto.scrap');
             Route::post('/lotto/calc', [LottoController::class, 'calculate'])->name('admin.lotto.calc');

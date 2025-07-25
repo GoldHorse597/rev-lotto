@@ -39,69 +39,90 @@
         </ul>
       </div>
     @endif
-
+    
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">배당률 설정</h1>
     </div>
 
-    <div class="row">
-        <div class="card shadow col mr-1 mb-4 p-0">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">배당률 설정</h6>
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">
+                <span class="mr-1">배당률</span>
+                <span class="badge badge-primary badge-pill">{{ $settings->count() }}</span>
+            </h6>
+        </div>
+        <div class="card-body">           
+            <div class="table-responsive" style="min-height: 500px;">
+                <table class="table table-bordered" id="usersDataTable">
+                    <thead>
+                        <tr>
+                            <th>@lang('admin/app.number')</th>                           
+                            <th>등급</th>                            
+                            <th>1등</th>
+                            <th>2등</th>
+                            <th>3등</th>
+                            <th>4등</th>
+                            <th>5등</th>
+                            <th>꽝</th>                            
+                            <th>@lang('admin/app.manage')</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if ($settings->isEmpty())
+                        <tr>
+                            <td class="text-center" colspan="12"> @lang('admin/app.no_data') </td>
+                        </tr>
+                        @else
+                        @foreach($settings as $index => $setting)
+                        <tr>
+                            <td> {{ $index + 1 }} </td>                            
+                            <td>
+                                {{$setting->level}}
+                            </td>
+                            <td>
+                                {{$setting->rate_1}}
+                            </td>
+                            <td>
+                                {{$setting->rate_2}}
+                            </td>
+                            <td>
+                                {{$setting->rate_3}}
+                            </td>
+                            <td>
+                                {{$setting->rate_4}}
+                            </td>
+                            <td>
+                                {{$setting->rate_5}}
+                            </td>
+                            <td>
+                                {{$setting->rate_7}}
+                            </td>
+                           
+                            <td>
+                                <div class="btn-group btn-group-sm">                                   
+                                   
+                                    <a class="btn btn-primary" href="{{route('admin.lotto.settingedit')}}?id={{ $setting->id}}"> @lang('admin/app.modify') </a>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        @endforeach
+                        @endif
+                    </tbody>
+                </table>
             </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <form action="{{route('admin.lotto.postSetting')}}" method="post">
-                         @csrf
-                        <table class="table table-bordered" style="width:50%" cellspacing="0">
-                            <tbody>                           
-                                
-                                <tr>
-                                    <th>1등</th>
-                                    <td><input type="text" class="form-control" id="rate_1" name="rate_1" value="{{$setting->rate_1}}" style="display:inline-block;width:95%"> %</td>
-                                </tr>
-                                <tr>
-                                    <th>2등</th>
-                                    <td><input type="text" class="form-control" id="rate_2" name="rate_2" value="{{$setting->rate_2}}" style="display:inline-block;width:95%"> %</td>
-                                </tr>
-                                <tr>
-                                    <th>3등</th>
-                                    <td><input type="text" class="form-control" id="rate_3" name="rate_3" value="{{$setting->rate_3}}" style="display:inline-block;width:95%"> %</td>
-                                </tr>
-                                <tr>
-                                    <th>4등</th>
-                                    <td><input type="text" class="form-control" id="rate_4" name="rate_4" value="{{$setting->rate_4}}" style="display:inline-block;width:95%"> %</td>
-                                </tr>
-                                <tr>
-                                    <th>5등</th>
-                                    <td><input type="text" class="form-control" id="rate_5" name="rate_5" value="{{$setting->rate_5}}" style="display:inline-block;width:95%"> %</td>
-                                </tr>
-                                <tr>
-                                    <th>6등</th>
-                                    <td><input type="text" class="form-control" id="rate_6" name="rate_6" value="{{$setting->rate_6}}" style="display:inline-block;width:95%"> %</td>
-                                </tr>
-                                <tr>
-                                    <th>꽝</th>
-                                    <td><input type="text" class="form-control" id="rate_7" name="rate_7" value="{{$setting->rate_7}}" style="display:inline-block;width:95%"> %</td>
-                                </tr>
-                            
-                                
-                            </tbody>
-                        </table>
-                        <div class="form-group row m-0 mt-4">
-                            <div class="col-sm-3">
-                            </div>
-                            <div class="col-sm-9">
-                                <button type="button" class="btn btn-success" id="btn_save_setting">@lang('admin/app.save')</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>        
+        </div>
     </div>
+    <div class="d-flex justify-content-end mb-4">
+        <button class="btn btn-success" data-toggle="modal" data-target="#gameCreateModal">
+            <i class="fas fa-plus fa-sm text-white-50"></i> 로또 추가 </button>
+    </div>
+    <form id="processForm" action="" method="post">
+        @csrf
+    </form>
 @endsection
+
 @section('script')
     @parent
     <script>
@@ -109,26 +130,23 @@
             format: 'yyyy-mm-dd',
         });
 
-       
-        $('#btn_save_setting').click(function () {
-            var rate_1 = $('#rate_1').val();
-            var rate_2 = $('#rate_2').val();
-            var rate_3 = $('#rate_3').val();
-            var rate_4 = $('#rate_4').val();
-            var rate_5 = $('#rate_5').val();
-            var rate_6 = $('#rate_6').val();
-            var rate_7 = $('#rate_7').val();
-            $.ajax({
+        $('.btn-process').click(function (e) {
+            e.preventDefault();
+            let param = $(this).data('param');
+            if (param == 'delete' && !confirm('정말로 삭제하시겠습니까?')) {
+                return;
+            }
+            let form = $('#processForm');
+            let action = $(this).attr('href');
+            form.attr('action', action).submit();
+        });
+
+        function scrap(id){
+             $.ajax({
                 type: 'POST',
-                url: '{{ route('admin.lotto.postSetting') }}',
+                url: '{{ route('admin.lotto.scrap') }}',
                 data: {
-                    rate_1: rate_1,
-                    rate_2: rate_2,
-                    rate_3: rate_3,
-                    rate_4: rate_4,
-                    rate_5: rate_5,
-                    rate_6: rate_6,
-                    rate_7: rate_7
+                   id:id
                 },
                 dataType: 'json',
                 headers: {
@@ -136,7 +154,7 @@
                 },
                 success: function (data) {
                     if (data.success) {
-                        alertify.alert('', '@lang('admin/app.setting_saved_successfully')');
+                        location.reload();
                     }
                     else {
                         alertify.alert('', '@lang('admin/app.setting_saving_failed')');
@@ -148,6 +166,32 @@
                 complete : function() {
                 }
             });
-        });
+        }
+        function calc(id){
+             $.ajax({
+                type: 'POST',
+                url: '{{ route('admin.lotto.calc') }}',
+                data: {
+                   id:id
+                },
+                dataType: 'json',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function (data) {
+                    if (data.success) {
+                        location.reload();
+                    }
+                    else {
+                        alertify.alert('', '@lang('admin/app.setting_saving_failed')');
+                    }
+                },
+                error: function(error) {
+                    console.log(error);
+                },
+                complete : function() {
+                }
+            });
+        }
     </script>
 @endsection

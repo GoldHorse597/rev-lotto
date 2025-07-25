@@ -52,16 +52,17 @@
         <div class="card-body">
             <ul class="nav nav-pills mb-4">
                 <li class="nav-item">
-                    <a class="nav-link active" href="#main_info" data-toggle="tab">
-                        @lang('admin/app.main_info')
+                    <a class="nav-link active" href="{{route('admin.user.list')}}" >
+                        목록으로 가기
                     </a>
                 </li>
             </ul>
             <div class="tab-content">
                 <div class="tab-pane active" id="main_info">
-                    <form id="userEditForm" action="{{route('admin.user.edit', $user->id)}}" method="post">
+                    <form id="userEditForm" name="userEditForm" action="{{route('admin.user.edit', $user->id)}}" method="post">
                         @method('PUT')
                         @csrf
+                        <input type="hidden" name="mode" value="0">
                         <div class="table-responsive">
                             <table class="table table-bordered" width="100%" cellspacing="0" style="min-width: 600px;">
                                 <tbody>
@@ -87,8 +88,17 @@
                                     </tr>
                                     <tr>
                                         <th>@lang('admin/app.current_balance')</th>
-                                        <td>  <input type="text" style="max-width:200px;text-align:right; display:inline" class="form-control" id="amount" name="amount" value="{{number_format(floor($user->amount))}}" >@lang('admin/app.pot') </td>
+                                        <td> {{number_format(floor($user->amount))}} @lang('admin/app.pot') </td>
                                     </tr>
+                                    <tr>
+                                        <th>보유금액처리</th>
+                                        <td> <input type="text" class="form-control" style="max-width:200px;text-align:right; display:inline" id="amount" name="amount" value="" >  @lang('admin/app.pot')    
+                                           
+                                            <a href="#none" onclick="javascript:searchit(1);" class="btn btn-info w250">지급</a>
+                                            <a href="#none" onclick="javascript:searchit(2);" class="btn btn-danger w250">회수</a>
+                                        </td>
+                                    </tr>
+                                    
                                     <tr>
                                         <th>은행</th>
                                         <td>  
@@ -140,6 +150,14 @@
 @section('script')
     @parent
     <script>
+        function searchit(id) {
+            frm = document.userEditForm;
+            if(id ==1)
+                frm.mode.value = 1;
+            else
+                frm.mode.value = 2;
+            frm.submit();
+        }
         $(".datepicker").datepicker({
             format: 'yyyy-mm-dd',
         });
