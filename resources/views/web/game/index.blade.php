@@ -1047,6 +1047,8 @@
 				
 				<div class="message-box-gy ">
 				
+					
+					@if($reverse == 0)
 					<div class="dot-item">실시간로또 게임당 1,100원 매일 1회 (19:30 이후)</div>
 					<div class="dot-item">한국(6/45) 게임당 1,100원 매주 토 (20:35 이후)</div>
 					<!-- <div class="dot-item">중국(쌍색구) 게임당 1,100원 매주 화/목/일 (21:30 이후)</div>
@@ -1057,7 +1059,6 @@
 					<div class="dot-item">일본(로또7) 게임당 3,300원 매주 금 (19:00 이후)</div>
 					<div class="dot-item">일본(로또미니) 게임당 3,300원 매주 화 (19:00 이후)</div></br>
 					<div class="dot-item">당첨결과는 현지 추첨완료 시간으로부터 +2시간 까지 소요될 수 있습니다.</div></br>
-					@if($reverse == 0)
 					<div class="dot-item">- 당첨금안내</div>
 					<div class="dot-item">실시간로또 고정 당첨금액 </div>
 					<div class="dot-item">1등 30억 (1등당첨차 n/1)</div>
@@ -1068,13 +1069,25 @@
 
 					<div class="dot-item">그 외 로또 - 정식게임 해당회차 당첨금 반영</div>
 					@elseif($reverse == 1)
+					<div class="dot-item">실시간로또 매일 1회 (19:30 이후)</div>
+					<div class="dot-item">한국(6/45) 매주 토 (20:35 이후)</div>
+					<!-- <div class="dot-item">중국(쌍색구) 게임당 1,100원 매주 화/목/일 (21:30 이후)</div>
+					<div class="dot-item">중국(따루토) 게임당 1,100원 매주 월/수/토 (22:00 이후)</div> -->
+					<div class="dot-item">미국(파워볼) 매주 화/목/일 (13:00 이후)</div>
+					<div class="dot-item">미국(메가밀리언) 매주 수/토 (13:00 이후)</div>
+					<div class="dot-item">일본(로또6) 매주 월/목 (19:00 이후)</div>
+					<div class="dot-item">일본(로또7) 매주 금 (19:00 이후)</div>
+					<div class="dot-item">일본(로또미니) 매주 화 (19:00 이후)</div></br>
+					<div class="dot-item">당첨결과는 현지 추첨완료 시간으로부터 +2시간 까지 소요될 수 있습니다.</div></br>
+
 					<div class="dot-item">- 당첨금안내</div>
-					<div class="dot-item">1등 원금 100% 손실 </div>
-					<div class="dot-item">2등 원금 30% 손실</div>
-					<div class="dot-item">3등 배당금 0.3% </div>
-					<div class="dot-item">4등 배당금 0.5% </div>
-					<div class="dot-item">5등 배당금 0.7% </div>
-					<div class="dot-item">그외 배당금 1.0%</div>
+					<div class="dot-item">1등 - 100% 손실 </div>
+					<div class="dot-item">2등 - 30% 손실</div>
+					<div class="dot-item">3등 - 0.3% </div>
+					<div class="dot-item">4등 - 0.4% </div>
+					<div class="dot-item">5등 - 0.5% </div>
+					<div class="dot-item">6등~꽝 - 0.7% </div>
+					<div class="dot-item">그외 배당금 - 공지사항 참조</div>
 					@endif
 				</div>
 				
