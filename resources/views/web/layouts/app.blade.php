@@ -6,8 +6,8 @@
         <meta meta="" name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, minimum-scale=1">
         <meta name="description" content="미국로또 파워볼주문 파워플레이옵션 QP주문 로또캠프">
         <meta property="og:type" content="website">
-        <meta property="og:site_name" content="로또캠프-해외로또 구매대행">
-        <meta property="og:title" content="파워볼 구매하기 "> 
+        <meta property="og:site_name" content="리버스로또-해외로또 구매대행">
+        <meta property="og:title" content="리버스로또 구매하기"> 
         <meta name="keywords" content="파워볼, 메가밀리언, 로또6/45 , 연금복원720, 쌍색구, 따루토, 로또6, 로또7, 미니 공식복권 신뢰도1위 해외로또 구매대행">
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <link rel="stylesheet" type="text/css" href= "{{ asset('css/web/google.font.css')}}">
