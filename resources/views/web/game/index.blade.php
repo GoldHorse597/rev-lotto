@@ -907,7 +907,7 @@
 					</div>
 				</div>
 				@if($game->id == 1)
-				<iframe id="gameifr" src="/game_page" allowfullscreen style="width: 100%;height: 800px;pointer-events: none;"></iframe>
+				<iframe id="gameifr" src="https://rev-lotto.com/game_page/" allowfullscreen style="width: 100%;height: 800px;pointer-events: none;"></iframe>
 				<!-- <iframe src="/admin/live" style="width: 100%;height: 800px;"></iframe> -->
 				@endif
 				<h3 class="tit-lotto-buy">
