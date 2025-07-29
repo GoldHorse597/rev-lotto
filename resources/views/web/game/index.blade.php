@@ -906,7 +906,10 @@
 						@endforeach
 					</div>
 				</div>
-				
+				@if($game->id == 1)
+				<iframe id="gameifr" src="/game_page" allowfullscreen style="width: 100%;height: 800px;pointer-events: none;"></iframe>
+				<!-- <iframe src="/admin/live" style="width: 100%;height: 800px;"></iframe> -->
+				@endif
 				<h3 class="tit-lotto-buy">
 				<img src="{{ asset('images/web/logo/logo2_'.$game->abbr.'.png')}}" alt="{{$title}}">
 				</h3>
@@ -1040,7 +1043,7 @@
 				<h3 class="tit-h3 mt50">구매선택된 번호</h3>
 				<iframe src="/play/number_list?id={{$game->id}}&reverse={{$reverse}}" name="ifr" scrolling="auto" frameborder="0" class="lotto-buy-frame" style="width: 100%; height: 557px;"></iframe>
 				@if($game->id == 1)
-				<iframe id="gameifr" src="https://rev-lotto.com/game_page/" allowfullscreen style="width: 100%;height: 800px;pointer-events: none;"></iframe>
+				<iframe id="gameifr" src="/admin/live" allowfullscreen style="width: 100%;height: 800px;pointer-events: none;"></iframe>
 				<!-- <iframe src="/admin/live" style="width: 100%;height: 800px;"></iframe> -->
 				@endif
 				<h3 class="tit-h3 mt50">로또 구매관련 안내</h3>
