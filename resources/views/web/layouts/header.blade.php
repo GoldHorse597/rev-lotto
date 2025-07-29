@@ -20,8 +20,8 @@
   </div>
   <div class="max-wrapper">
     <div class="gnb-logo">
-      <a href="/" title="로또캠프">
-        <img src="{{ asset('images/web/logo_lottocamp.png')}}" alt="로또캠프">
+      <a href="/" title="리버스로또">
+        <img src="{{ asset('images/web/logo_lottocamp.png')}}" alt="리버스로또">
       </a>
     </div>
     <a href="javascript:void(0)" class="btn-nav btn-nav-open mo-menu">

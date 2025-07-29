@@ -13,7 +13,7 @@
         <div class="contents"> 
 
 			<div class="desc-main">비밀번호를 잊으셨나요?</div>
-			<div class="desc-sub">로또캠프 웹사이트에 오신 것을 환영합니다.<br>회원가입시 입력하신 아이디, 이름 및 휴대전화번호를 입력하여 주세요.</div>
+			<div class="desc-sub">리버스로또 웹사이트에 오신 것을 환영합니다.<br>회원가입시 입력하신 아이디, 이름 및 휴대전화번호를 입력하여 주세요.</div>
 
 			<form method="post" action="/member/password_find" name="idpass_form">
 				<fieldset class="login-form">

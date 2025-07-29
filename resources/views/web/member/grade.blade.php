@@ -1,5 +1,5 @@
 <html lang="ko"><head>
-    <title>로또캠프</title>
+    <title>리버스로또</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="user-scalable=yes, initial-scale=1.0, width=device-width"> 
