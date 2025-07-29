@@ -224,7 +224,30 @@ class LottoController extends BaseController
         $game->save();
     }
     private function processlive(){
+        $game = Game::where('id', 1)->first();
+        $apiUrl = "https://rev-lotto.com/game_page/api/result";
+        $response = file_get_contents($apiUrl);
+        
+        $data = json_decode($response, true);
 
+        if (!$data) 
+        {
+            return;                
+        }
+
+        $numbersString = implode(',',$data["mainNumbers"]);
+        $bonus = $data['bonusNumber'];
+        $drawDate = $data['nextRoudStartAt'];
+      
+        $game->lastresult = $numbersString;
+        $game->bonus = $bonus;
+        $game->round = $data['nextRoudStartAt'];
+        $date = new \DateTime($drawDate);
+        $today = new \DateTime();
+        $game->lastday = $today->format('Y-m-d').' 19:30:00';
+        $today->add(new \DateInterval('P1D'));
+        $game->weekday = $today->format('Y-m-d').' 19:30:00';
+        $game->save();
     }
     private function processmm1(){
         $game = Game::where('id', 3)->first();
@@ -1420,7 +1443,7 @@ class LottoController extends BaseController
     }
     
     public function live(){
-         $page_title = '로또 목록';
+        $page_title = '로또 목록';
         return view('admin.lotto.live', compact('page_title'));
     }
 }
