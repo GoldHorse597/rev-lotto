@@ -49,6 +49,8 @@ class MypageController extends BaseController
         $deposit->amount =  str_replace(',', '', $request->amount);;
         $deposit->status = 0;
         $deposit->type = 1;   
+        $deposit->created_at = date('Y-m-d H:i:s');
+        $deposit->updated_at = date('Y-m-d H:i:s');
         $deposit->save();          
         return redirect()->route('mypage.withdrawal');
     }

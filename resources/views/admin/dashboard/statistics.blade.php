@@ -180,7 +180,7 @@
                                             @switch ($statistic->status)
                                                 @case(0)
                                                 <a class="dropdown-item btn btn-success btn-process" data-param="approve" href="{{route('admin.statistic.process', ['id'=> $statistic->id, 'param' => 'approve'])}}"> @lang('admin/app.approve') </a>
-                                                <a class="dropdown-item btn btn-danger btn-process" data-param="block" href="{{route('admin.statistic.process', ['id'=> $statistic->id, 'param' => 'block'])}}"> @lang('admin/app.block') </a>
+                                                <a class="dropdown-item btn btn-danger btn-process" data-param="block" href="{{route('admin.statistic.process', ['id'=> $statistic->id, 'param' => 'block'])}}">취소</a>
                                                 @break
                                                                                       
                                             @endswitch
