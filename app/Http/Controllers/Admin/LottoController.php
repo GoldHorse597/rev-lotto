@@ -1307,6 +1307,7 @@ class LottoController extends BaseController
                     $matched = count(array_intersect($myNumbers, $result_nums));
                     $hasBonus = in_array($bonus, $myNumbers);
                     $user = User::where('id', $history->user_id)->first();
+                    $rate = Rate::where('level',$user->level)->first();
                     $prize = new Prize;
                     if($history->reverse == 0)
                         $prize->title = Game::where('id', $game->id)->first()->game." 배팅";
