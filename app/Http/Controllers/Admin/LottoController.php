@@ -237,16 +237,16 @@ class LottoController extends BaseController
 
         $numbersString = implode(',',$data["mainNumbers"]);
         $bonus = $data['bonusNumber'];
-        $drawDate = $data['nextRoudStartAt'];
+        $drawDate = $data['roundDate'];
       
         $game->lastresult = $numbersString;
         $game->bonus = $bonus;
         $game->round = $data['nextRoudStartAt'];
         $date = new \DateTime($drawDate);
-        $today = new \DateTime();
-        $game->lastday = $today->format('Y-m-d').' 19:30:00';
-        $today->add(new \DateInterval('P1D'));
-        $game->weekday = $today->format('Y-m-d').' 19:30:00';
+        
+        $game->lastday = $date->format('Y-m-d').' 19:30:00';
+        $date->add(new \DateInterval('P1D'));
+        $game->weekday = $date->format('Y-m-d').' 19:30:00';
         $game->save();
     }
     private function processmm1(){
