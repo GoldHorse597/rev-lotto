@@ -24,7 +24,15 @@ class MypageController extends BaseController
     public function postDeposit(Request $request)
     {
         $authUser = \Auth::guard('web')->user();
-        $deposit = new Depowith;     
+        // 이미 대기중인 입금신청이 있는지 확인
+        $exists = Depowith::where('user_id', $authUser->id)
+            ->where('status', 0)
+            ->where('type', 0)
+            ->exists();
+        if ($exists) {
+            return redirect()->route('mypage.deposit')->with('message', '이미 처리 대기중인 요청건이 있습니다.');
+        }
+        $deposit = new Depowith;
         $deposit->user_id = $authUser->id;
         $deposit->amount =  str_replace(',', '', $request->amount);;
         $deposit->status = 0;
@@ -44,14 +52,31 @@ class MypageController extends BaseController
     public function postWithdrawal(Request $request)
     {
         $authUser = \Auth::guard('web')->user();
+        // 이미 대기중인 출금신청이 있는지 확인
+        $exists = Depowith::where('user_id', $authUser->id)
+            ->where('status', 0)
+            ->where('type', 1)
+            ->exists();
+        if ($exists) {
+            return redirect()->route('mypage.withdrawal')->with('message', '이미 처리 대기중인 요청건이 있습니다.');
+        }
+        
+        // 출금 금액이 보유 금액보다 많으면 에러
+        $balance = floor($authUser->amount);
+        $withdrawalAmount = str_replace(',', '', $request->amount);
+        if ($withdrawalAmount > $balance) {
+            return redirect()->route('mypage.withdrawal')->with('message', '출금 금액이 보유금액보다 많습니다.');
+        }
         $deposit = new Depowith;     
         $deposit->user_id = $authUser->id;
-        $deposit->amount =  str_replace(',', '', $request->amount);;
+        $deposit->amount =  str_replace(',', '', $request->amount);
         $deposit->status = 0;
         $deposit->type = 1;   
         $deposit->created_at = date('Y-m-d H:i:s');
         $deposit->updated_at = date('Y-m-d H:i:s');
-        $deposit->save();          
+        $deposit->save();   
+        $authUser->amount -= $deposit->amount; // 출금 금액 차감
+        $authUser->save();       
         return redirect()->route('mypage.withdrawal');
     }
     public function depoWith(Request $request){

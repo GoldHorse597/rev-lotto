@@ -36,6 +36,12 @@
             </div>      
         </form>
         @endif
+
+        @if(session('message'))
+        <div class="alert alert-success" role="alert" style="margin:20px 0;">
+            {{ session('message') }}
+        </div>
+        @endif
         <h3 class="tit-h3 mt50">{{$type == 3? '입출금':'신청'}}내역 </h3>
         <div class="table-lisw-w table-type-mobile table-line-type buy-etc-list">
             <div class="item th-head">
@@ -71,12 +77,35 @@
         </div>
     </div>
 </section>
-<script>
-    function searchit(){
 
-		frm = document.search_form;
-		frm.submit();		
-	}
+<script>
+    let flag = true;
+    function searchit(){
+        var amount = document.getElementById('amount').value.replace(/,/g, '');
+        if(!amount || parseInt(amount) === 0) {
+            alert('금액을 입력하세요.');
+            document.getElementById('amount').focus();
+            return;
+        }
+        // 출금일 때만 보유금액 체크
+        var type = {{ $type ?? 0 }};
+        if(type == 2) {
+            var balance = {{ floor(Auth::user()->amount) }};
+            if(parseInt(amount) > balance) {
+                alert('출금 금액이 보유금액보다 많습니다.');
+                document.getElementById('amount').focus();
+                return;
+            }
+        }
+        if(flag){
+            flag = false;
+            frm = document.search_form;
+            frm.submit();
+        }
+        else{
+            alert("이미 신청하셨습니다.");
+        }
+    }
     function roundToManUnit(input) {
         const value = parseInt(input.value.replace(/,/g, ""));
     

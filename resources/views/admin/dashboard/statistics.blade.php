@@ -177,14 +177,12 @@
                                     <div class="btn-group btn-group-sm">
                                         <a class="btn btn-info dropdown-toggle text-decoration-none text-white " href="#" data-toggle="dropdown"> @lang('admin/app.manage') </a>
                                         <div class="dropdown-menu" id="dropdown_process">
-                                            @switch ($statistic->status)
-                                                @case(0)
+                                            @if($statistic->status == 0)                                                
                                                 <a class="dropdown-item btn btn-success btn-process" data-param="approve" href="{{route('admin.statistic.process', ['id'=> $statistic->id, 'param' => 'approve'])}}"> @lang('admin/app.approve') </a>
-                                                <a class="dropdown-item btn btn-danger btn-process" data-param="block" href="{{route('admin.statistic.process', ['id'=> $statistic->id, 'param' => 'block'])}}">취소</a>
-                                                @break
-                                                                                      
-                                            @endswitch
+                                                <a class="dropdown-item btn btn-danger btn-process" data-param="block" href="{{route('admin.statistic.process', ['id'=> $statistic->id, 'param' => 'block'])}}">취소</a>                                                                            
+                                            @else
                                             <a class="dropdown-item btn btn-danger btn-process" data-param="delete" href="{{route('admin.statistic.process', ['id'=> $statistic->id, 'param' => 'delete'])}}"> @lang('admin/app.delete') </a>
+                                            @endif
                                         </div>
                                     <div>
                                 </div>

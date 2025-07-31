@@ -184,8 +184,8 @@ class DashboardController extends BaseController
                     $user = User::where('id', $statistic->user_id)->first();
                     if($statistic->type == 0)
                         $user->amount = $user->amount + $statistic->amount;
-                    else
-                        $user->amount = $user->amount - $statistic->amount;
+                    // else
+                    //     $user->amount = $user->amount - $statistic->amount;
                    
                     // $total  = Depowith::where('user_id',$user->id)->where('type', 0)->where('status', 1)->sum('amount');
                     // if ($total < 5000000) {
@@ -199,6 +199,8 @@ class DashboardController extends BaseController
                     break;
                 case 'block':
                     session()->flash('success', ' 신청을 취소하였습니다.');
+                    if($statistic->type == 1)
+                        $user->amount = $user->amount + $statistic->amount;
                     $statistic->status = 2;                   
                     break;
                
