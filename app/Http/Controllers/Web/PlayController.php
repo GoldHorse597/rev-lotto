@@ -292,6 +292,70 @@ class PlayController extends BaseController
                         $prize->save();
                     }
                 }
+                else{
+                     if($authUser->amount >= (int)str_replace(',', '', $request->amount)){
+                        $normalNumbers = array_filter([
+                        $request->s_num1, $request->s_num2, $request->s_num3,
+                        $request->s_num4, $request->s_num5, $request->s_num6, $request->s_num7,
+                        ]);
+                        $normalNumbers = array_filter([
+                            $request->s_num1, $request->s_num2, $request->s_num3,
+                            $request->s_num4, $request->s_num5, $request->s_num6, $request->s_num7,
+                        ], function ($v) {
+                            return $v !== null && $v !== '' && $v !== 'undefined';
+                        });
+                    
+                        // 보너스 2자리
+                        $bonusNumbers = array_filter([
+                            $request->s_num11, $request->s_num12
+                        ], function ($v) {
+                            return $v !== null && $v !== '' && $v !== 'undefined';
+                        });
+                       
+                        $exists = DB::table('histories')->where([
+                            ['user_id', '=', $authUser->id],
+                            ['game_id', '=', $request->part_idx],
+                            ['amount', '=', (int)str_replace(',', '', $request->amount)],
+                            ['list', '=', implode(',', $normalNumbers)],
+                            ['bonus', '=', implode(',', $bonusNumbers)],
+                            ['round', '=', Game::where('id', $request->part_idx)->first()->round],
+                            ['reverse', '=', $request->reverse],
+                            ['type', '=',  $request->cho_method ],
+                        ])->exists();
+                        if (!$exists) {
+                        DB::table('histories')->insert([
+                                'user_id' => $authUser->id,
+                                'game_id' => $request->part_idx,
+                                'amount' => (int)str_replace(',', '', $request->amount),
+                                'list' => implode(',', $normalNumbers),
+                                'round' => Game::where('id', $request->part_idx)->first()->round,
+                                'bonus' => implode(',', $bonusNumbers),
+                                'status' => 0,
+                                'reverse' => $request->reverse,
+                                'type' => $request->cho_method ,
+                                'created_at' => now(),
+                                'updated_at' => now(),
+                            ]);
+                        }
+                       
+                        $authUser->amount -= (int)str_replace(',', '', $request->amount);
+                        $authUser->save();
+
+                        $prize = new Prize;
+                         if($request->reverse == 0)
+                                $prize->title = Game::where('id', $request->part_idx)->first()->game." 배팅";
+                            else 
+                                $prize->title = Game::where('id', $request->part_idx)->first()->game."-리버스 배팅";
+                        $prize->list =  implode(',', $normalNumbers)."  ".implode(',', $bonusNumbers);
+                        $prize->money = intval(str_replace(',', '', $request->amount));
+                        $prize->type = 0;                       
+                        $prize->cur_amount = $authUser->amount;
+                        $prize->created_at = date('Y-m-d H:i:s');
+                        $prize->updated_at = date('Y-m-d H:i:s');
+                        $prize->user_id = $authUser->id;
+                        $prize->save();
+                    }
+                }
             }
             else{
                 $ids = explode('@', $arr); // ['2', '3', '4', '5']

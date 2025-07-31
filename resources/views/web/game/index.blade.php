@@ -398,12 +398,20 @@
 						alert('금액을 입력해주세요.');
 						return;
 					}
-					else {
-						document.form1.mode.value = "insert";
-						//EXIT;
-						form.submit();
-						click_clear();
+					// 보유금액 체크
+					var balance = {{ floor(Auth::user()->amount) }};
+					var inputAmount = parseInt(document.form1.amount.value.replace(/,/g, ''));
+					if(inputAmount > balance) {
+						alert('보유금액이 부족합니다.\n구매하실 금액을 확인해주세요.');
+						return;
 					}
+					if(!confirm('구매하시겠습니까?')) return;
+					document.form1.mode.value = "purchage";
+					// AJAX로 POST 후 새로고침
+					var formData = $(form).serialize();
+					$.post('/play/number_list_ok', formData, function(res) {
+						location.reload();
+					});
 				}else {
 					document.form1.mode.value = "insert";
 					//EXIT;
@@ -412,6 +420,115 @@
 				}
 				
 				
+			}
+
+			function num_save1() {
+				// 일반
+				var no_num = '';
+				var num_count = 0;
+				form = document.form1;
+				if (document.form1.s_num1.value == "QP") { // 일반번호가 QPick 일때
+					form.s_num1.value = "QP";
+					form.s_num2.value = "QP";
+					form.s_num3.value = "QP";
+					form.s_num4.value = "QP";
+					form.s_num5.value = "QP";
+					form.s_num6.value = "QP";
+					form.s_num7.value = "QP";
+				} else {
+					for (i = 1; i <= no_max_k_num; i++) {
+						num_id = 'k_num' + i;
+						if (document.all[num_id].className == 'on' || document.all[num_id].className == 'on') {
+							if (no_num == '') no_num = i;
+							else no_num = no_num + '-' + i;
+							num_count++;
+						}
+					}
+					if (num_count < {{$normal}}) {
+						let normalCount = {{ $normal }};
+						alert("일반번호 " + normalCount + "를 선택하세요.");
+						return;
+					}
+					var kkk = no_num.split('-');
+					form.s_num1.value = kkk[0];
+					form.s_num2.value = kkk[1];
+					form.s_num3.value = kkk[2];
+					form.s_num4.value = kkk[3];
+					form.s_num5.value = kkk[4];
+					form.s_num6.value = kkk[5];
+					form.s_num7.value = kkk[6];
+				}
+				// 보너스
+				var no_bonus = '';
+				var bonus_count = 0;
+				if (document.form1.s_num8.value == "QP") { // 파워볼이 QPick 일때
+					form.s_num8.value = "QP";
+				} else {
+					if(no_max_bonus >0){
+						for (i = 1; i <= no_max_bonus; i++) {
+							bonus_id = 'bonus' + i;
+							if (document.all[bonus_id].className == 'on' || document.all[bonus_id].className == 'on') {
+								no_bonus = i;
+								bonus_count++;
+							}
+						}
+						if (bonus_count < 1 && no_max_bonus != 0) {
+							alert('보너스를 선택하세요.');
+							return;
+						}
+						form.s_num8.value = no_bonus;
+					}
+				}
+				if (document.form1.s_num1.value == "") {
+					alert("일반번호를 선택해주세요");
+					return;
+				} else if (document.form1.s_num2.value == "") {
+					alert("일반번호를 선택해주세요");
+					return;
+				} else if (document.form1.s_num3.value == "") {
+					alert("일반번호를 선택해주세요");
+					return;
+				} else if (document.form1.s_num4.value == "") {
+					alert("일반번호를 선택해주세요");
+					return;
+				} else if (document.form1.s_num5.value == "") {
+					alert("일반번호를 선택해주세요");
+					return;
+				} else if (document.form1.s_num6.value == "") {
+					alert("일반번호을 선택해주세요");
+					return;
+				} 
+				 else if (document.form1.s_num7.value == "") {
+					alert("일반번호을 선택해주세요");
+					return;
+				} 
+				else if (document.form1.s_num8.value == "" && no_max_bonus != 0) {
+					alert("파워볼을 선택해주세요");
+					return;
+				}
+				
+				else if({{$reverse}} == 1)
+				{
+					if(document.form1.amount.value == "" || document.form1.amount == "0" )
+					{
+						alert('금액을 입력해주세요.');
+						return;
+					}
+					// 보유금액 체크
+					var balance = {{ floor(Auth::user()->amount) }};
+					var inputAmount = parseInt(document.form1.amount.value.replace(/,/g, ''));
+					if(inputAmount > balance) {
+						alert('보유금액이 부족합니다.\n구매하실 금액을 확인해주세요.');
+						return;
+					}
+					if(!confirm('구매하시겠습니까?')) return;
+					document.form1.mode.value = "purchage";
+					// AJAX로 POST 후 새로고침
+					var formData = $(form).serialize();
+					$.post('/play/number_list_ok', formData, function(res) {
+							location.reload();
+					});
+				}
 			}
 
 			function num_many_save() {
@@ -1010,10 +1127,16 @@
 							<!-- <a href="#none" onclick="click_half_random();" class="btn-comm-mid btn-gy">반자동선택</a> -->
 							<!-- <a href="#none" onclick="click_mynumber();" class="btn-comm-mid btn-gy">번호보관</a> -->
 						</div>
+						@if($reverse == 0)
 						<div class="btn-cart">
-							<a href="#none" onclick="num_save();">
-							<img src="{{asset('/images/web/ico_in_cart.png')}}" alt="icon" class="mr5"> 선택된 번호 구매리스트에 담기 </a>
+							<a href="#none" onclick="num_save();">							
+							<img src="{{asset('/images/web/ico_in_cart.png')}}" alt="icon" class="mr5"> 선택된 번호 구매리스트에 담기 </a>							
 						</div>
+						@else
+						<div class="btn-cart">
+							<a href="#none" onclick="num_save1();">바로 구매하기 </a>	
+						</div>
+						@endif
 						@if($reverse == 0)
 						<div class="btn-select">
 							<select name="game_su" id="game_su">
@@ -1040,9 +1163,10 @@
 						</div>
 					</div>
 				</form>
+				@if($reverse == 0)
 				<h3 class="tit-h3 mt50">구매선택된 번호</h3>
 				<iframe src="/play/number_list?id={{$game->id}}&reverse={{$reverse}}" name="ifr" scrolling="auto" frameborder="0" class="lotto-buy-frame" style="width: 100%; height: 557px;"></iframe>
-				
+				@endif
 				<h3 class="tit-h3 mt50">로또 구매관련 안내</h3>
 				
 				<div class="message-box-gy ">
