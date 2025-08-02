@@ -27,7 +27,7 @@ class MypageController extends BaseController
         // 이미 대기중인 입금신청이 있는지 확인
         $exists = Depowith::where('user_id', $authUser->id)
             ->where('status', 0)
-            ->where('type', 0)
+            // ->where('type', 0)
             ->exists();
         if ($exists) {
             return redirect()->route('mypage.deposit')->with('message', '이미 처리 대기중인 요청건이 있습니다.');
@@ -55,7 +55,7 @@ class MypageController extends BaseController
         // 이미 대기중인 출금신청이 있는지 확인
         $exists = Depowith::where('user_id', $authUser->id)
             ->where('status', 0)
-            ->where('type', 1)
+            // ->where('type', 1)
             ->exists();
         if ($exists) {
             return redirect()->route('mypage.withdrawal')->with('message', '이미 처리 대기중인 요청건이 있습니다.');
