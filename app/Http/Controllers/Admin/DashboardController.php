@@ -199,6 +199,7 @@ class DashboardController extends BaseController
                     break;
                 case 'block':
                     session()->flash('success', ' 신청을 취소하였습니다.');
+                     $user = User::where('id', $statistic->user_id)->first();
                     if($statistic->type == 1)
                         $user->amount = $user->amount + $statistic->amount;
                     $statistic->status = 2;                   
