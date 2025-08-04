@@ -85,13 +85,13 @@
         if(!amount || parseInt(amount) === 0) {
             alert('금액을 입력하세요.');
             document.getElementById('amount').focus();
-            return;
+            return false;
         }
         // 만단위 체크
         if(parseInt(amount) % 10000 !== 0) {
             alert('금액은 만(10,000) 단위로만 입력 가능합니다.');
             document.getElementById('amount').focus();
-            return;
+            return false;
         }
         // 출금일 때만 보유금액 체크
         var type = {{ $type ?? 0 }};
@@ -100,16 +100,18 @@
             if(parseInt(amount) > balance) {
                 alert('출금 금액이 보유금액보다 많습니다.');
                 document.getElementById('amount').focus();
-                return;
+                return false;
             }
         }
         if(flag){
             flag = false;
             frm = document.search_form;
             frm.submit();
+            return true;
         }
         else{
             alert("이미 신청하셨습니다.");
+            return false;
         }
     }
     function roundToManUnit(input) {
