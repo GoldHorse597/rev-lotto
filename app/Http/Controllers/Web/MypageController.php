@@ -151,7 +151,7 @@ class MypageController extends BaseController
 
         $authUser = \Auth::guard('web')->user();
         $part_idx = $request->part_idx;
-        $status = $request->status;
+        $status = $request->query('status');
         $games = Game::all();
         $query = DB::table('histories')
             ->where('histories.user_id', $authUser->id)

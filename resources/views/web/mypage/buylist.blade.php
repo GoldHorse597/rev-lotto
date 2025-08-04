@@ -55,10 +55,9 @@
                             <span class="tit">결과</span> 
 
 							<select name="status" id="status" class="w150">
-                                <option value="" selected="selected">전체</option>
-                                <option value="0" {{ $status == 0 ? 'selected' : '' }}>결과 대기중</option>
-                                <option value="1" {{ $status == 1 ? 'selected' : '' }}>결과 처리됨</option>
-                               
+                                <option value="" {{ ($status === null || $status === '') ? 'selected' : '' }}> 전체 </option>
+                                <option value="0" {{ ($status === 0 || $status === '0') ? 'selected' : '' }}>결과 대기중</option>
+                                <option value="1" {{ ($status === 1 || $status === '1') ? 'selected' : '' }}>결과 처리됨</option>
                             </select>
 
                         </div>
@@ -75,6 +74,7 @@
                 <div class="pwauto">번호</div>
                 <div class="pwauto">금액</div>
                 <div class="w15p">당첨여부</div>
+                <div class="pwauto">수익금</div>
             </div>
             <div class="tbody">
                 @foreach($lists as $list)
@@ -97,6 +97,7 @@
                             {{ $list->result }}등
                         @endif
                     </div>
+                    <div class="pwauto">{{number_format(floor($list->amount),0)}}</div>
                 </div>
                 @endforeach
             </div>
@@ -110,9 +111,9 @@
 </section>
 <script type="text/javascript">
 	function searchit(){
-		frm = document.items;
-		frm.submit();
-	}
+        frm = document.items;
+        frm.submit();
+    }
     // jQuery(function($){
     //     $.datepicker.regional['ko'] = {
     //         closeText: '닫기',
