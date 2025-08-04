@@ -16,7 +16,7 @@
     <div class="contents">    
         <div class="inner-contents">
         @if($type != 3)
-        <form name="search_form" method="post" action="/mypage/{{$type == 1? 'deposit':'withdrawal'}}">
+        <form name="search_form" method="post" action="/mypage/{{$type == 1? 'deposit':'withdrawal'}}" onsubmit="return searchit();">
             @csrf
             <div class="search-box al-left">
                 <div class="item  item-etc" style="justify-content: center" >
@@ -84,6 +84,12 @@
         var amount = document.getElementById('amount').value.replace(/,/g, '');
         if(!amount || parseInt(amount) === 0) {
             alert('금액을 입력하세요.');
+            document.getElementById('amount').focus();
+            return;
+        }
+        // 만단위 체크
+        if(parseInt(amount) % 10000 !== 0) {
+            alert('금액은 만(10,000) 단위로만 입력 가능합니다.');
             document.getElementById('amount').focus();
             return;
         }

@@ -97,7 +97,7 @@
                             {{ $list->result }}등
                         @endif
                     </div>
-                    <div class="pwauto">{{number_format(floor($list->amount),0)}}</div>
+                    <div class="pwauto">{{number_format(floor($list->profit),0)}}</div>
                 </div>
                 @endforeach
             </div>
