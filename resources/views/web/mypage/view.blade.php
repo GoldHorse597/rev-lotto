@@ -1,6 +1,3 @@
-
-
-
 @extends('web.layouts.app')
 <link rel="stylesheet" type="text/css" href="{{ asset('css/web/sb-admin-2.min.css') }}?v=1.2">
 <section class="container">
@@ -33,16 +30,18 @@
         </div>
         <b>
           <div class="list-relation">
+            @if($prev && $prev->id)
             <div class="item">
-              <span>
-                <img src="{{asset('/images/web/ico_aw_up.gif')}}"> 이전 쪽지 </span>
-              <a href="message_view?id={{$prev && $prev->id ? $prev->id :''}}">{{$prev && $prev->title?$prev->title:''}}</a>
+              <span><img src="{{asset('/images/web/ico_aw_up.gif')}}"> 이전 쪽지 </span>
+              <a href="message_view?id={{$prev->id}}">{{$prev->title}}</a>
             </div>
+            @endif
+            @if($next && $next->id)
             <div class="item">
-              <span>
-                <img src="{{asset('/images/web/ico_aw_down.gif')}}"> 다음 쪽지</span>
-              <a href="message_view?id={{$next && $next->id ? $next->id :''}}">{{$next && $next->title ? $next->title :''}}</a>
+              <span><img src="{{asset('/images/web/ico_aw_down.gif')}}"> 다음 쪽지</span>
+              <a href="message_view?id={{$next->id}}">{{$next->title}}</a>
             </div>
+            @endif
           </div>
         </b>
       </div>

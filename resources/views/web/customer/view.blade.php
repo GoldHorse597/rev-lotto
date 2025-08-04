@@ -33,17 +33,19 @@
      @if($type != 'faq')
     <b>
       <div class="list-relation">
-        <div class="item">
-          <span>
-            <img src="{{asset('/images/web/ico_aw_up.gif')}}"> 이전글 </span>
-          <a href="{{$type}}_view?id={{$prev && $prev->id ? $prev->id :''}}">{{$prev && $prev->title?$prev->title:''}}</a>
+          @if($prev && $prev->id)
+          <div class="item">
+            <span><img src="{{asset('/images/web/ico_aw_up.gif')}}"> 이전글 </span>
+            <a href="{{$type}}_view?id={{$prev->id}}">{{$prev->title}}</a>
+          </div>
+          @endif
+          @if($next && $next->id)
+          <div class="item">
+            <span><img src="{{asset('/images/web/ico_aw_down.gif')}}"> 다음글 </span>
+            <a href="{{$type}}_view?id={{$next->id}}">{{ $next->title }}</a>
+          </div>
+          @endif
         </div>
-        <div class="item">
-          <span>
-            <img src="{{asset('/images/web/ico_aw_down.gif')}}"> 다음글 </span>
-          <a href="{{$type}}_view?id={{$next && $next->id ? $next->id :''}}">{{$next && $next->title ? $next->title :''}}</a>
-        </div>
-      </div>
     </b>
      @endif
   </div>

@@ -119,7 +119,7 @@ class MypageController extends BaseController
 
         if (empty($item)) {
             // 쪽지가 없으면 리턴 (예: 다른 유저의 쪽지 ID 입력했을 때)
-            return redirect()->route('web.mypage.message')->withErrors('쪽지가 존재하지 않습니다.');
+            return redirect()->route('mypage.message.view')->withErrors('쪽지가 존재하지 않습니다.');
         }
 
         // 다음 쪽지

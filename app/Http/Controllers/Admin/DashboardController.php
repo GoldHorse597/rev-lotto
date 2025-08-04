@@ -202,7 +202,8 @@ class DashboardController extends BaseController
                      $user = User::where('id', $statistic->user_id)->first();
                     if($statistic->type == 1)
                         $user->amount = $user->amount + $statistic->amount;
-                    $statistic->status = 2;                   
+                    $statistic->status = 2;     
+                    $user->save();              
                     break;
                
                 case 'delete':
