@@ -673,7 +673,7 @@ class LottoController extends BaseController
                             // "3등";
                             $history->result = 3;
                              $user->amount = $user->amount + $game->third;
-                             $historiy->profit = $game->third;
+                             $history->profit = $game->third;
                               $prize->money = $game->third;                                              
                             $prize->cur_amount = $user->amount;
                             $prize->save();
@@ -836,7 +836,7 @@ class LottoController extends BaseController
                             // "1등";
                             $history->result = 1;
                             $user->amount = $user->amount + $game->first;
-                            $historiy->profit = $game->first;
+                            $history->profit = $game->first;
                             $prize->money = $game->first;                                              
                             $prize->cur_amount = $user->amount;
                             $prize->save();
@@ -845,7 +845,7 @@ class LottoController extends BaseController
                             $history->result = 2;
                              $user->amount = $user->amount + $game->second;
                              $prize->money = $game->second;  
-                             $historiy->profit = $game->second;                                            
+                             $history->profit = $game->second;                                            
                             $prize->cur_amount = $user->amount;
                             $prize->save();
                         } elseif ($mainMatch == 4 && $megaMatch) {
@@ -853,13 +853,13 @@ class LottoController extends BaseController
                             $history->result = 3;
                              $user->amount = $user->amount + $game->third;
                              $prize->money = $game->third;  
-                             $historiy->profit = $game->third;                                            
+                             $history->profit = $game->third;                                            
                             $prize->cur_amount = $user->amount;
                             $prize->save();
                         } elseif ($mainMatch == 4) {
                              $user->amount = $user->amount + $game->fourth;
                              $prize->money = $game->fourth; 
-                             $historiy->profit  = $game->fourth;                                             
+                             $history->profit  = $game->fourth;                                             
                             $prize->cur_amount = $user->amount;
                             $prize->save();
                             // "4등";
@@ -869,7 +869,7 @@ class LottoController extends BaseController
                             $history->result = 5;
                             $user->amount = $user->amount + $game->fifth;
                             $prize->money = $game->fifth;      
-                            $historiy->profit = $game->fifth;                                        
+                            $history->profit = $game->fifth;                                        
                             $prize->cur_amount = $user->amount;
                             $prize->save();
                         }elseif ($mainMatch == 3) {
@@ -877,7 +877,7 @@ class LottoController extends BaseController
                             $history->result = 6;
                             $user->amount = $user->amount + $game->sixth;
                             $prize->money = $game->sixth; 
-                            $historiy->profit = $game->sixth;                                             
+                            $history->profit = $game->sixth;                                             
                             $prize->cur_amount = $user->amount;
                             $prize->save();
                         }elseif ($mainMatch == 2 && $megaMatch) {
@@ -885,7 +885,7 @@ class LottoController extends BaseController
                             $history->result = 7;
                             $user->amount = $user->amount + $game->seventh;
                             $prize->money = $game->seventh;   
-                            $historiy->profit = $game->seventh;                                           
+                            $history->profit = $game->seventh;                                           
                             $prize->cur_amount = $user->amount;
                             $prize->save();
                         }elseif ($mainMatch == 1 && $megaMatch) {
@@ -893,7 +893,7 @@ class LottoController extends BaseController
                             $history->result =8;
                             $user->amount = $user->amount + $game->eighth;
                             $prize->money = $game->eighth; 
-                            $historiy->profit = $game->eighth;                                             
+                            $history->profit = $game->eighth;                                             
                             $prize->cur_amount = $user->amount;
                             $prize->save();
                         }
@@ -902,7 +902,7 @@ class LottoController extends BaseController
                             $history->result = 9;
                             $user->amount = $user->amount + $game->nineth;
                             $prize->money = $game->nineth;  
-                            $historiy->profit  = $game->nineth;                                            
+                            $history->profit  = $game->nineth;                                            
                             $prize->cur_amount = $user->amount;
                             $prize->save();
                         } else {
@@ -918,13 +918,13 @@ class LottoController extends BaseController
                             if($rate->rate_1 < 0)
                             {
                                 $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_1) / 100);
-                                $historiy->profit = $history->amount - ($history->amount * abs($rate->rate_1) / 100);
+                                $history->profit = $history->amount - ($history->amount * abs($rate->rate_1) / 100);
                                 $prize->type = 0;
                                 $prize->money = $history->amount - ($history->amount * abs($rate->rate_1) / 100);
                             }
                             else{
                                 $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_1 / 100);
-                                $historiy->profit = $history->amount + ($history->amount * abs($rate->rate_1) / 100);
+                                $history->profit = $history->amount + ($history->amount * abs($rate->rate_1) / 100);
                                 $prize->type = 1;  
                                 $prize->money = $history->amount + ($history->amount *  $rate->rate_1 / 100);  
                             }
@@ -935,13 +935,13 @@ class LottoController extends BaseController
                             if($rate->rate_2 < 0)
                             {
                                 $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_2) / 100);
-                                $historiy->profit = $history->amount - ($history->amount * abs($rate->rate_2) / 100);
+                                $history->profit = $history->amount - ($history->amount * abs($rate->rate_2) / 100);
                                 $prize->type = 0;
                                 $prize->money = $history->amount - ($history->amount * abs($rate->rate_2) / 100);
                             }
                             else{
                                 $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_2 / 100);
-                                $historiy->profit = $history->amount + ($history->amount * abs($rate->rate_2) / 100);
+                                $history->profit = $history->amount + ($history->amount * abs($rate->rate_2) / 100);
                                 $prize->type = 1;  
                                 $prize->money = $history->amount + ($history->amount *  $rate->rate_2 / 100);  
                             }
@@ -951,13 +951,13 @@ class LottoController extends BaseController
                             if($rate->rate_3 < 0)
                             {
                                 $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_3) / 100);
-                                $historiy->profit = $history->amount - ($history->amount * abs($rate->rate_3) / 100);
+                                $history->profit = $history->amount - ($history->amount * abs($rate->rate_3) / 100);
                                 $prize->type = 0;
                                 $prize->money = $history->amount - ($history->amount * abs($rate->rate_3) / 100);
                             }
                             else{
                                 $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_3 / 100);
-                                $historiy->profit = $history->amount + ($history->amount * abs($rate->rate_3) / 100);
+                                $history->profit = $history->amount + ($history->amount * abs($rate->rate_3) / 100);
                                 $prize->type = 1;  
                                 $prize->money = $history->amount + ($history->amount *  $rate->rate_3 / 100);  
                             }
@@ -967,13 +967,13 @@ class LottoController extends BaseController
                             if($rate->rate_4 < 0)
                             {
                                 $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_4) / 100);
-                                $historiy->profit = $history->amount - ($history->amount * abs($rate->rate_4) / 100);
+                                $history->profit = $history->amount - ($history->amount * abs($rate->rate_4) / 100);
                                 $prize->type = 0;
                                 $prize->money = $history->amount - ($history->amount * abs($rate->rate_4) / 100);
                             }
                             else{
                                 $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_4 / 100);
-                                $historiy->profit = $history->amount + ($history->amount * abs($rate->rate_4) / 100);
+                                $history->profit = $history->amount + ($history->amount * abs($rate->rate_4) / 100);
                                 $prize->type = 1;  
                                 $prize->money = $history->amount + ($history->amount *  $rate->rate_4 / 100);  
                             }
@@ -983,13 +983,13 @@ class LottoController extends BaseController
                             if($rate->rate_5 < 0)
                             {
                                 $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_5) / 100);
-                                $historiy->profit = $history->amount - ($history->amount * abs($rate->rate_5) / 100);
+                                $history->profit = $history->amount - ($history->amount * abs($rate->rate_5) / 100);
                                 $prize->type = 0;
                                 $prize->money = $history->amount - ($history->amount * abs($rate->rate_5) / 100);
                             }
                             else{
                                 $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_5 / 100);
-                                $historiy->profit = $history->amount + ($history->amount * abs($rate->rate_5) / 100);
+                                $history->profit = $history->amount + ($history->amount * abs($rate->rate_5) / 100);
                                 $prize->type = 1;  
                                 $prize->money = $history->amount + ($history->amount *  $rate->rate_5 / 100);  
                             }
@@ -998,13 +998,13 @@ class LottoController extends BaseController
                             if($rate->rate_7 < 0)
                             {
                                 $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_7) / 100);
-                                $historiy->profit = $history->amount - ($history->amount * abs($rate->rate_7) / 100);
+                                $history->profit = $history->amount - ($history->amount * abs($rate->rate_7) / 100);
                                 $prize->type = 0;
                                 $prize->money = $history->amount - ($history->amount * abs($rate->rate_7) / 100);
                             }
                             else{
                                 $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_7 / 100);
-                                $historiy->profit = $history->amount + ($history->amount * abs($rate->rate_7) / 100);
+                                $history->profit = $history->amount + ($history->amount * abs($rate->rate_7) / 100);
                                 $prize->type = 1;  
                                 $prize->money = $history->amount + ($history->amount *  $rate->rate_7 / 100);  
                             }
@@ -1048,7 +1048,7 @@ class LottoController extends BaseController
                             $history->result = 1;    
                              $user->amount = $user->amount + $game->first;    
                              $prize->money = $game->first;   
-                             $historiy->profit = $game->first;                                           
+                             $history->profit = $game->first;                                           
                             $prize->cur_amount = $user->amount;
                             $prize->save();                    
                         } elseif ($matched === 5 && $hasBonus) {
@@ -1056,7 +1056,7 @@ class LottoController extends BaseController
                             $history->result = 2;
                              $user->amount = $user->amount + $game->second;
                              $prize->money = $game->second;   
-                             $historiy->profit = $game->second;                                           
+                             $history->profit = $game->second;                                           
                             $prize->cur_amount = $user->amount;
                             $prize->save();
                             
@@ -1065,7 +1065,7 @@ class LottoController extends BaseController
                             $history->result = 3;
                              $user->amount = $user->amount + $game->third;
                              $prize->money = $game->third;  
-                             $historiy->profit = $game->third;                                            
+                             $history->profit = $game->third;                                            
                             $prize->cur_amount = $user->amount;
                             $prize->save();
                             
@@ -1074,7 +1074,7 @@ class LottoController extends BaseController
                             $history->result = 4;
                              $user->amount = $user->amount + $game->fourth;
                              $prize->money = $game->fourth;    
-                             $historiy->profit = $game->fourth;                                          
+                             $history->profit = $game->fourth;                                          
                             $prize->cur_amount = $user->amount;
                             $prize->save();
                             
@@ -1083,7 +1083,7 @@ class LottoController extends BaseController
                             $history->result = 5;
                             $user->amount = $user->amount + $game->fifth;
                             $prize->money = $game->fifth;  
-                            $historiy->profit = $game->fifth;                                            
+                            $history->profit = $game->fifth;                                            
                             $prize->cur_amount = $user->amount;
                             $prize->save();
                         } else {
@@ -1100,13 +1100,13 @@ class LottoController extends BaseController
                             if($rate->rate_1 < 0)
                             {
                                 $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_1) / 100);
-                                $historiy->profit = $history->amount - ($history->amount * abs($rate->rate_1) / 100);
+                                $history->profit = $history->amount - ($history->amount * abs($rate->rate_1) / 100);
                                 $prize->type = 0;
                                 $prize->money = $history->amount - ($history->amount * abs($rate->rate_1) / 100);
                             }
                             else{
                                 $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_1 / 100);
-                                $historiy->profit = $history->amount + ($history->amount * abs($rate->rate_1) / 100);
+                                $history->profit = $history->amount + ($history->amount * abs($rate->rate_1) / 100);
                                 $prize->type = 1;  
                                 $prize->money = $history->amount + ($history->amount *  $rate->rate_1 / 100);  
                             }
@@ -1117,13 +1117,13 @@ class LottoController extends BaseController
                             if($rate->rate_2 < 0)
                             {
                                 $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_2) / 100);
-                                $historiy->profit = $history->amount - ($history->amount * abs($rate->rate_2) / 100);
+                                $history->profit = $history->amount - ($history->amount * abs($rate->rate_2) / 100);
                                 $prize->type = 0;
                                 $prize->money = $history->amount - ($history->amount * abs($rate->rate_2) / 100);
                             }
                             else{
                                 $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_2 / 100);
-                                $historiy->profit = $history->amount + ($history->amount * abs($rate->rate_2) / 100);
+                                $history->profit = $history->amount + ($history->amount * abs($rate->rate_2) / 100);
                                 $prize->type = 1;  
                                 $prize->money = $history->amount + ($history->amount *  $rate->rate_2 / 100);  
                             }
@@ -1133,13 +1133,13 @@ class LottoController extends BaseController
                             if($rate->rate_3 < 0)
                             {
                                 $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_3) / 100);
-                                $historiy->profit = $history->amount - ($history->amount * abs($rate->rate_3) / 100);
+                                $history->profit = $history->amount - ($history->amount * abs($rate->rate_3) / 100);
                                 $prize->type = 0;
                                 $prize->money = $history->amount - ($history->amount * abs($rate->rate_3) / 100);
                             }
                             else{
                                 $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_3 / 100);
-                                $historiy->profit = $history->amount + ($history->amount * abs($rate->rate_3) / 100);
+                                $history->profit = $history->amount + ($history->amount * abs($rate->rate_3) / 100);
                                 $prize->type = 1;  
                                 $prize->money = $history->amount + ($history->amount *  $rate->rate_3 / 100);  
                             }
@@ -1149,13 +1149,13 @@ class LottoController extends BaseController
                             if($rate->rate_4 < 0)
                             {
                                 $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_4) / 100);
-                                $historiy->profit = $history->amount - ($history->amount * abs($rate->rate_4) / 100);
+                                $history->profit = $history->amount - ($history->amount * abs($rate->rate_4) / 100);
                                 $prize->type = 0;
                                 $prize->money = $history->amount - ($history->amount * abs($rate->rate_4) / 100);
                             }
                             else{
                                 $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_4 / 100);
-                                $historiy->profit = $history->amount + ($history->amount * abs($rate->rate_4) / 100);
+                                $history->profit = $history->amount + ($history->amount * abs($rate->rate_4) / 100);
                                 $prize->type = 1;  
                                 $prize->money = $history->amount + ($history->amount *  $rate->rate_4 / 100);  
                             }
@@ -1165,13 +1165,13 @@ class LottoController extends BaseController
                             if($rate->rate_5 < 0)
                             {
                                 $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_5) / 100);
-                                $historiy->profit = $history->amount - ($history->amount * abs($rate->rate_5) / 100);
+                                $history->profit = $history->amount - ($history->amount * abs($rate->rate_5) / 100);
                                 $prize->type = 0;
                                 $prize->money = $history->amount - ($history->amount * abs($rate->rate_5) / 100);
                             }
                             else{
                                 $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_5 / 100);
-                                $historiy->profit = $history->amount + ($history->amount * abs($rate->rate_5) / 100);
+                                $history->profit = $history->amount + ($history->amount * abs($rate->rate_5) / 100);
                                 $prize->type = 1;  
                                 $prize->money = $history->amount + ($history->amount *  $rate->rate_5 / 100);  
                             }
@@ -1180,13 +1180,13 @@ class LottoController extends BaseController
                             if($rate->rate_7 < 0)
                             {
                                 $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_7) / 100);
-                                $historiy->profit = $history->amount - ($history->amount * abs($rate->rate_7) / 100);
+                                $history->profit = $history->amount - ($history->amount * abs($rate->rate_7) / 100);
                                 $prize->type = 0;
                                 $prize->money = $history->amount - ($history->amount * abs($rate->rate_7) / 100);
                             }
                             else{
                                 $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_7 / 100);
-                                $historiy->profit = $history->amount + ($history->amount * abs($rate->rate_7) / 100);
+                                $history->profit = $history->amount + ($history->amount * abs($rate->rate_7) / 100);
                                 $prize->type = 1;  
                                 $prize->money = $history->amount + ($history->amount *  $rate->rate_7 / 100);  
                             }
@@ -1230,7 +1230,7 @@ class LottoController extends BaseController
                             $history->result = 1;
                             $user->amount = $user->amount + $game->first;
                              $prize->money = $game->first;    
-                             $historiy->profit = $game->first;                                          
+                             $history->profit = $game->first;                                          
                             $prize->cur_amount = $user->amount;
                             $prize->save();
                         } elseif ($matched === 6 && $bonusMatched >= 1) {
@@ -1238,7 +1238,7 @@ class LottoController extends BaseController
                             $history->result = 2;
                              $user->amount = $user->amount + $game->second;
                               $prize->money = $game->second;   
-                              $historiy->profit = $game->second;                                           
+                              $history->profit = $game->second;                                           
                             $prize->cur_amount = $user->amount;
                             $prize->save();
                         } elseif ($matched === 6) {
@@ -1246,7 +1246,7 @@ class LottoController extends BaseController
                             $history->result = 3;
                              $user->amount = $user->amount + $game->third;
                               $prize->money = $game->third;   
-                              $historiy->profit = $game->third;                                           
+                              $history->profit = $game->third;                                           
                             $prize->cur_amount = $user->amount;
                             $prize->save();
                         } elseif ($matched === 5) {
@@ -1254,7 +1254,7 @@ class LottoController extends BaseController
                             $history->result = 4;
                              $user->amount = $user->amount + $game->fourth;
                               $prize->money = $game->fourth;    
-                              $historiy->profit = $game->fourth;                                          
+                              $history->profit = $game->fourth;                                          
                             $prize->cur_amount = $user->amount;
                             $prize->save();
                         } elseif ($matched === 4) {
@@ -1262,13 +1262,13 @@ class LottoController extends BaseController
                             $history->result = 5;
                             $user->amount = $user->amount + $game->fifth;
                              $prize->money = $game->fifth; 
-                             $historiy->profit = $game->fifth;                                             
+                             $history->profit = $game->fifth;                                             
                             $prize->cur_amount = $user->amount;
                             $prize->save();
                         }elseif ($matched === 3 && $bonusMatched >= 1) {
                             // "6등";
                             $history->result = 6;
-                            $historiy->profit = $game->sixth;
+                            $history->profit = $game->sixth;
                             $user->amount = $user->amount + $game->sixth;
                         } else {
                             // "꽝";
@@ -1284,13 +1284,13 @@ class LottoController extends BaseController
                             if($rate->rate_1 < 0)
                             {
                                 $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_1) / 100);
-                                $historiy->profit = $history->amount - ($history->amount * abs($rate->rate_1) / 100);
+                                $history->profit = $history->amount - ($history->amount * abs($rate->rate_1) / 100);
                                 $prize->type = 0;
                                 $prize->money = $history->amount - ($history->amount * abs($rate->rate_1) / 100);
                             }
                             else{
                                 $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_1 / 100);
-                                $historiy->profit = $history->amount + ($history->amount * abs($rate->rate_1) / 100);
+                                $history->profit = $history->amount + ($history->amount * abs($rate->rate_1) / 100);
                                 $prize->type = 1;  
                                 $prize->money = $history->amount + ($history->amount *  $rate->rate_1 / 100);  
                             }
@@ -1301,13 +1301,13 @@ class LottoController extends BaseController
                             if($rate->rate_2 < 0)
                             {
                                 $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_2) / 100);
-                                $historiy->profit = $history->amount - ($history->amount * abs($rate->rate_2) / 100);
+                                $history->profit = $history->amount - ($history->amount * abs($rate->rate_2) / 100);
                                 $prize->type = 0;
                                 $prize->money = $history->amount - ($history->amount * abs($rate->rate_2) / 100);
                             }
                             else{
                                 $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_2 / 100);
-                                $historiy->profit = $history->amount + ($history->amount * abs($rate->rate_2) / 100);
+                                $history->profit = $history->amount + ($history->amount * abs($rate->rate_2) / 100);
                                 $prize->type = 1;  
                                 $prize->money = $history->amount + ($history->amount *  $rate->rate_2 / 100);  
                             }
@@ -1317,13 +1317,13 @@ class LottoController extends BaseController
                             if($rate->rate_3 < 0)
                             {
                                 $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_3) / 100);
-                                $historiy->profit = $history->amount - ($history->amount * abs($rate->rate_3) / 100);
+                                $history->profit = $history->amount - ($history->amount * abs($rate->rate_3) / 100);
                                 $prize->type = 0;
                                 $prize->money = $history->amount - ($history->amount * abs($rate->rate_3) / 100);
                             }
                             else{
                                 $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_3 / 100);
-                                $historiy->profit = $history->amount + ($history->amount * abs($rate->rate_3) / 100);
+                                $history->profit = $history->amount + ($history->amount * abs($rate->rate_3) / 100);
                                 $prize->type = 1;  
                                 $prize->money = $history->amount + ($history->amount *  $rate->rate_3 / 100);  
                             }
@@ -1333,13 +1333,13 @@ class LottoController extends BaseController
                             if($rate->rate_4 < 0)
                             {
                                 $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_4) / 100);
-                                $historiy->profit = $history->amount - ($history->amount * abs($rate->rate_4) / 100);
+                                $history->profit = $history->amount - ($history->amount * abs($rate->rate_4) / 100);
                                 $prize->type = 0;
                                 $prize->money = $history->amount - ($history->amount * abs($rate->rate_4) / 100);
                             }
                             else{
                                 $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_4 / 100);
-                                $historiy->profit = $history->amount + ($history->amount * abs($rate->rate_4) / 100);
+                                $history->profit = $history->amount + ($history->amount * abs($rate->rate_4) / 100);
                                 $prize->type = 1;  
                                 $prize->money = $history->amount + ($history->amount *  $rate->rate_4 / 100);  
                             }
@@ -1349,13 +1349,13 @@ class LottoController extends BaseController
                             if($rate->rate_5 < 0)
                             {
                                 $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_5) / 100);
-                                $historiy->profit = $history->amount - ($history->amount * abs($rate->rate_5) / 100);
+                                $history->profit = $history->amount - ($history->amount * abs($rate->rate_5) / 100);
                                 $prize->type = 0;
                                 $prize->money = $history->amount - ($history->amount * abs($rate->rate_5) / 100);
                             }
                             else{
                                 $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_5 / 100);
-                                $historiy->profit = $history->amount + ($history->amount * abs($rate->rate_5) / 100);
+                                $history->profit = $history->amount + ($history->amount * abs($rate->rate_5) / 100);
                                 $prize->type = 1;  
                                 $prize->money = $history->amount + ($history->amount *  $rate->rate_5 / 100);  
                             }
@@ -1364,13 +1364,13 @@ class LottoController extends BaseController
                             if($rate->rate_7 < 0)
                             {
                                 $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_7) / 100);
-                                $historiy->profit = $history->amount - ($history->amount * abs($rate->rate_7) / 100);
+                                $history->profit = $history->amount - ($history->amount * abs($rate->rate_7) / 100);
                                 $prize->type = 0;
                                 $prize->money = $history->amount - ($history->amount * abs($rate->rate_7) / 100);
                             }
                             else{
                                 $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_7 / 100);
-                                $historiy->profit = $history->amount + ($history->amount * abs($rate->rate_7) / 100);
+                                $history->profit = $history->amount + ($history->amount * abs($rate->rate_7) / 100);
                                 $prize->type = 1;  
                                 $prize->money = $history->amount + ($history->amount *  $rate->rate_7 / 100);  
                             }
@@ -1414,7 +1414,7 @@ class LottoController extends BaseController
                             $history->result = 1;
                              $user->amount = $user->amount + $game->first;
                              $prize->money = $game->first;  
-                             $historiy->profit = $game->first;                                            
+                             $history->profit = $game->first;                                            
                             $prize->cur_amount = $user->amount;
                             $prize->save();
                         } elseif ($matched === 4 && $hasBonus) {
@@ -1422,7 +1422,7 @@ class LottoController extends BaseController
                             $history->result = 2;
                              $user->amount = $user->amount + $game->second;
                              $prize->money = $game->second;  
-                             $historiy->profit = $game->second;                                            
+                             $history->profit = $game->second;                                            
                             $prize->cur_amount = $user->amount;
                             $prize->save();
                         } elseif ($matched === 4) {
@@ -1430,7 +1430,7 @@ class LottoController extends BaseController
                             $history->result = 3;
                              $user->amount = $user->amount + $game->third;
                              $prize->money = $game->third;   
-                             $historiy->profit  = $game->third;                                           
+                             $history->profit  = $game->third;                                           
                             $prize->cur_amount = $user->amount;
                             $prize->save();
                         } elseif ($matched === 3) {
@@ -1438,7 +1438,7 @@ class LottoController extends BaseController
                             $history->result = 4;  
                              $user->amount = $user->amount + $game->fourth; 
                              $prize->money = $game->fourth; 
-                             $historiy->profit = $game->fourth;                                             
+                             $history->profit = $game->fourth;                                             
                             $prize->cur_amount = $user->amount;
                             $prize->save();
                         } else {
@@ -1455,13 +1455,13 @@ class LottoController extends BaseController
                             if($rate->rate_1 < 0)
                             {
                                 $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_1) / 100);
-                                $historiy->profit = $history->amount - ($history->amount * abs($rate->rate_1) / 100);
+                                $history->profit = $history->amount - ($history->amount * abs($rate->rate_1) / 100);
                                 $prize->type = 0;
                                 $prize->money = $history->amount - ($history->amount * abs($rate->rate_1) / 100);
                             }
                             else{
                                 $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_1 / 100);
-                                $historiy->profit = $history->amount + ($history->amount * abs($rate->rate_1) / 100);
+                                $history->profit = $history->amount + ($history->amount * abs($rate->rate_1) / 100);
                                 $prize->type = 1;  
                                 $prize->money = $history->amount + ($history->amount *  $rate->rate_1 / 100);  
                             }
@@ -1472,13 +1472,13 @@ class LottoController extends BaseController
                             if($rate->rate_2 < 0)
                             {
                                 $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_2) / 100);
-                                $historiy->profit = $history->amount - ($history->amount * abs($rate->rate_2) / 100);
+                                $history->profit = $history->amount - ($history->amount * abs($rate->rate_2) / 100);
                                 $prize->type = 0;
                                 $prize->money = $history->amount - ($history->amount * abs($rate->rate_2) / 100);
                             }
                             else{
                                 $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_2 / 100);
-                                $historiy->profit = $history->amount + ($history->amount * abs($rate->rate_2) / 100);
+                                $history->profit = $history->amount + ($history->amount * abs($rate->rate_2) / 100);
                                 $prize->type = 1;  
                                 $prize->money = $history->amount + ($history->amount *  $rate->rate_2 / 100);  
                             }
@@ -1488,13 +1488,13 @@ class LottoController extends BaseController
                             if($rate->rate_3 < 0)
                             {
                                 $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_3) / 100);
-                                $historiy->profit = $history->amount - ($history->amount * abs($rate->rate_3) / 100);
+                                $history->profit = $history->amount - ($history->amount * abs($rate->rate_3) / 100);
                                 $prize->type = 0;
                                 $prize->money = $history->amount - ($history->amount * abs($rate->rate_3) / 100);
                             }
                             else{
                                 $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_3 / 100);
-                                $historiy->profit = $history->amount + ($history->amount * abs($rate->rate_3) / 100);
+                                $history->profit = $history->amount + ($history->amount * abs($rate->rate_3) / 100);
                                 $prize->type = 1;  
                                 $prize->money = $history->amount + ($history->amount *  $rate->rate_3 / 100);  
                             }
@@ -1504,13 +1504,13 @@ class LottoController extends BaseController
                             if($rate->rate_4 < 0)
                             {
                                 $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_4) / 100);
-                                $historiy->profit = $history->amount - ($history->amount * abs($rate->rate_4) / 100);
+                                $history->profit = $history->amount - ($history->amount * abs($rate->rate_4) / 100);
                                 $prize->type = 0;
                                 $prize->money = $history->amount - ($history->amount * abs($rate->rate_4) / 100);
                             }
                             else{
                                 $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_4 / 100);
-                                $historiy->profit = $history->amount + ($history->amount * abs($rate->rate_4) / 100);
+                                $history->profit = $history->amount + ($history->amount * abs($rate->rate_4) / 100);
                                 $prize->type = 1;  
                                 $prize->money = $history->amount + ($history->amount *  $rate->rate_4 / 100);  
                             }                        
@@ -1519,13 +1519,13 @@ class LottoController extends BaseController
                             if($rate->rate_7 < 0)
                             {
                                 $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_7) / 100);
-                                $historiy->profit = $history->amount - ($history->amount * abs($rate->rate_7) / 100);
+                                $history->profit = $history->amount - ($history->amount * abs($rate->rate_7) / 100);
                                 $prize->type = 0;
                                 $prize->money = $history->amount - ($history->amount * abs($rate->rate_7) / 100);
                             }
                             else{
                                 $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_7 / 100);
-                                $historiy->profit = $history->amount + ($history->amount * abs($rate->rate_7) / 100);
+                                $history->profit = $history->amount + ($history->amount * abs($rate->rate_7) / 100);
                                 $prize->type = 1;  
                                 $prize->money = $history->amount + ($history->amount *  $rate->rate_7 / 100);  
                             }
