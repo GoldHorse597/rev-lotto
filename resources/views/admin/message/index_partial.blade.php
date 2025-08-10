@@ -67,8 +67,10 @@
                 <td> {{ $message->created_at }} </td>
                 <td>
                     <div class="btn-group btn-group-sm">
-                        <button class="btn btn-primary btn-view text-white" data-id="{{$message->id}}"> @lang('admin/app.view') </button>
+                        <button class="btn btn-warning btn-view text-white" data-id="{{$message->id}}"> @lang('admin/app.view') </button>
+                        <a class="btn btn-primary" href="{{route('admin.message.edit', $message->id)}}"> @lang('admin/app.modify') </a>
                         <button class="btn btn-danger btn-delete text-white" href="{{route('admin.message.delete', $message->id)}}"> @lang('admin/app.delete') </button>
+                        
                     </div>
                 </td>
             </tr>

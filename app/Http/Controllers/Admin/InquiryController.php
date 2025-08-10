@@ -223,4 +223,51 @@ class InquiryController extends BaseController
         session()->flash('error', '비법적인 호출입니다.');
         return redirect()->back();
     }
+
+    public function edit(Request $request, $id)
+    {
+        $authUser = \Auth::guard('admin')->user();
+        $page_title = '1:1문의 수정';
+        if ($authUser->parent_level > 0) {
+            session()->flash('error', '귀하의 권한이 부족합니다.');
+            return redirect()->back();
+        }
+
+        $inquiry = Inquiry::where('id', $id)->first();
+        if (!$inquiry) {
+            session()->flash('error', '1:1문의가 존재하지 않습니다.');
+            return abort(404);
+        }
+
+        if ($request->isMethod('put')) {
+            $validator = \Validator::make($request->all(), [
+                'title' => ['required'],
+                'content' => ['required'],
+                'reply' => ['required']
+            ], [
+                'required' => ':attribute 필드는 필수입니다.',
+            ], [
+                'title' => '제목',
+                'content' => '내용',
+                'reply' => '답변 내용'
+            ]);
+            if ($validator->fails()) {
+                $messages = $validator->messages()->all();
+                return response()->json(['success' => false, 'msg' => implode('\r\n', $messages)]);
+            }
+
+            $inquiry->title = $request->title;
+            $inquiry->content = $request->content;
+            $inquiry->updated_at = date('Y-m-d H:i:s');
+            $inquiry->save();
+            $reply = Inquiry::where('referer_id', $id)->first();
+            $reply->content = $request->reply;
+            $reply->save();
+            session()->flash('success', '1:1문의 내용을 수정했습니다.');
+            return redirect()->route('admin.inquiry.list');
+        }
+        $reply = Inquiry::where('referer_id', $id)->first();
+
+        return view('admin.inquiry.edit', compact('inquiry','page_title','reply'));
+    }
 }

@@ -188,4 +188,46 @@ class MessageController extends BaseController
         session()->flash('error', '비법적인 호출입니다.');
         return redirect()->back();
     }
+
+    public function edit(Request $request, $id)
+    {
+        $page_title = '쪽지 수정';
+        $authUser = \Auth::guard('admin')->user();
+        $message = Message::where('id', $id)->first();
+        if (!$message) {
+            session()->flash('error', '쪽지가 존재하지 않습니다.');
+            return redirect()->back();
+        }
+
+        if ($request->isMethod('put')) {
+            $validator = \Validator::make($request->all(), [
+                'title' => ['required'],
+                'content' => ['required']
+            ], [
+                'required' => ':attribute 필드는 필수입니다.',
+            ], [
+                'title' => '제목',
+                'content' => '내용'
+            ]);
+            if ($validator->fails()) {
+                $messages = $validator->messages()->all();
+                return response()->json(['success' => false, 'msg' => implode('\r\n', $messages)]);
+            }
+
+            $message->title = $request->title;
+            $message->content = $request->content;
+            $message->updated_at = date('Y-m-d H:i:s');
+            $message->save();
+
+            session()->flash('success', '쪽지를 수정했습니다.');
+            return redirect()->route('admin.message.list');
+        }
+
+        if ($authUser->parent_level > 0 && $message->receiver_id != $authUser->id && $message->receiver_type != 0) {
+            session()->flash('error', '귀하의 권한이 부족합니다.');
+            return redirect()->back();
+        }
+
+        return view('admin.message.edit', compact('message','page_title'));
+    }
 }

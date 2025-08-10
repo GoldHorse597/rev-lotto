@@ -1526,7 +1526,7 @@ class LottoController extends BaseController
                             else{
                                 $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_7 / 100);
                                 $history->profit = $history->amount + ($history->amount * abs($rate->rate_7) / 100);
-                                $prize->type = 1;  
+                                $prize->type = 1;
                                 $prize->money = $history->amount + ($history->amount *  $rate->rate_7 / 100);  
                             }
                             $history->result = 0;

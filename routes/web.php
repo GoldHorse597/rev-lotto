@@ -21,23 +21,23 @@ use App\Http\Controllers\Admin\LottoController;
 use App\Http\Controllers\Admin\HistoryController;
 use App\Http\Controllers\Web\PlayController;
 
-Route::middleware([SiteIsClosed::class])->group(function ()
+Route::domain('rev-lotto.com')->middleware([SiteIsClosed::class])->group(function ()
 {
     // if (!env('USER'))
     //     return;
    
     Route::get('/', [WebHomeController::class, 'index'])->name('web.index');
-//     //로또 안내 
-//     Route::get('/info/lotto_pb', [InfoController::class, 'lotto_pb'])->name('web.info.lotto-pb');
-//     Route::get('/info/lotto_live', [InfoController::class, 'lotto_live'])->name('web.info.lotto-live');
-//     Route::get('/info/lotto_mm', [InfoController::class, 'lotto_mm'])->name('web.info.lotto-mm');
-//     Route::get('/info/lotto_kr', [InfoController::class, 'lotto_kr'])->name('web.info.lotto-kr');
-//     Route::get('/info/lotto_kr1', [InfoController::class, 'lotto_kr1'])->name('web.info.lotto-kr1');
-//     Route::get('/info/lotto_ssq', [InfoController::class, 'lotto_ssq'])->name('web.info.lotto-ssq');
-//     Route::get('/info/lotto_dlt', [InfoController::class, 'lotto_dlt'])->name('web.info.lotto-dlt');
-//     Route::get('/info/lotto_6', [InfoController::class, 'lotto_6'])->name('web.info.lotto-6');
-//     Route::get('/info/lotto_7', [InfoController::class, 'lotto_7'])->name('web.info.lotto-7');
-//     Route::get('/info/lotto_mini', [InfoController::class, 'lotto_mini'])->name('web.info.lotto-mini');
+    //로또 안내 
+    // Route::get('/info/lotto_pb', [InfoController::class, 'lotto_pb'])->name('web.info.lotto-pb');
+    // Route::get('/info/lotto_live', [InfoController::class, 'lotto_live'])->name('web.info.lotto-live');
+    // Route::get('/info/lotto_mm', [InfoController::class, 'lotto_mm'])->name('web.info.lotto-mm');
+    // Route::get('/info/lotto_kr', [InfoController::class, 'lotto_kr'])->name('web.info.lotto-kr');
+    // Route::get('/info/lotto_kr1', [InfoController::class, 'lotto_kr1'])->name('web.info.lotto-kr1');
+    // Route::get('/info/lotto_ssq', [InfoController::class, 'lotto_ssq'])->name('web.info.lotto-ssq');
+    // Route::get('/info/lotto_dlt', [InfoController::class, 'lotto_dlt'])->name('web.info.lotto-dlt');
+    // Route::get('/info/lotto_6', [InfoController::class, 'lotto_6'])->name('web.info.lotto-6');
+    // Route::get('/info/lotto_7', [InfoController::class, 'lotto_7'])->name('web.info.lotto-7');
+    // Route::get('/info/lotto_mini', [InfoController::class, 'lotto_mini'])->name('web.info.lotto-mini');
     //회원 로그인/가입
     Route::get('/member/login', [MemberController::class, 'login'])->name('login');
     Route::post('/member/login', [MemberController::class, 'postLogin'])->name('web.member.postLogin');
@@ -53,7 +53,7 @@ Route::middleware([SiteIsClosed::class])->group(function ()
 //     Route::get('/member/password_find', [MemberController::class, 'password_find'])->name('web.member.password_find');
 //     Route::post('/member/password_find', [MemberController::class, 'password_find_post'])->name('web.member.password_find_post');
 });
-Route::middleware([AuthAlertMiddleware::class])->prefix('customer')->group(function() {
+Route::domain('rev-lotto.com')->middleware([AuthAlertMiddleware::class])->prefix('customer')->group(function() {
     
     Route::get('/notice', [CustomerController::class, 'notice'])->name('customer.notice');
     Route::get('/notice_view', [CustomerController::class, 'noticeView'])->name('customer.notice_view');
@@ -65,7 +65,7 @@ Route::middleware([AuthAlertMiddleware::class])->prefix('customer')->group(funct
     // 추가적인 customer 관련 라우트들 여기에 작성
     
 });
-Route::middleware([AuthAlertMiddleware::class])->prefix('mypage')->group(function() {
+Route::domain('rev-lotto.com')->middleware([AuthAlertMiddleware::class])->prefix('mypage')->group(function() {
     
     Route::get('/message', [MypageController::class, 'message'])->name('mypage.message');
     Route::get('/message_view', [MypageController::class, 'messageView'])->name('mypage.message.view');
@@ -81,7 +81,7 @@ Route::middleware([AuthAlertMiddleware::class])->prefix('mypage')->group(functio
     
 });
 
-Route::middleware([AuthAlertMiddleware::class])->prefix('play')->group(function() {
+Route::domain('rev-lotto.com')->middleware([AuthAlertMiddleware::class])->prefix('play')->group(function() {
     Route::get('/lotto_live', [PlayController::class, 'lotto_live'])->name('play.lotto_live');
     Route::get('/lotto_kr', [PlayController::class, 'lotto_kr'])->name('play.lotto_kr');
     Route::get('/lotto_pb', [PlayController::class, 'lotto_pb'])->name('play.lotto_pb');
@@ -95,7 +95,7 @@ Route::middleware([AuthAlertMiddleware::class])->prefix('play')->group(function(
     Route::get('/number_list', [PlayController::class, 'number_list'])->name('play.number_list');
     Route::post('/number_list_ok', [PlayController::class, 'number_list_ok'])->name('play.number_list_ok');
 });
-Route::middleware([AuthAlertMiddleware::class])->prefix('jplay')->group(function() {
+Route::domain('rev-lotto.com')->middleware([AuthAlertMiddleware::class])->prefix('jplay')->group(function() {
     Route::get('/lotto_live', [PlayController::class, 'jlotto_live'])->name('play.jlotto_live');
     Route::get('/lotto_kr', [PlayController::class, 'jlotto_kr'])->name('play.jlotto_kr');
     Route::get('/lotto_pb', [PlayController::class, 'jlotto_pb'])->name('play.jlotto_pb');
@@ -110,7 +110,7 @@ Route::middleware([AuthAlertMiddleware::class])->prefix('jplay')->group(function
     Route::post('/number_list_ok', [PlayController::class, 'number_list_ok'])->name('play.number_list_ok');
 });
 
-Route::middleware([SiteIsClosed::class])
+Route::domain('admin.rev-lotto.com')->middleware([SiteIsClosed::class])
         ->prefix(config('custom.admin_prefix'))
         ->group(function (){
                 // if (!env('ADMIN'))
@@ -120,7 +120,7 @@ Route::middleware([SiteIsClosed::class])
 
         });
 
-Route::prefix(config('custom.admin_prefix'))
+Route::domain('admin.rev-lotto.com')->prefix(config('custom.admin_prefix'))
         ->middleware(['auth:admin', SiteIsClosed::class])
         ->group(function () {
             Route::any('/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
@@ -168,6 +168,7 @@ Route::prefix(config('custom.admin_prefix'))
             Route::post('/message/{id}', [MessageController::class, 'read'])->where('id', '[0-9]+')->name('admin.message.read');
             Route::post('/message/readall', [MessageController::class, 'readall'])->name('admin.message.readall');
             Route::delete('/message/{id}/delete', [MessageController::class, 'delete'])->name('admin.message.delete');
+            Route::match(['get', 'put'], '/message/{id}', [MessageController::class, 'edit'])->where('id', '[0-9]+')->name('admin.message.edit');
 
             Route::delete('/message/deleteall', [MessageController::class, 'deleteall'])->name('admin.message.deleteall');
             Route::get('/inquiries', [InquiryController::class, 'index'])->name('admin.inquiry.list');
@@ -177,6 +178,7 @@ Route::prefix(config('custom.admin_prefix'))
             Route::post('/inquiry/{id}/reply', [InquiryController::class, 'reply'])->name('admin.inquiry.reply');
             Route::delete('/inquiry/{id}/delete', [InquiryController::class, 'delete'])->name('admin.inquiry.delete');
             Route::delete('/inquiry/deleteall', [InquiryController::class, 'deleteall'])->name('admin.inquiry.deleteall');
+            Route::match(['get', 'put'], '/inquiry/{id}', [InquiryController::class, 'edit'])->where('id', '[0-9]+')->name('admin.inquiry.edit');
             
             Route::get('/inquirytemplates', [InquiryTemplateController::class, 'index'])->name('admin.inquirytemplate.list');
             Route::post('/inquirytemplates/create', [InquiryTemplateController::class, 'create'])->name('admin.inquirytemplate.create');
