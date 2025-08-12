@@ -147,7 +147,7 @@
                                         <td>프리미엄 메뉴설정</td>
                                         <td>
                                             <div class="wrapper">
-                                                <input type="checkbox" id="primium" value="{{$user->primium_menu}}" name="primium_menu" {{$user->primium_menu == 1 ?'checked' : ''}}>
+                                                <input type="checkbox" id="primium" name="primium_menu" {{$user->primium_menu == 1 ?'checked' : ''}}>
                                                 <label for="primium" class="switch_label">
                                                     <span class="onf_btn"></span>
                                                 </label>
@@ -155,12 +155,12 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>프리미엄 메뉴설정</td>
+                                        <td>프리미엄 베팅설정</td>
                                         <td>
                                             <div class="wrapper">
-                                                <input type="checkbox" id="primium_bet" value="{{$user->primium_bet}}" name="primium_bet" {{$user->primium_bet == 1 ?'checked' : ''}}>
+                                                <input type="checkbox" id="primium_bet" name="primium_bet" {{$user->primium_bet == 1 ?'checked' : ''}}>
                                                 <label for="primium_bet" class="switch_label">
-                                                    <span class="onf_btn"></span>
+                                                    <span class="onf_btn1"></span>
                                                 </label>
                                             </div>
                                         </td>
@@ -211,7 +211,7 @@
 .switch_label:hover {
   background: #efefef;
 }
-.onf_btn {
+.onf_btn, .onf_btn1 {
   position: absolute;
   top: 4px;
   left: 3px;
@@ -234,7 +234,7 @@
 }
 
 /* move */
-#primium:checked+.switch_label .onf_btn, #primium_bet:checked+.switch_label .onf_btn {
+#primium:checked+.switch_label .onf_btn, #primium_bet:checked+.switch_label .onf_btn1 {
   left: 36px;
   background: #fff;
   box-shadow: 1px 2px 3px #00000020;

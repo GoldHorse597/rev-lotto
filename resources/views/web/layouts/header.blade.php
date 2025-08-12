@@ -65,7 +65,7 @@
       </div>
       <ul class="gnb-menu">
          @auth
-            @if(Auth::user()->primium == 1)
+            @if(Auth::user()->primium_menu == 1)
              <li class="menu-item">
               <span class="gnb-btn" style="cursor:pointer">프리미엄 로또</span>
               <ul class="depth2">
