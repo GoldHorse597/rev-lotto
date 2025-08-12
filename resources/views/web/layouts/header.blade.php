@@ -67,7 +67,7 @@
          @auth
             @if(Auth::user()->primium == 1)
              <li class="menu-item">
-              <a href="/play/lotto_pri" title="프리미엄 로또">프리미엄 로또</a>
+              <a class="gnb-btn" style="cursor:pointer" href="/play/lotto_pri" title="프리미엄 로또">프리미엄 로또</a>
             </li> 
             @endif
           @endauth
