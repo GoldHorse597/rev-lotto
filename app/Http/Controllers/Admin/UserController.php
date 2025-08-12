@@ -168,10 +168,14 @@ class UserController extends BaseController
                     $user->bank_owner = $request->bank_owner;
                     $user->level = $request->level;
                     $user->phone = $request->phone;
-                    if($request->primium == "0")
-                        $user->primium = 1;
+                    if($request->primium_menu == "0")
+                        $user->primium_menu = 1;
                     else
-                        $user->primium = 0;
+                        $user->primium_menu = 0;
+                    if($request->primium_bet == "0")
+                        $user->primium_bet = 1;
+                    else
+                        $user->primium_bet = 0;
                 }
             }
             else if($request->mode == 1)

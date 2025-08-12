@@ -77,7 +77,7 @@
             @endif
           @endauth
         <li class="menu-item">
-          
+          <span class="gnb-btn" style="cursor:pointer">로또구매 대행</span>
           <ul class="depth2">
             
             <li>

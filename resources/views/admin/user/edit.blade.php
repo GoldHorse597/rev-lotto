@@ -144,11 +144,22 @@
                                         <td>  <input type="text" class="form-control" id="phone" name="phone" value="{{$user->phone}}" ></td>
                                     </tr>
                                     <tr>
-                                        <td>프리미엄 설정</td>
+                                        <td>프리미엄 메뉴설정</td>
                                         <td>
                                             <div class="wrapper">
-                                                <input type="checkbox" id="primium" value="{{$user->primium}}" name="primium" {{$user->primium == 1 ?'checked' : ''}}>
+                                                <input type="checkbox" id="primium" value="{{$user->primium_menu}}" name="primium_menu" {{$user->primium_menu == 1 ?'checked' : ''}}>
                                                 <label for="primium" class="switch_label">
+                                                    <span class="onf_btn"></span>
+                                                </label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>프리미엄 메뉴설정</td>
+                                        <td>
+                                            <div class="wrapper">
+                                                <input type="checkbox" id="primium_bet" value="{{$user->primium_bet}}" name="primium_bet" {{$user->primium_bet == 1 ?'checked' : ''}}>
+                                                <label for="primium_bet" class="switch_label">
                                                     <span class="onf_btn"></span>
                                                 </label>
                                             </div>
@@ -178,7 +189,7 @@
 @endsection
 <style>
 
-#primium {
+#primium,#primium_bet {
   position: absolute;
   /* hidden */
   appearance: none;
@@ -213,17 +224,17 @@
 }
 
 /* checking style */
-#primium:checked+.switch_label {
+#primium:checked+.switch_label,#primium_bet:checked+.switch_label {
   background: #c44;
   border: 2px solid #c44;
 }
 
-#primium:checked+.switch_label:hover {
+#primium:checked+.switch_label:hover,#primium_bet:checked+.switch_label:hover {
   background: #e55;
 }
 
 /* move */
-#primium:checked+.switch_label .onf_btn {
+#primium:checked+.switch_label .onf_btn, #primium_bet:checked+.switch_label .onf_btn {
   left: 36px;
   background: #fff;
   box-shadow: 1px 2px 3px #00000020;
