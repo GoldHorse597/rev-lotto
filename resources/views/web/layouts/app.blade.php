@@ -13,7 +13,7 @@
         <link rel="stylesheet" type="text/css" href= "{{ asset('css/web/google.font.css')}}">
         <link rel="stylesheet" type="text/css" href= "{{ asset('css/web/Montserrat.css')}}">
         <link rel="stylesheet" type="text/css" href="{{ asset('css/web/common.css') }}?v=1.3">
-        <link rel="stylesheet" type="text/css" href="{{ asset('css/web/layout.css') }}?v=1.1">
+        <link rel="stylesheet" type="text/css" href="{{ asset('css/web/layout.css') }}?v=1.2">
         <link rel="stylesheet" type="text/css" href="{{ asset('css/web/main.css') }}?v=1.5">
         <link rel="stylesheet" type="text/css" href="{{ asset('css/web/jquery-ui.min.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ asset('css/web/sidemenu.css') }}">
