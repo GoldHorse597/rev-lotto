@@ -70,7 +70,7 @@
               <span class="gnb-btn" style="cursor:pointer">프리미엄 로또</span>
               <ul class="depth2">
                 <li>
-                  <a href="/play/lotto_pri" title="프리미엄 로또">프리미엄 로또</a>
+                  <a href="/jplay/lotto_pri" title="프리미엄 로또">프리미엄 로또</a>
                 </li>
               </ul>
             </li> 

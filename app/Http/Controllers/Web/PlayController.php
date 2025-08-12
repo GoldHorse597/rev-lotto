@@ -12,16 +12,7 @@ use App\Models\Purchase;
 
 class PlayController extends BaseController
 {
-    public function lotto_pri(){
-        $title = "프리미엄 로또";
-        $num = 45;
-        $num1 = 0;
-        $normal = 6;
-        $bonus = 0;
-        $reverse = 0;
-        $game = Game::where('id',10)->first();
-        return view('web.game.index', compact('title','num','num1','game','normal','bonus','reverse'));
-    }
+    
     public function lotto_live(){
         $title = "실시간로또";
         $num = 45;
