@@ -19,7 +19,7 @@ header .gnb-logo {position:absolute;left:0;top:10px;}
 header .gnb {display:flex;align-items:flex-start;justify-content: center}
 header .gnb .gnb-menu {display:inline-flex;justify-content:center}
 header .gnb .gnb-menu .menu-item {position:relative;margin:0 10px;box-sizing:border-box}
-header .gnb .gnb-menu .menu-item .gnb-btn {display:inline-flex;height:84px;padding:4px 24px 0 ;align-items:center;font-size:22px;font-weight:700;color:#152a5d;letter-spacing:-0.05em;box-sizing:border-box}
+header .gnb .gnb-menu .menu-item .gnb-btn {display:inline-flex;height:84px;padding:4px 15px 0 ;align-items:center;font-size:22px;font-weight:700;color:#152a5d;letter-spacing:-0.05em;box-sizing:border-box}
 header .gnb .gnb-menu .menu-item:nth-child(2) .gnb-btn{padding:4px 34px 0}
 header .gnb .gnb-menu .menu-item::after{position:absolute;top:80px;left:0;width:0;height:5px;background:#fe6b8b;transition:width .3s ease-in;content:''}
 header .gnb .gnb-menu .menu-item.active > .gnb-btn,
