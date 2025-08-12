@@ -67,9 +67,15 @@
         <li class="menu-item">
           <span class="gnb-btn" style="cursor:pointer">로또구매대행</span>
           <ul class="depth2">
+            @if(Auth::user()->primium == 1)
+            <li>
+              <a href="/play/lotto_pri" title="프리미엄 로또">프리미엄 로또</a>
+            </li> 
+            @endif
             <li>
               <a href="/play/lotto_live" title="실시간로또">실시간로또</a>
             </li>
+            
             <li>
               <a href="/play/lotto_kr" title="로또6/45(한국)">로또6/45(한국)</a>
             </li>
@@ -100,7 +106,12 @@
         <li class="menu-item">
           <span class="gnb-btn" style="cursor:pointer">리버스 로또</span>
           <ul class="depth2">
-              <li>
+            @if(Auth::user()->primium == 1)
+            <li>
+              <a href="/jplay/lotto_pri" title="프리미엄 로또">프리미엄 로또</a>
+            </li> 
+            @endif
+            <li>
               <a href="/jplay/lotto_live" title="실시간로또">실시간로또</a>
             </li>
             <li>

@@ -83,6 +83,7 @@ Route::domain('rev-lotto.com')->middleware([AuthAlertMiddleware::class])->prefix
 
 Route::domain('rev-lotto.com')->middleware([AuthAlertMiddleware::class])->prefix('play')->group(function() {
     Route::get('/lotto_live', [PlayController::class, 'lotto_live'])->name('play.lotto_live');
+    Route::get('/lotto_pri', [PlayController::class, 'lotto_pri'])->name('play.lotto_pri');
     Route::get('/lotto_kr', [PlayController::class, 'lotto_kr'])->name('play.lotto_kr');
     Route::get('/lotto_pb', [PlayController::class, 'lotto_pb'])->name('play.lotto_pb');
     Route::get('/lotto_mm', [PlayController::class, 'lotto_mm'])->name('play.lotto_mm');
@@ -97,6 +98,7 @@ Route::domain('rev-lotto.com')->middleware([AuthAlertMiddleware::class])->prefix
 });
 Route::domain('rev-lotto.com')->middleware([AuthAlertMiddleware::class])->prefix('jplay')->group(function() {
     Route::get('/lotto_live', [PlayController::class, 'jlotto_live'])->name('play.jlotto_live');
+    Route::get('/lotto_pri', [PlayController::class, 'jlotto_pri'])->name('play.jlotto_pri');
     Route::get('/lotto_kr', [PlayController::class, 'jlotto_kr'])->name('play.jlotto_kr');
     Route::get('/lotto_pb', [PlayController::class, 'jlotto_pb'])->name('play.jlotto_pb');
     Route::get('/lotto_mm', [PlayController::class, 'jlotto_mm'])->name('play.jlotto_mm');

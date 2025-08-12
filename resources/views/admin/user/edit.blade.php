@@ -143,7 +143,17 @@
                                         <th>휴대전화</th>
                                         <td>  <input type="text" class="form-control" id="phone" name="phone" value="{{$user->phone}}" ></td>
                                     </tr>
-                                   
+                                    <tr>
+                                        <td>프리미엄 설정</td>
+                                        <td>
+                                            <div class="wrapper">
+                                                <input type="checkbox" id="primium" value="{{$user->primium}}" name="primium" {{$user->primium == 1 ?'checked' : ''}}>
+                                                <label for="primium" class="switch_label">
+                                                    <span class="onf_btn"></span>
+                                                </label>
+                                            </div>
+                                        </td>
+                                    </tr>
                                    
                                     <tr>
                                         <th>@lang('admin/user.last_access_at')</th>
@@ -166,7 +176,59 @@
         </div>
     </div>
 @endsection
+<style>
 
+#primium {
+  position: absolute;
+  /* hidden */
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.switch_label {
+  position: relative;
+  cursor: pointer;
+  display: inline-block;
+  width: 65px;
+  height: 32px;
+  background: #fff;
+  border: 2px solid #daa;
+  border-radius: 20px;
+  transition: 0.2s;
+}
+.switch_label:hover {
+  background: #efefef;
+}
+.onf_btn {
+  position: absolute;
+  top: 4px;
+  left: 3px;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 20px;
+  background: #daa;
+  transition: 0.2s;
+}
+
+/* checking style */
+#primium:checked+.switch_label {
+  background: #c44;
+  border: 2px solid #c44;
+}
+
+#primium:checked+.switch_label:hover {
+  background: #e55;
+}
+
+/* move */
+#primium:checked+.switch_label .onf_btn {
+  left: 36px;
+  background: #fff;
+  box-shadow: 1px 2px 3px #00000020;
+}
+</style>
 @section('script')
     @parent
     <script>
