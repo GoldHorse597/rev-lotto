@@ -150,37 +150,32 @@ class LottoController extends BaseController
             case 1:
                 $this->processlive();
                 break;
-
             case 2:
                 $this->processkr();
                 break;
-
             case 3:
                 $this->processmm();
                 break;
-
             case 4:
                 $this->processpb();
                 break;
-
             case 5:
                 $this->processssq();
                 break;
-
             case 6:
                 $this->processdlt();
                 break;
-
             case 7:
                 $this->process6();
                 break;
-
             case 8:
                 $this->process7();
                 break;
-
             case 9:
                 $this->processmini();
+                break;
+            case 10:
+                $this->processpri();
                 break;
         }
         // $this->calculate($id);
@@ -248,6 +243,37 @@ class LottoController extends BaseController
         $date->add(new \DateInterval('P1D'));
         $game->weekday = $date->format('Y-m-d').' 19:30:00';
         $game->save();
+    }
+    private function processpri(){
+       
+        // $apiUrl = "https://127.0.0.1:9000/list?type=pending&page=1";
+        $apiUrl = "http://137.220.191.107/list";
+        $response = file_get_contents($apiUrl);
+        
+        $data = json_decode($response, true);
+        $now = Carbon::now();
+        if (!$data) 
+        {
+            return;                
+        }
+        foreach ($data as $item) {
+            $drawDate = $item['startAt'];
+            $drawTime = Carbon::parse($drawDate);
+            if ($now->greaterThanOrEqualTo($drawTime->copy()->subMinutes(5)) && $now->lessThan($drawTime)) {
+                //echo "현재 시간이 추첨 시작 5분 전입니다.";
+                $game = Game::where('id', 10)->first();
+                $numbersString = implode(',',$item["result"]["mainNumbers"]);
+                $bonus = $item["result"]['bonusNumber'];
+                $game->lastresult = $numbersString;
+                $game->bonus = $bonus;
+                $game->round = $item['round'] + 1;
+                $date = new \DateTime($drawDate);
+                
+                $game->lastday = $date->format('Y-m-d H:i:s');
+                $game->weekday = $date->addMinutes(5);
+                $game->save();
+            } 
+        }
     }
     private function processmm1(){
         $game = Game::where('id', 3)->first();
@@ -1543,12 +1569,196 @@ class LottoController extends BaseController
 
                 }
                 break;
-        }
+            case 10:
+                foreach($histories as $history)
+                {
+                    $result_nums = explode(',',$game->lastresult);
+                    $bonus = $game->bonus;
+                    $myNumbers = explode(',',$history->list);
+                    $matched = count(array_intersect($myNumbers, $result_nums));
+                    $user = User::where('id', $history->user_id)->first();
+                    $rate = Rate::where('level',$user->level)->first();
+                    $prize = new Prize;
+                    $prize->title = Game::where('id', $game->id)->first()->game." 배팅";
+                    $prize->list =  $history->list."  ".$history->bonus;                    
+                    $prize->user_id = $user->id;
+                    $prize->created_at = date('Y-m-d H:i:s');
+                    $prize->updated_at = date('Y-m-d H:i:s');
+                    
+                    if ($matched === 6) {
+                        // "1등";
+                        $history->result = 1;
+                        if($rate->rate_1 < 0)
+                        {
+                            $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_1) / 100);
+                            $prize->type = 0;
+                            $prize->money = $history->amount - ($history->amount * abs($rate->rate_1) / 100);   
+                            $history->profit = $history->amount - ($history->amount * abs($rate->rate_1) / 100);
+                        }
+                        else{
+                            $prize->type = 1;  
+                            $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_1 / 100);
+                            $prize->money = $history->amount + ($history->amount *  $rate->rate_1 / 100);   
+                            $history->profit = $history->amount + ($history->amount * abs($rate->rate_1) / 100);
+                        }
+                    } elseif ($matched === 5 && in_array($bonus, $myNumbers)) {
+                        // "2등";
+                        $history->result = 2;
+                        if($rate->rate_2 < 0)
+                        {
+                            $prize->type = 0;
+                            $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_2) / 100);
+                            $history->profit = $history->amount - ($history->amount * abs($rate->rate_2) / 100);
+                            $prize->money = $history->amount - ($history->amount * abs($rate->rate_2) / 100); 
+                        }
+                        else{
+                            
+                            $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_2 / 100);
+                            $history->profit = $history->amount + ($history->amount * abs($rate->rate_2) / 100);
+                            $prize->type = 1;  
+                            $prize->money = $history->amount + ($history->amount *  $rate->rate_2 / 100);   
+                        }                            
+                    } elseif ($matched === 5) {
+                        // "3등";
+                        $history->result = 3;
+                        if($rate->rate_3 < 0)
+                        {
+                            $prize->type = 0;
+                            $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_3) / 100);
+                            $history->profit = $history->amount - ($history->amount * abs($rate->rate_3) / 100);
+                            $prize->money = $history->amount - ($history->amount * abs($rate->rate_3) / 100); 
+                        }
+                        else{
+                            $prize->type = 1;  
+                            $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_3 / 100);
+                            $history->profit = $history->amount + ($history->amount * abs($rate->rate_3) / 100);
+                            $prize->money = $history->amount + ($history->amount *  $rate->rate_3 / 100);   
+                        }
+                    } elseif ($matched === 4) {
+                        // "4등";
+                        $history->result = 4;
+                        if($rate->rate_4 < 0)
+                        {
+                            $prize->type = 0;
+                            $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_4) / 100);
+                            $history->profit = $history->amount - ($history->amount * abs($rate->rate_4) / 100);
+                            $prize->money = $history->amount - ($history->amount * abs($rate->rate_4) / 100); 
+                        }
+                        else{
+                            $prize->type = 1;  
+                            $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_4 / 100);
+                            $history->profit = $history->amount + ($history->amount * abs($rate->rate_4) / 100);
+                            $prize->money = $history->amount + ($history->amount *  $rate->rate_4 / 100);   
+                        }
+                        
+                    } elseif ($matched === 3) {
+                        // "5등";
+                        $history->result = 5;
+                        if($rate->rate_5 < 0)
+                        {
+                            $prize->type = 0;
+                            $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_5) / 100);
+                            $history->profit = $history->amount - ($history->amount * abs($rate->rate_5) / 100);
+                            $prize->money = $history->amount - ($history->amount * abs($rate->rate_5) / 100); 
+                        }
+                        else{
+                            $prize->type = 1;  
+                            $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_5 / 100);
+                            $history->profit = $history->amount + ($history->amount * abs($rate->rate_5) / 100);
+                            $prize->money = $history->amount + ($history->amount *  $rate->rate_5 / 100);   
+                        }
+                    } else {
+                        // "꽝";
+                        if($rate->rate_7 < 0)
+                        {
+                            $prize->type = 0;
+                            $user->amount = $user->amount + $history->amount - ($history->amount * abs($rate->rate_7) / 100);
+                            $history->profit = $history->amount - ($history->amount * abs($rate->rate_7) / 100);
+                            $prize->money = $history->amount - ($history->amount * abs($rate->rate_7) / 100); 
+                        }
+                        else{
+                            $prize->type = 1;  
+                            $user->amount = $user->amount + $history->amount + ($history->amount *  $rate->rate_7 / 100);
+                            $history->profit = $history->amount + ($history->amount * abs($rate->rate_7) / 100);
+                            $prize->money = $history->amount + ($history->amount *  $rate->rate_7 / 100);   
+                        }
+                        $history->result = 0;
+                    }
+                    $history->status = 1;
+                    if($prize->money != 0)   
+                    {
+                        $prize->cur_amount = $user->amount;
+                        $prize->save();
+                    }                 
+                    $user->save();                    
+                    $history->save();
+
+                }
+                break;
+            }
         return response()->json(['success' => true]);
     }
     
     public function live(){
         $page_title = '로또 목록';
         return view('admin.lotto.live', compact('page_title'));
+    }
+
+    public function pri(){
+        $page_title = '프리미엄로또 완료답지';
+         $apiUrl = "127.0.0.1:9000/list?type=finish&page=1";
+        $response = file_get_contents($apiUrl);
+        
+        $data = json_decode($response, true);
+        if (!$data) 
+        {
+            return;                
+        }
+        $collection = collect($data);
+
+        // 현재 페이지 번호
+        $currentPage = request()->get('page', 1);
+
+        // 페이지당 항목 수
+        $perPage = 20;
+
+        // LengthAwarePaginator 생성
+        $lotteries = new LengthAwarePaginator(
+            $collection->forPage($currentPage, $perPage),
+            $collection->count(),
+            $perPage,
+            $currentPage,
+            ['path' => request()->url(), 'query' => request()->query()]
+        );
+        return view('admin.lotto.pri', compact('page_title','lotteries'));
+    }
+
+    public function pri1(){
+        $page_title = '프리미엄로또 예정답지';
+         $apiUrl = "127.0.0.1:9000/list?type=pending&page=1";
+        $response = file_get_contents($apiUrl);
+        
+        $data = json_decode($response, true);
+        if (!$data) 
+        {
+            return;                
+        }
+        $collection = collect($data);
+
+        // 현재 페이지 번호
+        $currentPage = request()->get('page', 1);
+
+        // 페이지당 항목 수
+        $perPage = 20;
+
+        // LengthAwarePaginator 생성
+        $lotteries = new LengthAwarePaginator(
+            $collection->forPage($currentPage, $perPage),
+            $collection->count(),
+            $perPage,
+            $currentPage,
+            ['path' => request()->url(), 'query' => request()->query()]
+        );
+        return view('admin.lotto.pri', compact('page_title','lotteries'));
     }
 }

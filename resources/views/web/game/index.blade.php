@@ -1027,6 +1027,10 @@
 				<iframe id="gameifr" src="https://rev-lotto.com/game_page/" allowfullscreen style="width: 100%;height: 800px;pointer-events: none;"></iframe>
 				<!-- <iframe src="/admin/live" style="width: 100%;height: 800px;"></iframe> -->
 				@endif
+				@if($game->id == 10)
+				<iframe id="gameifr" src="https://rev-lotto.com/premium_lottery_5m/" allowfullscreen style="width: 100%;height: 800px;pointer-events: none;"></iframe>
+				<!-- <iframe src="/admin/live" style="width: 100%;height: 800px;"></iframe> -->
+				@endif
 				<h3 class="tit-lotto-buy">
 				<img src="{{ asset('images/web/logo/logo2_'.$game->abbr.'.png')}}" alt="{{$title}}">
 				</h3>

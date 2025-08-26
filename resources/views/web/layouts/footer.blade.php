@@ -3,11 +3,16 @@
     <div class="swiper-container swiper-container-horizontal swiper-container-autoheight">
       <div class="swiper-wrapper" style="height: 82px; transform: translate3d(-3045px, 0px, 0px); transition-duration: 0ms;">
         <div class="swiper-slide " data-swiper-slide-index="4" style="width: 207.5px; margin-right: 10px;">
+          <a href="/jplay/lotto_pri" title="프리미엄로또">
+            <img src="{{ asset('images/web/logo_pri.png')}}" alt="프리미엄로또">
+          </a>
+        </div>
+         <div class="swiper-slide " data-swiper-slide-index="5" style="width: 207.5px; margin-right: 10px;">
           <a href="/jplay/lotto_live" title="실시간로또">
             <img src="{{ asset('images/web/logo_live.png')}}" alt="실시간로또">
           </a>
         </div>
-        <div class="swiper-slide " data-swiper-slide-index="5" style="width: 207.5px; margin-right: 10px;">
+        <div class="swiper-slide " data-swiper-slide-index="6" style="width: 207.5px; margin-right: 10px;">
           <a href="/jplay/lotto_kr" title="로또6/45(한국)">
             <img src="{{ asset('images/web/logo_kr.png')}}" alt="로또6/45(한국)">
           </a>

@@ -165,6 +165,9 @@ Route::prefix(config('custom.admin_prefix'))
             Route::match(['get', 'put'], '/lotto/{id}', [LottoController::class, 'edit'])->where('id', '[0-9]+')->name('admin.lotto.edit');
             Route::post('/lotto/process/{id}', [LottoController::class, 'process'])->where('id', '[0-9]+')->name('admin.lotto.process');
 
+            Route::get('/lotto/pri', [LottoController::class, 'pri'])->name('admin.lotto.pri');
+            Route::get('/lotto/pri1', [LottoController::class, 'pri1'])->name('admin.lotto.pri1');
+
             Route::get('/messages', [MessageController::class, 'index'])->name('admin.message.list');
             Route::post('/message/send', [MessageController::class, 'send'])->name('admin.message.send');
             Route::post('/message/{id}', [MessageController::class, 'read'])->where('id', '[0-9]+')->name('admin.message.read');
