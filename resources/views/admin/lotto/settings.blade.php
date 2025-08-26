@@ -78,7 +78,7 @@
                         <tr>
                             <td> {{ $index + 1 }} </td>                            
                             <td>
-                                {{$setting->level}}
+                                {{ $setting->level == 10 ? '프리미엄' : $setting->level }}
                             </td>
                             <td>
                                 {{$setting->rate_1}}
@@ -114,13 +114,7 @@
             </div>
         </div>
     </div>
-    <div class="d-flex justify-content-end mb-4">
-        <button class="btn btn-success" data-toggle="modal" data-target="#gameCreateModal">
-            <i class="fas fa-plus fa-sm text-white-50"></i> 로또 추가 </button>
-    </div>
-    <form id="processForm" action="" method="post">
-        @csrf
-    </form>
+    
 @endsection
 
 @section('script')
@@ -141,57 +135,6 @@
             form.attr('action', action).submit();
         });
 
-        function scrap(id){
-             $.ajax({
-                type: 'POST',
-                url: '{{ route('admin.lotto.scrap') }}',
-                data: {
-                   id:id
-                },
-                dataType: 'json',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function (data) {
-                    if (data.success) {
-                        location.reload();
-                    }
-                    else {
-                        alertify.alert('', '@lang('admin/app.setting_saving_failed')');
-                    }
-                },
-                error: function(error) {
-                    console.log(error);
-                },
-                complete : function() {
-                }
-            });
-        }
-        function calc(id){
-             $.ajax({
-                type: 'POST',
-                url: '{{ route('admin.lotto.calc') }}',
-                data: {
-                   id:id
-                },
-                dataType: 'json',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function (data) {
-                    if (data.success) {
-                        location.reload();
-                    }
-                    else {
-                        alertify.alert('', '@lang('admin/app.setting_saving_failed')');
-                    }
-                },
-                error: function(error) {
-                    console.log(error);
-                },
-                complete : function() {
-                }
-            });
-        }
+       
     </script>
 @endsection

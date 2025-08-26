@@ -1579,7 +1579,7 @@ class LottoController extends BaseController
                     $myNumbers = explode(',',$history->list);
                     $matched = count(array_intersect($myNumbers, $result_nums));
                     $user = User::where('id', $history->user_id)->first();
-                    $rate = Rate::where('level',$user->level)->first();
+                    $rate = Rate::where('level',10)->first();
                     $prize = new Prize;
                     $prize->title = Game::where('id', $game->id)->first()->game." 배팅";
                     $prize->list =  $history->list."  ".$history->bonus;                    
