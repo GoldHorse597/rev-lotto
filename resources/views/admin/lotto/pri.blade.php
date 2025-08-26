@@ -64,7 +64,7 @@
                             <td class="text-center" colspan="12"> @lang('admin/app.no_data') </td>
                         </tr>
                         @else
-                        @foreach($lotteries as $index => $game)
+                        @foreach($lotteries as $index => $lottery)
                         <tr>
                             <td> {{ $index + 1 }} </td>                            
                             <td>
@@ -77,7 +77,6 @@
                                {{ implode(', ', $lottery['result']['mainNumbers']) }}
                             </td>
                             <td> {{ $lottery['result']['bonusNumber'] }}</td>
-                            <td> {{$game->bonus}}</td>
                            
                         </tr>
                         @endforeach
