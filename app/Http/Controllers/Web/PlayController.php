@@ -105,6 +105,9 @@ class PlayController extends BaseController
     }
 
      public function jlotto_pri(){
+        $authUser = \Auth::guard('web')->user();
+        if($authUser->primium_menu == 0)
+            return redirect()->route('web.index');  
         $title = "프리미엄 로또";
         $num = 45;
         $num1 = 0;

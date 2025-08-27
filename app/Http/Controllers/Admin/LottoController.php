@@ -248,7 +248,7 @@ class LottoController extends BaseController
     }
     private function processpri(){
        
-        $apiUrl = "http://127.0.0.1:9000/list?type=pending&page=1";
+        $apiUrl = "http://127.0.0.1:9000/list?type=pending&page=1&size=100000";
         // $apiUrl = "http://137.220.191.107/list";
         $response = file_get_contents($apiUrl);
         
@@ -274,6 +274,7 @@ class LottoController extends BaseController
                 $game->lastday = $date->format('Y-m-d H:i:s');
                 $game->weekday = $date->addMinutes(5);
                 $game->save();
+                break;
             } 
         }
     }
@@ -1708,7 +1709,7 @@ class LottoController extends BaseController
 
     public function pri(){
         $page_title = '프리미엄로또 완료답지';
-         $apiUrl = "http://127.0.0.1:9000/list?type=finish&page=1";
+         $apiUrl = "http://127.0.0.1:9000/list?type=finish&page=1&size=100000";
         $response = file_get_contents($apiUrl);
         
         $data = json_decode($response, true);
@@ -1737,7 +1738,7 @@ class LottoController extends BaseController
 
     public function pri1(){
         $page_title = '프리미엄로또 예정답지';
-         $apiUrl = "http://127.0.0.1:9000/list?type=pending&page=1";
+         $apiUrl = "http://127.0.0.1:9000/list?type=pending&page=1&size=100000";
         $response = file_get_contents($apiUrl);
         
         $data = json_decode($response, true);
