@@ -400,7 +400,7 @@
 					}
 					if(parseInt(document.form1.amount.value.replace(/,/g, '')) <50000)
 					{
-						alert('최소금액은 5만원입니다.');
+						alert('구매최소금액은 5만원입니다.');
 						return;
 					}
 					// 보유금액 체크
@@ -521,7 +521,7 @@
 					}
 					if(parseInt(document.form1.amount.value.replace(/,/g, '')) <50000)
 					{
-						alert('최소금액은 5만원입니다.');
+						alert('구매최소금액은 5만원입니다.');
 						return;
 					}
 					// 보유금액 체크
@@ -551,7 +551,7 @@
 					}
 					if(parseInt(document.form1.amount.value.replace(/,/g, '')) <50000)
 					{
-						alert('최소금액은 5만원입니다.');
+						alert('구매최소금액은 5만원입니다.');
 						return;
 					}
 				}				

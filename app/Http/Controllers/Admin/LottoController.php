@@ -1712,7 +1712,7 @@ class LottoController extends BaseController
     }
 
     public function pri(Request $request){
-        $page_title = '프리미엄로또 완료답지';
+        $page_title = '프리미엄로또 답지';
         $status = $request->query('status');
 
         if ($status === '0') {
@@ -1735,7 +1735,7 @@ class LottoController extends BaseController
                 return strtotime($b['startAt']) <=> strtotime($a['startAt']);
             });
         } 
-        else {
+        else if(strval($status) === '2'){
             // 전체 처리 → 두 개 API 합치기
             $pendingUrl = "http://127.0.0.1:9000/list?type=pending&page=1&size=100000";
             $finishUrl  = "http://127.0.0.1:9000/list?type=finish&page=1&size=100000";
@@ -1749,6 +1749,17 @@ class LottoController extends BaseController
             usort($data, function($a, $b) {
                 return strtotime($a['startAt']) <=> strtotime($b['startAt']);
             });
+        }
+        else {
+             // 대기중 처리
+            $apiUrl = "http://127.0.0.1:9000/list?type=pending&page=1&size=100000";
+            $response = file_get_contents($apiUrl);
+            $data = json_decode($response, true) ?? [];
+            // startAt 기준으로 내림차순 정렬
+            usort($data, function($a, $b) {
+                return strtotime($a['startAt']) <=> strtotime($b['startAt']);
+            });
+            
         }
         
         // 컬렉션으로 변환

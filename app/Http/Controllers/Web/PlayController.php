@@ -262,6 +262,10 @@ class PlayController extends BaseController
                 if (!empty($request->input('del_list'))) {
                     $purchase = Purchase::where('id', $request->input('del_list'))->first();
                     if($authUser->amount >= $purchase->amount){
+                        if($purchase->game_id == 10 && $authUser->primium_bet == 0)
+                        {
+                                return redirect()->route('web.game.numberlist')->withErrors('허가받은 이용자만 이용가능한 메뉴입니다.');
+                        }
                         $exists = DB::table('histories')->where([
                             ['user_id', '=', $purchase->user_id],
                             ['game_id', '=', $purchase->game_id],
@@ -308,6 +312,11 @@ class PlayController extends BaseController
                 }
                 else{
                      if($authUser->amount >= (int)str_replace(',', '', $request->amount)){
+                        if($request->part_idx == 10 && $authUser->primium_bet == 0)
+                        {
+                            return redirect()->route('web.index')->withErrors('허가받은 이용자만 이용가능한 메뉴입니다.');
+                            // return redirect()->route('web.game.numberlist')->withErrors('허가받은 이용자만 이용가능한 메뉴입니다.');
+                        }
                         $normalNumbers = array_filter([
                         $request->s_num1, $request->s_num2, $request->s_num3,
                         $request->s_num4, $request->s_num5, $request->s_num6, $request->s_num7,
@@ -325,7 +334,7 @@ class PlayController extends BaseController
                         ], function ($v) {
                             return $v !== null && $v !== '' && $v !== 'undefined';
                         });
-                       
+                        
                         $exists = DB::table('histories')->where([
                             ['user_id', '=', $authUser->id],
                             ['game_id', '=', $request->part_idx],
@@ -380,6 +389,10 @@ class PlayController extends BaseController
                     $purchases = Purchase::whereIn('id', $ids)->get();
                     foreach ($purchases as $purchase) {
                         if($authUser->amount >= $purchase->amount){
+                            if($purchase->game_id == 10 && $authUser->primium_bet == 0)
+                            {
+                                 return redirect()->route('web.game.numberlist')->withErrors('허가받은 이용자만 이용가능한 메뉴입니다.');
+                            }
                             $exists = DB::table('histories')->where([
                                 ['user_id', '=', $purchase->user_id],
                                 ['game_id', '=', $purchase->game_id],
