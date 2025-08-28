@@ -1741,7 +1741,7 @@ class LottoController extends BaseController
         }
          // startAt 기준으로 내림차순 정렬
         usort($data, function($a, $b) {
-            return strtotime($b['startAt']) <=> strtotime($a['startAt']);
+            return strtotime($a['startAt']) <=> strtotime($b['startAt']);
         });
         // 컬렉션으로 변환
         $collection = collect($data);
