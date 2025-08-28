@@ -248,8 +248,8 @@ class LottoController extends BaseController
     }
     private function processpri(){
        
-        $apiUrl = "http://127.0.0.1:9000/list?type=pending&page=1&size=100000";
-        // $apiUrl = "http://137.220.191.107/list";
+        // $apiUrl = "http://127.0.0.1:9000/list?type=pending&page=1&size=100000";
+         $apiUrl = "http://137.220.191.107/list?type=finish&page=1&size=100000";
         $response = file_get_contents($apiUrl);
         
         $data = json_decode($response, true);
@@ -259,23 +259,27 @@ class LottoController extends BaseController
             return;                
         }
         foreach ($data as $item) {
-            $drawDate = $item['startAt'];
-            $drawTime = Carbon::parse($drawDate);
-            if ($now->greaterThanOrEqualTo($drawTime->copy()->subMinutes(5)) && $now->lessThan($drawTime)) {
-                //echo "현재 시간이 추첨 시작 5분 전입니다.";
+            // UTC 기준으로 파싱 후 서울 시간대 변환
+            $drawTime = Carbon::parse($item['startAt'], 'UTC')->setTimezone('Asia/Seoul');
+
+            // 현재 시간과의 차이 계산 ($now - $drawTime)
+            $diffInSeconds = $now->diffInSeconds($drawTime, false);
+
+            // 추첨 후 5분 이내
+            if ($diffInSeconds < 0 && $diffInSeconds >= -300) {
                 $game = Game::where('id', 10)->first();
-                $numbersString = implode(',',$item["result"]["mainNumbers"]);
-                $bonus = $item["result"]['bonusNumber'];
+                $numbersString = implode(',', $item['result']['mainNumbers']);
+                $bonus = $item['result']['bonusNumber'];
+
                 $game->lastresult = $numbersString;
                 $game->bonus = $bonus;
                 $game->round = $item['round'] + 1;
-                $date = new \DateTime($drawDate);
-                
-                $game->lastday = $date->format('Y-m-d H:i:s');
-                $game->weekday = $date->addMinutes(5);
+
+                $game->lastday = $drawTime->format('Y-m-d H:i:s');
+                $game->weekday = $drawTime->copy()->addMinutes(5)->format('Y-m-d H:i:s');
                 $game->save();
                 break;
-            } 
+            }
         }
     }
     private function processmm1(){
