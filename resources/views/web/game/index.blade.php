@@ -514,6 +514,10 @@
 				
 				else if({{$reverse}} == 1)
 				{
+					if(document.form1.part_idx.value == 10 && {{Auth::user()->primium_bet}} == 0 ){
+						alert('허가받은 이용자만 이용가능한 메뉴입니다.');
+						return;
+					}
 					if(document.form1.amount.value == "" || document.form1.amount == "0" )
 					{
 						alert('금액을 입력해주세요.');

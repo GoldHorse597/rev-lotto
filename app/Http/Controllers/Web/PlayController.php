@@ -314,8 +314,8 @@ class PlayController extends BaseController
                      if($authUser->amount >= (int)str_replace(',', '', $request->amount)){
                         if($request->part_idx == 10 && $authUser->primium_bet == 0)
                         {
-                            return redirect()->route('web.index')->withErrors('허가받은 이용자만 이용가능한 메뉴입니다.');
-                            // return redirect()->route('web.game.numberlist')->withErrors('허가받은 이용자만 이용가능한 메뉴입니다.');
+                            // return redirect()->route('web.index')->withErrors('허가받은 이용자만 이용가능한 메뉴입니다.');
+                            return redirect()->route('play.number_list')->withErrors('허가받은 이용자만 이용가능한 메뉴입니다.');
                         }
                         $normalNumbers = array_filter([
                         $request->s_num1, $request->s_num2, $request->s_num3,
