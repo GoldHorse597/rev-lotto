@@ -50,13 +50,13 @@
             <form method="get">
                 <ul class="nav nav-pills d-flex ">
                    
-                    <li class="nav-item mb-3">
+                    <li class="nav-item mb-3" style="margin-right:20px;">
                         <button type="submit" name="status" value="0"  class="btn btn-info">대기중</button>
                     </li>
-                    <li class="nav-item mb-3">
+                    <li class="nav-item mb-3" style="margin-right:20px;">
                         <button type="submit" name="status" value="1" class="btn btn-danger">완료</button>
                     </li>
-                    <li class="nav-item mb-3">
+                    <li class="nav-item mb-3" style="margin-right:20px;">
                         <button type="submit" name="status" value="2" class="btn btn-primary">전체</button>
                     </li>
                 </ul>
