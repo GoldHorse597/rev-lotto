@@ -1720,12 +1720,20 @@ class LottoController extends BaseController
             $apiUrl = "http://127.0.0.1:9000/list?type=pending&page=1&size=100000";
             $response = file_get_contents($apiUrl);
             $data = json_decode($response, true) ?? [];
+            // startAt 기준으로 내림차순 정렬
+            usort($data, function($a, $b) {
+                return strtotime($a['startAt']) <=> strtotime($b['startAt']);
+            });
         } 
         elseif ($status === '1') {
             // 완료 처리
             $apiUrl = "http://127.0.0.1:9000/list?type=finish&page=1&size=100000";
             $response = file_get_contents($apiUrl);
             $data = json_decode($response, true) ?? [];
+            // startAt 기준으로 내림차순 정렬
+            usort($data, function($a, $b) {
+                return strtotime($b['startAt']) <=> strtotime($a['startAt']);
+            });
         } 
         else {
             // 전체 처리 → 두 개 API 합치기
@@ -1737,12 +1745,12 @@ class LottoController extends BaseController
 
             // 두 배열 합치기
             $data = array_merge($pendingData, $finishData);
-          
+            // startAt 기준으로 내림차순 정렬
+            usort($data, function($a, $b) {
+                return strtotime($a['startAt']) <=> strtotime($b['startAt']);
+            });
         }
-         // startAt 기준으로 내림차순 정렬
-        usort($data, function($a, $b) {
-            return strtotime($a['startAt']) <=> strtotime($b['startAt']);
-        });
+        
         // 컬렉션으로 변환
         $collection = collect($data);
 
