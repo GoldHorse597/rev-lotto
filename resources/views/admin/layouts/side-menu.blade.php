@@ -141,12 +141,12 @@
                         </a>  
                         <a class="collapse-item {{ request()->routeIs('admin.lotto.pri') }}" href="{{ route('admin.lotto.pri') }}">
                             <i class="fas fa-fw fa-gem"></i>
-                            <span>프리미엄로또 완료답지</span>
+                            <span>프리미엄로또 답지</span>
                         </a>    
-                        <a class="collapse-item {{ request()->routeIs('admin.lotto.pri1') }}" href="{{ route('admin.lotto.pri1') }}">
+                        <!-- <a class="collapse-item {{ request()->routeIs('admin.lotto.pri1') }}" href="{{ route('admin.lotto.pri1') }}">
                             <i class="fas fa-fw fa-gem"></i>
                             <span>프리미엄로또 예정답지</span>
-                        </a>                   
+                        </a>                    -->
                     </div>
                 </div>
             </li>

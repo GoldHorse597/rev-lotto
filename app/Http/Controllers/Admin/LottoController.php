@@ -1711,16 +1711,39 @@ class LottoController extends BaseController
         return view('admin.lotto.live', compact('page_title'));
     }
 
-    public function pri(){
+    public function pri(Request $request){
         $page_title = '프리미엄로또 완료답지';
-         $apiUrl = "http://127.0.0.1:9000/list?type=finish&page=1&size=100000";
-        $response = file_get_contents($apiUrl);
-        
-        $data = json_decode($response, true);
-        if (!$data) 
-        {
-            return;                
+        $status = $request->query('status');
+
+        if ($status === '0') {
+            // 대기중 처리
+            $apiUrl = "http://127.0.0.1:9000/list?type=pending&page=1&size=100000";
+            $response = file_get_contents($apiUrl);
+            $data = json_decode($response, true) ?? [];
+        } 
+        elseif ($status === '1') {
+            // 완료 처리
+            $apiUrl = "http://127.0.0.1:9000/list?type=finish&page=1&size=100000";
+            $response = file_get_contents($apiUrl);
+            $data = json_decode($response, true) ?? [];
+        } 
+        else {
+            // 전체 처리 → 두 개 API 합치기
+            $pendingUrl = "http://127.0.0.1:9000/list?type=pending&page=1&size=100000";
+            $finishUrl  = "http://127.0.0.1:9000/list?type=finish&page=1&size=100000";
+
+            $pendingData = json_decode(file_get_contents($pendingUrl), true) ?? [];
+            $finishData  = json_decode(file_get_contents($finishUrl), true) ?? [];
+
+            // 두 배열 합치기
+            $data = array_merge($pendingData, $finishData);
+          
         }
+         // startAt 기준으로 내림차순 정렬
+        usort($data, function($a, $b) {
+            return strtotime($b['startAt']) <=> strtotime($a['startAt']);
+        });
+        // 컬렉션으로 변환
         $collection = collect($data);
 
         // 현재 페이지 번호
@@ -1730,19 +1753,21 @@ class LottoController extends BaseController
         $perPage = 20;
 
         // LengthAwarePaginator 생성
-        $lotteries = new LengthAwarePaginator(
+        $lotteries = new \Illuminate\Pagination\LengthAwarePaginator(
             $collection->forPage($currentPage, $perPage),
             $collection->count(),
             $perPage,
             $currentPage,
             ['path' => request()->url(), 'query' => request()->query()]
         );
+
         return view('admin.lotto.pri', compact('page_title','lotteries'));
     }
 
     public function pri1(){
-        $page_title = '프리미엄로또 예정답지';
-         $apiUrl = "http://127.0.0.1:9000/list?type=pending&page=1&size=100000";
+        $page_title = '프리미엄로또 답지';
+
+        $apiUrl = "http://127.0.0.1:9000/list?type=pending&page=1&size=100000";
         $response = file_get_contents($apiUrl);
         
         $data = json_decode($response, true);

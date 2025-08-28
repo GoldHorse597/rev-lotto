@@ -46,7 +46,21 @@
     </div>
 
     <div class="card shadow mb-4">       
-        <div class="card-body">           
+        <div class="card-body">        
+            <form method="get">
+                <ul class="nav nav-pills d-flex ">
+                   
+                    <li class="nav-item mb-3">
+                        <button type="submit" name="status" value="0"  class="btn btn-info">대기중</button>
+                    </li>
+                    <li class="nav-item mb-3">
+                        <button type="submit" name="status" value="1" class="btn btn-danger">완료</button>
+                    </li>
+                    <li class="nav-item mb-3">
+                        <button type="submit" name="status" value="2" class="btn btn-primary">전체</button>
+                    </li>
+                </ul>
+            </form>   
             <div class="table-responsive" style="min-height: 500px;">
                 <table class="table table-bordered" id="usersDataTable">
                     <thead>
@@ -71,7 +85,7 @@
                                 {{ $lottery['round'] }}
                             </td>
                             <td>
-                               {{ \Carbon\Carbon::parse($lottery['startAt'])->format('Y-m-d H:i:s') }}
+                               {{ \Carbon\Carbon::parse($lottery['startAt'])->setTimezone('Asia/Seoul')->format('Y-m-d H:i:s') }}
                             </td>
                             <td>
                                {{ implode(', ', $lottery['result']['mainNumbers']) }}
