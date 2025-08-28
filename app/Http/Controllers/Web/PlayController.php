@@ -104,7 +104,7 @@ class PlayController extends BaseController
         return view('web.game.index', compact('title','num','num1','game','normal','bonus','reverse'));
     }
 
-     public function jlotto_pri(){
+    public function jlotto_pri(){
         $authUser = \Auth::guard('web')->user();
         if($authUser->primium_menu == 0)
             return redirect()->route('web.index');  

@@ -398,6 +398,11 @@
 						alert('금액을 입력해주세요.');
 						return;
 					}
+					if(parseInt(document.form1.amount.value.replace(/,/g, '')) <50000)
+					{
+						alert('최소금액은 5만원입니다.');
+						return;
+					}
 					// 보유금액 체크
 					var balance = {{ floor(Auth::user()->amount) }};
 					var inputAmount = parseInt(document.form1.amount.value.replace(/,/g, ''));
@@ -514,6 +519,11 @@
 						alert('금액을 입력해주세요.');
 						return;
 					}
+					if(parseInt(document.form1.amount.value.replace(/,/g, '')) <50000)
+					{
+						alert('최소금액은 5만원입니다.');
+						return;
+					}
 					// 보유금액 체크
 					var balance = {{ floor(Auth::user()->amount) }};
 					var inputAmount = parseInt(document.form1.amount.value.replace(/,/g, ''));
@@ -537,6 +547,11 @@
 					if(document.form1.amount.value == "" || document.form1.amount == "0" )
 					{
 						alert('금액을 입력해주세요.');
+						return;
+					}
+					if(parseInt(document.form1.amount.value.replace(/,/g, '')) <50000)
+					{
+						alert('최소금액은 5만원입니다.');
 						return;
 					}
 				}				
