@@ -3,6 +3,9 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use App\Http\Controllers\LottoController;
+use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class CalaPriCommand extends Command
 {
