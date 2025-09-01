@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Http\Controllers\LottoController;
+use App\Http\Controllers\Admin\LottoController;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
