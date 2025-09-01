@@ -28,21 +28,12 @@ class CalaPriCommand extends Command
      */
     public function handle()
     {
-        $id = $this->argument('id');
-
-        // Request 객체 생성
-        $request = new Request(['id' => $id]);
-
-        // 컨트롤러 호출
-        $controller = new LottoController();
-        $response = $controller->calculate($request);
-
-        // 결과 출력
-        $data = $response->getData();
-        if (isset($data->success) && $data->success) {
-            $this->info("Game ID {$id} → calculate() 함수 실행 성공!");
-        } else {
-            $this->error("Game ID {$id} → calculate() 함수 실행 실패!");
-        }
+        $now = Carbon::now();
+        if ($now->minute % 5 === 0 && $now->second === 10) {
+            $id = $this->argument('id');
+            $request = new Request(['id' => $id]);
+            $controller = new LottoController();
+            $controller->calculate($request);
+        }   
     }
 }

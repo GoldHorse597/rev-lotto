@@ -9,5 +9,5 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 
-Schedule::command('lotto:processpri')->everySecond();
-Schedule::command('lotto:calculate 10')->everyFiveMinutes();
+Schedule::command('lotto:processpri')->everyMinute();
+Schedule::command('lotto:calculate 10')->everyMinute();
