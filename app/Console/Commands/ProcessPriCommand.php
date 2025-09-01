@@ -16,7 +16,7 @@ class ProcessPriCommand extends Command
         $now = Carbon::now();
 
         // 분이 5의 배수 && 초가 00일 때만 실행
-        if ($now->minute % 5 === 0 && $now->second === 0) {
+        if ($now->minute % 5 === 0) {
             $controller = new LottoController();
             $controller->processpri();
             $this->info("[" . $now . "] processpri 함수 실행 완료!");

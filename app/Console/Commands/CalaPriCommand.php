@@ -29,7 +29,7 @@ class CalaPriCommand extends Command
     public function handle()
     {
         $now = Carbon::now();
-        if ($now->minute % 5 === 0 && $now->second === 10) {
+        if ($now->minute % 6 === 0) {
             $id = $this->argument('id');
             $request = new Request(['id' => $id]);
             $controller = new LottoController();
