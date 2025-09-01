@@ -11,7 +11,7 @@ class CalaPriCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'lotto:calculate';
+    protected $signature = 'lotto:calculate {id}';
 
     /**
      * 명령어 설명
