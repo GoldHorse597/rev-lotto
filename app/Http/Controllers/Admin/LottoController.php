@@ -246,7 +246,7 @@ class LottoController extends BaseController
         $game->weekday = $date->format('Y-m-d').' 19:30:00';
         $game->save();
     }
-    private function processpri(){
+    public function processpri(){
        
         // $apiUrl = "http://127.0.0.1:9000/list?type=pending&page=1&size=100000";
          $apiUrl = "http://137.220.191.107/list?type=finish&page=1&size=100000";
