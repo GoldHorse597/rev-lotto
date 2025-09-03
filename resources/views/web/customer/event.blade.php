@@ -20,7 +20,7 @@
         <div class="pw8p">번호</div>
         <div class="pwauto">제목</div>
         <div class="pw15p">작성일</div>
-        <div class="pw10p">조회</div>
+        <!-- <div class="pw10p">조회</div> -->
     </div>
     <div class="tbody">
          @foreach($events as $index => $event)
@@ -30,7 +30,7 @@
                 <a href="/customer/event_view?id={{$event->id}}">{{$event->title}}</a>
             </div>
             <div class="pw15p">{{ \Carbon\Carbon::parse($event->created_at)->format('Y/m/d') }}</div>
-            <div class="pw10p">{{$event->hits}}</div>
+            <!-- <div class="pw10p">{{$event->hits}}</div> -->
         </div>
         @endforeach
     </div>
