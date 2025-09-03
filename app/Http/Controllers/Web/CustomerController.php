@@ -72,7 +72,7 @@ class CustomerController extends BaseController
         $title = $request->query('title');
         if (!empty($title))
              $query->where('title','Like', '%'.$title.'%');
-        $query = $query->->orderBy('created_at', 'DESC')where('sender_id',$authUser->id)->where('referer_id',0);
+        $query = $query->orderBy('created_at', 'DESC')->where('sender_id',$authUser->id)->where('referer_id',0);
        
         $totalCnt = $query->count();
         $faqs = $query->paginate(10);
