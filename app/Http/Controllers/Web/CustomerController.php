@@ -17,7 +17,7 @@ class CustomerController extends BaseController
         $title = $request->query('title');
         if (!empty($title)){}
              $query->where('title','Like', '%'.$title.'%');
-        $notices = $query->paginate(10);
+        $notices = $query->orderBy('created_at', 'DESC')->paginate(10);
         $totalCnt = $query->count();
         return view('web.customer.notice',compact('notices','totalCnt','title'));
     }
@@ -28,7 +28,7 @@ class CustomerController extends BaseController
         $title = $request->query('title');
         if (!empty($title))
              $query->where('title','Like', '%'.$title.'%');
-        $events = $query->paginate(10);
+        $events = $query->orderBy('created_at', 'DESC')->paginate(10);
         $totalCnt = $query->count();
         return view('web.customer.event',compact('events','totalCnt','title'));
     }
@@ -72,7 +72,7 @@ class CustomerController extends BaseController
         $title = $request->query('title');
         if (!empty($title))
              $query->where('title','Like', '%'.$title.'%');
-        $query = $query->where('sender_id',$authUser->id)->where('referer_id',0);
+        $query = $query->->orderBy('created_at', 'DESC')where('sender_id',$authUser->id)->where('referer_id',0);
        
         $totalCnt = $query->count();
         $faqs = $query->paginate(10);
