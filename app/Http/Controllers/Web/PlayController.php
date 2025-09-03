@@ -115,7 +115,9 @@ class PlayController extends BaseController
         $bonus = 0;
         $reverse = 1;
         $game = Game::where('id',10)->first();
-        return view('web.game.index', compact('title','num','num1','game','normal','bonus','reverse'));
+        $now = \Carbon\Carbon::now();
+        $serverTime = $now->toDateTimeString();
+        return view('web.game.index', compact('title','num','num1','game','normal','bonus','reverse','serverTime'));
     }
     public function jlotto_live(){
         $title = "실시간로또 - 리버스";

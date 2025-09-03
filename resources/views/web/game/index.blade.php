@@ -6,7 +6,36 @@
  	@section('content')
 		
 		<script type="text/javascript">
-			
+			let purchageFlag = true;
+			if({{$game->id}} == 10){
+				let serverTime = new Date("{{ $serverTime }}");
+
+				// 3초마다 서버시간을 흘려보내기
+				setInterval(() => {
+					serverTime.setSeconds(serverTime.getSeconds() + 3);
+
+					let minute = serverTime.getMinutes();
+					let second = serverTime.getSeconds();
+
+					// 기준이 되는 분 (5의 배수)
+					let baseMinute = Math.round(minute / 5) * 5;
+					let baseTime = new Date(serverTime);
+					baseTime.setMinutes(baseMinute, 0, 0);
+
+					// disable 구간 = 기준 -30초 ~ 기준 +30초
+					let disableStart = new Date(baseTime.getTime() - 30 * 1000);
+					let disableEnd   = new Date(baseTime.getTime() + 30 * 1000);
+
+					// let btn = document.getElementById("lottoBtn");
+
+					if (serverTime >= disableStart && serverTime <= disableEnd) {
+						purchageFlag = false;
+					} else {
+						purchageFlag = true;
+					}
+
+				}, 3000); // 3초마다 갱신
+			}
 			if (navigator.appName.indexOf("Microsoft") > -1) {
 				if (navigator.appVersion.indexOf("MSIE 6") > -1) {
 				} else if (navigator.appVersion.indexOf("MSIE 7") > -1) {}
@@ -432,6 +461,10 @@
 				var no_num = '';
 				var num_count = 0;
 				form = document.form1;
+				if(purchageFlag == false){
+					alert('구매시간이 마감되었습니다. 추첨임박 30초전 부터 ~ 추첨중일때에는 구매가 불가합니다.');
+					return;
+				}
 				if (document.form1.s_num1.value == "QP") { // 일반번호가 QPick 일때
 					form.s_num1.value = "QP";
 					form.s_num2.value = "QP";
@@ -1157,7 +1190,7 @@
 						</div>
 						@else
 						<div class="btn-cart">
-							<a href="#none" onclick="num_save1();">바로 구매하기 </a>	
+							<a href="#none" onclick="num_save1();" id="lottoBtn">바로 구매하기 </a>	
 						</div>
 						@endif
 						@if($reverse == 0)
