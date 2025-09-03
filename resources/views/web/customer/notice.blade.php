@@ -23,9 +23,9 @@
         <div class="pw10p">조회</div>
     </div>
     <div class="tbody">
-         @foreach($notices as $notice)
+         @foreach($notices as $index => $notice)
         <div class="item">       
-            <div class="pw8p">{{$notice->id}}</div>
+            <div class="pw8p">{{$notices->firstItem() + $index }}</div>
             <div class="pwauto t-l">
                 <a href="/customer/notice_view?id={{$notice->id}}">{{$notice->title}}</a>
             </div>

@@ -23,9 +23,9 @@
         <div class="pw10p">조회</div>
     </div>
     <div class="tbody">
-         @foreach($events as $event)
+         @foreach($events as $index => $event)
         <div class="item">       
-            <div class="pw8p">{{$event->id}}</div>
+            <div class="pw8p">{{$events->firstItem() + $index }}</div>
             <div class="pwauto t-l">
                 <a href="/customer/event_view?id={{$event->id}}">{{$event->title}}</a>
             </div>
