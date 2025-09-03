@@ -10,4 +10,4 @@ Artisan::command('inspire', function () {
 
 
 Schedule::command('lotto:processpri')->everyMinute();
-Schedule::command('lotto:calculate 10')->cron('1-59/5 * * * *');
+// Schedule::command('lotto:calculate 10')->cron('1-59/5 * * * *');

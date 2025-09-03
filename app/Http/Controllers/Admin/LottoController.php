@@ -281,6 +281,9 @@ class LottoController extends BaseController
                 break;
             }
         }
+
+        $request1 = new Request(['id' => 10]);
+        $this->calculate($request1);
     }
     private function processmm1(){
         $game = Game::where('id', 3)->first();
