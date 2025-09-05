@@ -7,6 +7,7 @@
 		
 		<script type="text/javascript">
 			let purchageFlag = true;
+			
 			if({{$game->id}} == 10){
 				let serverTime = new Date("{{ $serverTime }}");
 

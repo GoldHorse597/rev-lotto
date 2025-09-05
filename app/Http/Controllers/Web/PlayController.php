@@ -20,8 +20,10 @@ class PlayController extends BaseController
         $normal = 6;
         $bonus = 0;
         $reverse = 0;
+        $now = \Carbon\Carbon::now();
+        $serverTime = $now->toDateTimeString();
         $game = Game::where('id',1)->first();
-        return view('web.game.index', compact('title','num','num1','game','normal','bonus','reverse'));
+        return view('web.game.index', compact('title','num','num1','game','normal','bonus','reverse','serverTime'));
     }
     public function lotto_kr(){
         $title = "로또6/45(한국)";
@@ -30,8 +32,10 @@ class PlayController extends BaseController
         $normal = 6;
         $bonus = 0;
         $reverse = 0;
+        $now = \Carbon\Carbon::now();
+        $serverTime = $now->toDateTimeString();
         $game = Game::where('id',2)->first();
-        return view('web.game.index', compact('title','num','num1','game','normal','bonus','reverse'));
+        return view('web.game.index', compact('title','num','num1','game','normal','bonus','reverse','serverTime'));
     }
     public function lotto_pb(){
         $title = "파워볼(미국)";
@@ -40,8 +44,10 @@ class PlayController extends BaseController
         $normal = 5;
         $bonus = 1;
         $reverse = 0;
+        $now = \Carbon\Carbon::now();
+        $serverTime = $now->toDateTimeString();
         $game = Game::where('id',4)->first();
-        return view('web.game.index', compact('title','num','num1','game','normal','bonus','reverse'));
+        return view('web.game.index', compact('title','num','num1','game','normal','bonus','reverse','serverTime'));
     }
     public function lotto_mm(){
         $title = "메가밀리언(미국)";
@@ -50,8 +56,10 @@ class PlayController extends BaseController
         $normal = 5;
         $bonus = 1;
         $reverse = 0;
+        $now = \Carbon\Carbon::now();
+        $serverTime = $now->toDateTimeString();
         $game = Game::where('id',3)->first();
-        return view('web.game.index', compact('title','num','num1','game','normal','bonus','reverse'));
+        return view('web.game.index', compact('title','num','num1','game','normal','bonus','reverse','serverTime'));
     }
     public function lotto_dlt(){
         $title = "따루토(중국)";
@@ -60,8 +68,10 @@ class PlayController extends BaseController
         $normal = 5;
         $bonus = 2;
         $reverse = 0;
+        $now = \Carbon\Carbon::now();
+        $serverTime = $now->toDateTimeString();
         $game = Game::where('id',6)->first();
-        return view('web.game.index', compact('title','num','num1','game','normal','bonus','reverse'));
+        return view('web.game.index', compact('title','num','num1','game','normal','bonus','reverse','serverTime'));
     }
     public function lotto_ssq(){
         $title = "쌍색구(중국)";
@@ -70,8 +80,10 @@ class PlayController extends BaseController
         $normal = 6;
         $bonus = 1;
         $reverse = 0;
+        $now = \Carbon\Carbon::now();
+        $serverTime = $now->toDateTimeString();
         $game = Game::where('id',5)->first();
-        return view('web.game.index', compact('title','num','num1','game','normal','bonus','reverse'));
+        return view('web.game.index', compact('title','num','num1','game','normal','bonus','reverse','serverTime'));
     }
     public function lotto_6(){
         $title = "로또6(일본)";
@@ -80,8 +92,10 @@ class PlayController extends BaseController
         $normal = 6;
         $bonus = 0;
         $reverse = 0;
+        $now = \Carbon\Carbon::now();
+        $serverTime = $now->toDateTimeString();
         $game = Game::where('id',7)->first();
-        return view('web.game.index', compact('title','num','num1','game','normal','bonus','reverse'));
+        return view('web.game.index', compact('title','num','num1','game','normal','bonus','reverse','serverTime'));
     }
     public function lotto_7(){
         $title = "로또7(일본)";
@@ -90,8 +104,10 @@ class PlayController extends BaseController
         $normal = 7;
         $bonus = 0;
         $reverse = 0;
+        $now = \Carbon\Carbon::now();
+        $serverTime = $now->toDateTimeString();
         $game = Game::where('id',8)->first();
-        return view('web.game.index', compact('title','num','num1','game','normal','bonus','reverse'));
+        return view('web.game.index', compact('title','num','num1','game','normal','bonus','reverse','serverTime'));
     }
     public function lotto_mini(){
         $title = "미니(일본)";
@@ -100,8 +116,10 @@ class PlayController extends BaseController
         $normal = 5;
         $bonus = 0;
         $reverse = 0;
+        $now = \Carbon\Carbon::now();
+        $serverTime = $now->toDateTimeString();
         $game = Game::where('id',9)->first();
-        return view('web.game.index', compact('title','num','num1','game','normal','bonus','reverse'));
+        return view('web.game.index', compact('title','num','num1','game','normal','bonus','reverse','serverTime'));
     }
 
     public function jlotto_pri(){
@@ -126,8 +144,10 @@ class PlayController extends BaseController
         $normal = 6;
         $bonus = 0;
         $reverse = 1;
+        $now = \Carbon\Carbon::now();
+        $serverTime = $now->toDateTimeString();
         $game = Game::where('id',1)->first();
-        return view('web.game.index', compact('title','num','num1','game','normal','bonus','reverse'));
+        return view('web.game.index', compact('title','num','num1','game','normal','bonus','reverse','serverTime'));
     }
     public function jlotto_kr(){
         $title = "로또6/45(한국) - 리버스";
@@ -136,8 +156,10 @@ class PlayController extends BaseController
         $normal = 6;
         $bonus = 0;
         $reverse = 1;
+        $now = \Carbon\Carbon::now();
+        $serverTime = $now->toDateTimeString();
         $game = Game::where('id',2)->first();
-        return view('web.game.index', compact('title','num','num1','game','normal','bonus','reverse'));
+        return view('web.game.index', compact('title','num','num1','game','normal','bonus','reverse','serverTime'));
     }
     public function jlotto_pb(){
         $title = "파워볼(미국) - 리버스";
@@ -146,8 +168,10 @@ class PlayController extends BaseController
         $normal = 5;
         $bonus = 1;
         $reverse = 1;
+        $now = \Carbon\Carbon::now();
+        $serverTime = $now->toDateTimeString();
         $game = Game::where('id',4)->first();
-        return view('web.game.index', compact('title','num','num1','game','normal','bonus','reverse'));
+        return view('web.game.index', compact('title','num','num1','game','normal','bonus','reverse','serverTime'));
     }
     public function jlotto_mm(){
         $title = "메가밀리언(미국) - 리버스";
@@ -156,8 +180,10 @@ class PlayController extends BaseController
         $normal = 5;
         $bonus = 1;
         $reverse = 1;
+        $now = \Carbon\Carbon::now();
+        $serverTime = $now->toDateTimeString();
         $game = Game::where('id',3)->first();
-        return view('web.game.index', compact('title','num','num1','game','normal','bonus','reverse'));
+        return view('web.game.index', compact('title','num','num1','game','normal','bonus','reverse','serverTime'));
     }
     public function jlotto_dlt(){
         $title = "따루토(중국) - 리버스";
@@ -166,8 +192,10 @@ class PlayController extends BaseController
         $normal = 5;
         $bonus = 2;
         $reverse = 1;
+        $now = \Carbon\Carbon::now();
+        $serverTime = $now->toDateTimeString();
         $game = Game::where('id',6)->first();
-        return view('web.game.index', compact('title','num','num1','game','normal','bonus','reverse'));
+        return view('web.game.index', compact('title','num','num1','game','normal','bonus','reverse','serverTime'));
     }
     public function jlotto_ssq(){
         $title = "쌍색구(중국) - 리버스";
@@ -176,8 +204,10 @@ class PlayController extends BaseController
         $normal = 6;
         $bonus = 1;
         $reverse = 1;
+        $now = \Carbon\Carbon::now();
+        $serverTime = $now->toDateTimeString();
         $game = Game::where('id',5)->first();
-        return view('web.game.index', compact('title','num','num1','game','normal','bonus','reverse'));
+        return view('web.game.index', compact('title','num','num1','game','normal','bonus','reverse','serverTime'));
     }
     public function jlotto_6(){
         $title = "로또6(일본) - 리버스";
@@ -186,8 +216,10 @@ class PlayController extends BaseController
         $normal = 6;
         $bonus = 0;
         $reverse = 1;
+        $now = \Carbon\Carbon::now();
+        $serverTime = $now->toDateTimeString();
         $game = Game::where('id',7)->first();
-        return view('web.game.index', compact('title','num','num1','game','normal','bonus','reverse'));
+        return view('web.game.index', compact('title','num','num1','game','normal','bonus','reverse','serverTime'));
     }
     public function jlotto_7(){
         $title = "로또7(일본) - 리버스";
@@ -196,8 +228,10 @@ class PlayController extends BaseController
         $normal = 7;
         $bonus = 0;
         $reverse = 1;
+        $now = \Carbon\Carbon::now();
+        $serverTime = $now->toDateTimeString();
         $game = Game::where('id',8)->first();
-        return view('web.game.index', compact('title','num','num1','game','normal','bonus','reverse'));
+        return view('web.game.index', compact('title','num','num1','game','normal','bonus','reverse','serverTime'));
     }
     public function jlotto_mini(){
         $title = "미니(일본) - 리버스";
@@ -206,8 +240,10 @@ class PlayController extends BaseController
         $normal = 5;
         $bonus = 0;
         $reverse = 1;
+        $now = \Carbon\Carbon::now();
+        $serverTime = $now->toDateTimeString();
         $game = Game::where('id',9)->first();
-        return view('web.game.index', compact('title','num','num1','game','normal','bonus','reverse'));
+        return view('web.game.index', compact('title','num','num1','game','normal','bonus','reverse','serverTime'));
     }
 
 
